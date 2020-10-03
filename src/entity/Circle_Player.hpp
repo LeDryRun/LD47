@@ -9,7 +9,7 @@
 class Circle_Player: public Circular_Entity{
 
 private:
-	double speed=1;
+	double speed=3;
 public:
 	Circle_Player(){
 		animations.push_back(Animation("green_circle"));

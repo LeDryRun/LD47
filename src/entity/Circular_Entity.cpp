@@ -45,3 +45,14 @@ void Circular_Entity::load_animations(Imagehandler& imagehandler){
 		imagehandler.load_animation(animations.at(i));
 	}
 }
+
+void Circular_Entity::rotate_animations(int deg_p){
+	for(int i=0;i<(int)animations.size();i++){
+		animations.at(i).set_rotation(deg_p);
+	}
+}
+void Circular_Entity::scale_animations(Point scale_p){
+	for(int i=0;i<(int)animations.size();i++){
+		animations.at(i).scale(scale_p);
+	}
+}

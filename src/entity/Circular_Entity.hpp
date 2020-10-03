@@ -65,6 +65,8 @@ public:
 
 	virtual void move();//Doesn't check for collisions unless you tell it to!
 	virtual void load_animations(Imagehandler&);
+	virtual void rotate_animations(int);
+	virtual void scale_animations(Point);
 
 };
 

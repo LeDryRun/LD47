@@ -1,5 +1,6 @@
 #ifndef POINT_HPP
 #define POINT_HPP
+#include <math.h>
 
 class Point{
 private:
@@ -27,10 +28,17 @@ public:
 		else return false;
 	}
 
-    float get_x(){return x;}
-    float get_y(){return y;}
-	void set_x(int x_p){x=x_p;}
-	void set_y(int y_p){y=y_p;}
+	void normalize(){
+		float length=sqrt(x*x+y*y);
+		x=x/length;
+		y=y/length;
+	}
+
+	float get_x(){return x;}
+	float get_y(){return y;}
+	void set_x(float x_p){x=x_p;}
+	void set_y(float y_p){y=y_p;}
+
 	void set_point(float x_p, float y_p){set_x(x_p);set_y(y_p);}
 	void set_point(Point new_p){set_x(new_p.get_x());set_y(new_p.get_y());}
 
