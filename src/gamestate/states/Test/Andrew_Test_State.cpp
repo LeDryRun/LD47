@@ -14,21 +14,35 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	m_debug_text.setFont(m_debug_font);
 
 	m_bullet_manager = Bullet_Manager();
-	m_test_enemy = Enemy_Straight(&m_bullet_manager, &m_test_player);
-	m_test_burst_enemy = Enemy_Burst(&m_bullet_manager);
+
+	std::vector<EnemyType> enemies;
+	enemies.push_back(EnemyType::kEnemyStraight);
+	enemies.push_back(EnemyType::kEnemyBurst);
+
+	std::deque<Spawn_Data> spawn_data_one;
+	std::deque<Spawn_Data> spawn_data_two;
+
+	spawn_data_one.push_back(Spawn_Data(0, 16, Point(500, 100), 100));
+	spawn_data_one.push_back(Spawn_Data(0, 16, Point(500, 200), 200));
+	spawn_data_one.push_back(Spawn_Data(0, 16, Point(500, 300), 300));
+
+	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 100), 400));
+	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 200), 500));
+	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 300), 600));
+
+	m_wave_one = Wave(enemies, false, spawn_data_one);
+	m_wave_two = Wave(enemies, false, spawn_data_two);
+	m_wave_manager = Wave_Manager(&m_bullet_manager, &m_test_player);
 
 	load_sprites(imagehandler);
 
-	m_test_enemy.create(Point(200, 200), 16);
-	m_test_burst_enemy.create(Point(200, 100), 16);
 	m_test_player.create(Point(500, 500), 16);
 }
 
 void Andrew_Test_State::load_sprites(Imagehandler& imagehandler){
 	m_bullet_manager.load_animations(imagehandler);
-	m_test_enemy.load_animations(imagehandler);
-	m_test_burst_enemy.load_animations(imagehandler);
 	m_test_player.load_animations(imagehandler);
+	m_wave_manager.load_animations(imagehandler);
 }
 
 void Andrew_Test_State::update_layer_resolutions(){
@@ -50,6 +64,17 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 
 	m_test_player.update(Point(v_hor, v_vert), keyboard.get_key('v').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
 
+	bool spawn = mouse.is_clicked();
+
+	if (spawn) {
+		m_wave_manager.add_wave(m_wave_one);
+		m_wave_manager.add_wave(m_wave_two);
+		std::cout << "Spawn!\n";
+		spawn = false;
+	}
+
+	m_wave_manager.update();
+
 	if (keyboard.get_key('b').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
 	{
 		if (!m_test_player.get_isLooping())
@@ -61,8 +86,6 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 			m_test_player.validate_loop();
 	}
 
-	m_test_enemy.update();
-	m_test_burst_enemy.update();
 
 	Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
 	for (int i = 0; i < (int)bullets_hitting_player.size(); i++) {
@@ -74,11 +97,11 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	int bullety = 0;
 
 	if (m_bullet_manager.getLiveBullets().size() > 0) {
-		bulletx = m_test_burst_enemy.getCurrentAnimation().get_current_frame().getRotation();
-		bullety = m_bullet_manager.getLiveBullets().at(0)->get_center().get_y();
+		bulletx = 0;// m_test_burst_enemy.getCurrentAnimation().get_current_frame().getRotation();
+		bullety = 0;// m_bullet_manager.getLiveBullets().at(0)->get_center().get_y();
 	}
 
-	m_debug_text.setString("Enemy Rotation: " + std::to_string(bulletx));
+	m_debug_text.setString("Enemy Spawn: " + std::to_string(bulletx));
 	m_debug_text.setCharacterSize(12);
 	m_debug_text.setFillColor(sf::Color::White);
 
@@ -95,8 +118,6 @@ void Andrew_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 
 	Gamestate::render_background_layer(window);
 	window.setView(test_layer);
-	window.draw(m_test_enemy);
-	window.draw(m_test_burst_enemy);
 	window.draw(m_debug_text);
 
 	sf::VertexArray points(sf::LinesStrip, 0);
@@ -106,6 +127,7 @@ void Andrew_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 
 	window.draw(points);
 	window.draw(m_test_player);
+	window.draw(m_wave_manager);
 	window.draw(m_bullet_manager);
 
 
