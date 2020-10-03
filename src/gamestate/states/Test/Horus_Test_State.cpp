@@ -1,6 +1,7 @@
 #include "Horus_Test_State.hpp"
 #include "../../../communal/Communal.hpp"
 
+#include <math.h>
 
 Horus_Test_State::Horus_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
 	state_name="horus_test_state";
@@ -23,12 +24,14 @@ void Horus_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad)
 
 	mouse.set_layer(test_layer);
 
-    int v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
-    int v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
+    float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
+    v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
+    float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
+    v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
 
-    p_test.update(Point(v_hor,v_vert), keyboard.get_key('v').is_pressed());
+    p_test.update(Point(v_hor,v_vert), keyboard.get_key('v').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
 
-    if (keyboard.get_key('b').is_pressed())
+    if (keyboard.get_key('b').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
     {
         if (!p_test.get_isLooping())
             p_test.start_loop();
