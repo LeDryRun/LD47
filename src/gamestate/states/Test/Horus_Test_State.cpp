@@ -7,6 +7,8 @@ Horus_Test_State::Horus_Test_State(Imagehandler& imagehandler,Audiohandler& audi
 	state_name="horus_test_state";
 	load_sprites(imagehandler);
 
+    world.init(Point(0,0), test_layer.get_original_size());
+
     p_test.create(Point(500,500), 16);
 }
 
@@ -29,9 +31,9 @@ void Horus_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad)
     float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
     v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
 
-    p_test.update(Point(v_hor,v_vert), keyboard.get_key('v').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
+    p_test.update(world, Point(v_hor,v_vert), keyboard.get_key('^').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
 
-    if (keyboard.get_key('b').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
+    if (keyboard.get_key(' ').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
     {
         if (!p_test.get_isLooping())
             p_test.start_loop();
@@ -66,13 +68,7 @@ void Horus_Test_State::render(sf::RenderWindow& window){Duration_Check::start("-
 	Gamestate::render_background_layer(window);
 	window.setView(test_layer);
 
-    sf::VertexArray points(sf::LinesStrip, 0);
-    for (Point p : p_test.get_Line()) {
-        points.append(sf::Vertex(sf::Vector2f(p.get_x(), p.get_y()), sf::Color::White));
-    }
-
-    window.draw(points);
-    window.draw(p_test);
+    p_test.draw(world, window);
 
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
@@ -90,18 +86,4 @@ void Horus_Test_State::check_gamepad(Gamepad& gamepad){
 	if(gamepad.was_just_pressed(GAMEPAD_START)){
 		send_data.push_back(Data_Packet("set_state",MANAGER,{"pause_menu"}));
 	}
-/*
-	if(gamepad.was_just_pressed(GAMEPAD_A)){
-
-	}
-
-	if(gamepad.get_left_stick_y()>0){
-
-	}else if(gamepad.get_left_stick_y()<0 ){
-		;
-	}else if(gamepad.get_left_stick_x()<0 ){
-
-	}else if(gamepad.get_left_stick_x()>0 ){
-
-	}*/
 }
