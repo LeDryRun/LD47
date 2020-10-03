@@ -3,11 +3,15 @@
 
 
 Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
-	state_name="Daniel_test_state";
+	state_name="daniel_test_state";
 	load_sprites(imagehandler);
+	player.create(Point(500,500),16);
+	other.create(Point(600,600),16);
 }
 
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
+	player.load_animations(imagehandler);
+	other.load_animations(imagehandler);
 }
 
 void Daniel_Test_State::update_layer_resolutions(){
@@ -19,6 +23,8 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	Gamestate::update_gui_layer(mouse,keyboard,gamepad);
 
 	mouse.set_layer(test_layer);
+
+	player.update(other,keyboard,gamepad);
 
 	check_gamepad(gamepad);
 	check_keyboard(keyboard);
@@ -36,6 +42,8 @@ void Daniel_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 
 	Gamestate::render_background_layer(window);
 	window.setView(test_layer);
+	window.draw(player);
+	window.draw(other);
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
 

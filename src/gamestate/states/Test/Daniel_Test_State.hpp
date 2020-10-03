@@ -4,16 +4,16 @@
 #include "../../Gamestate.hpp"
 #include "../../../tilemap/Tilemap.hpp"
 #include "../../../audio/Audiohandler.hpp"
-#include "../../../entity/Platformer_Controller.hpp"
+#include "../../../entity/Circle_Player.hpp"
 
 class Daniel_Test_State:public Gamestate{
 private:
 
 	Layer test_layer;
 
-	Tilemap platform_map;
+	Circle_Player player;
+	Circle_Player other;
 
-	Platformer_Controller player;
 
 public:
 	Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler);
