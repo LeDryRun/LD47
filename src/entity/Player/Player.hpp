@@ -2,10 +2,14 @@
 #define PLAYER_HPP
 
 #include "../Circular_Entity.hpp"
+#include "../../communal/LDUtil.hpp"
+#include "../Bullet/Bullet_Manager.hpp"
 
 class Player : public Circular_Entity
 {
     private:
+        //Bullet_Manager p_BulletMan;
+
         float i_PlayerSpd = 10.f;
 
         std::vector<Point> v_Line;
@@ -25,7 +29,8 @@ class Player : public Circular_Entity
         bool get_isLooping() { return b_isLooping; };
         void set_isLooping(bool b) { b_isLooping = b; };
 
-        void update(Point move, bool shifted);
+        void update(World_Data world, Point move, bool shifted);
+        void draw(World_Data world, sf::RenderWindow& window);
         void start_loop();
         void validate_loop();
 };
