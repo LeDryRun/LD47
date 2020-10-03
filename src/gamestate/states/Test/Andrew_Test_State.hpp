@@ -8,15 +8,17 @@
 #include "../../../entity/enemy/Enemy_Straight.hpp"
 #include "../../../entity/enemy/Enemy_Burst.hpp"
 #include "../../../entity/Bullet/Bullet_Manager.hpp"
+#include "../../../wave/Wave_Manager.hpp"
 
 class Andrew_Test_State:public Gamestate{
 private:
 
 	Layer test_layer;
 
-	Enemy_Straight m_test_enemy;
-	Enemy_Burst m_test_burst_enemy;
 	Bullet_Manager m_bullet_manager;
+	Wave_Manager m_wave_manager;
+	Wave m_wave_one;
+	Wave m_wave_two;
 	Player m_test_player;
 
 	sf::Font m_debug_font;

@@ -4,6 +4,7 @@
 Enemy_Burst::Enemy_Burst()
 {
 	animations.push_back(Animation("red_circle"));
+	m_health = 1;
 }
 
 Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
@@ -21,6 +22,11 @@ Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
 	m_fire_delay = 10;
 	m_fire_timer = 0;
 
+	m_health = 100;
+
+	m_spawning = false;
+	m_spawned = false;
+
 	m_bullet_spawn_points.push_back(Point(0, 0));
 	m_bullet_spawn_points.push_back(Point(32, 0));
 	m_bullet_spawn_points.push_back(Point(32, 32));
@@ -34,13 +40,23 @@ Enemy_Burst::~Enemy_Burst()
 
 void Enemy_Burst::update()
 {
-	flight_path();
-	if (m_fire_timer >= m_fire_delay) {
-		fire();
-		m_fire_timer = 0;
-	}
+	if (m_spawned) {
+		flight_path();
+		if (m_fire_timer >= m_fire_delay) {
+			fire();
+			m_fire_timer = 0;
+		}
 
-	m_fire_timer++;
+		m_fire_timer++;
+	}
+	else if (m_spawning) {
+		spawn_path();
+	}
+}
+
+void Enemy_Burst::doSpawn()
+{
+	m_spawning = true;
 }
 
 void Enemy_Burst::flight_path()
@@ -58,6 +74,12 @@ void Enemy_Burst::flight_path()
 	move();
 
 	m_distance_travelled++;
+}
+
+void Enemy_Burst::spawn_path()
+{
+	m_spawning = false;
+	m_spawned = true;
 }
 
 void Enemy_Burst::fire()
@@ -80,4 +102,16 @@ void Enemy_Burst::fire()
 Animation Enemy_Burst::getCurrentAnimation()
 {
 	return animations.at(0);
+}
+
+Enemy_Burst Enemy_Burst::create_copy(Point center, int radius)
+{
+	create(center, radius);
+	return *this;
+}
+
+Enemy_Burst Enemy_Burst::create_copy(Spawn_Data data)
+{
+	create_copy(data.pos, data.radius);
+	return *this;
 }

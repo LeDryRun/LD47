@@ -2,6 +2,7 @@
 #define ENEMY_BURST_HPP
 
 #include "Enemy.hpp"
+#include "../../wave/Wave.hpp"
 
 class Enemy_Burst : public Enemy
 {
@@ -10,14 +11,20 @@ public:
 	Enemy_Burst(Bullet_Manager* bullet_manager);
 	~Enemy_Burst();
 	virtual void update();
-	virtual void flight_path();
-	virtual void fire();
+	virtual void doSpawn();
+	
 	Animation getCurrentAnimation();
+	Enemy_Burst create_copy(Point center, int radius);
+	Enemy_Burst create_copy(Spawn_Data data);
 
 private:
 	int m_length;
 	int m_distance_travelled;
 	int m_dir;
+
+	virtual void flight_path();
+	virtual void spawn_path();
+	virtual void fire();
 };
 
 #endif //ENEMY_STRAIGHT_HPP
