@@ -1,0 +1,1 @@
+error_animation:32x32,1r4c,4f

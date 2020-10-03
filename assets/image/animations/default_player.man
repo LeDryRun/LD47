@@ -1,0 +1,4 @@
+Player_Idle:15x32,1r1c,1f
+Player_Run:15x32,1r3c,3f
+Player_Jump:15x32,1r1c,1f
+Player_Wall_Slide:15x32,1r1c,1f

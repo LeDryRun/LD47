@@ -1,0 +1,7 @@
+Player_Idle:64x64,1r1c,1f
+Player_Scoot:64x64,1r2c,2f
+Player_Jump:64x64,1r5c,5f
+Player_Land:64x64,1r4c,4f
+Player_Cling:64x64,1r4c,4f
+Player_Pogo:64x64,1r5c,5f
+Player_Cling_Idle:64x64,1r1c,1f

@@ -1,0 +1,15 @@
+(tileWidth)x(tileHeight)
+(number collumns of tiles)x(number of rows of tiles)
+name_of_backgroud_tile:
+name_of_solid_tiles:S
+name_of_empty_tile:G-
+tile_that_looks_like_tile0:G0
+...
+//a name that ends with a colon and then an endline is not solid
+//a name that ends with an S after the colon has a hitbox and is solid
+//a name that ends with an G- after the colon is an empty tile and can be used to denote something specific on the map
+//a name that ends with an G and a number after the colon looks like the tile at that number in this list and can be used to denote something specific on the map
+
+
+//to create a new basic tileset you can just make a copy of the default tileset png and tilset files and edit them to have the names/visual of your choice
+//in order to use a new tileset you must add it to the static tilemap tileset vector. see Tilemap.hpp

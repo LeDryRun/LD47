@@ -1,0 +1,6 @@
+//optional buffer
+first:(frame width)x(frame height),(number of rows)r(number of collumns)c,(total frames)f
+...
+
+//to make a simple testing animation simply make a copy of default_animations on and man files and edit them. to use them in the program 
+//add the files to the image handler with  the and then add each animation you want to the entity in its constructor. see Entity.hpp

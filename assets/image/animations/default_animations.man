@@ -1,0 +1,8 @@
+red:32x32,1r2c,2f
+blue:32x32,1r2c,2f
+yellow:32x32,1r2c,2f
+green:32x32,1r2c,2f
+purple:32x32,1r2c,2f
+orange:32x32,1r2c,2f
+white:32x32,1r2c,2f
+other:32x32,1r2c,2f
