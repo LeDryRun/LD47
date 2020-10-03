@@ -38,6 +38,7 @@ public:
 	float get_y(){return y;}
 	void set_x(float x_p){x=x_p;}
 	void set_y(float y_p){y=y_p;}
+
 	void set_point(float x_p, float y_p){set_x(x_p);set_y(y_p);}
 	void set_point(Point new_p){set_x(new_p.get_x());set_y(new_p.get_y());}
 
@@ -46,11 +47,11 @@ public:
 };
 
 namespace Cardinal{
-	const Point North=Point(0,-1);
-	const Point South=Point(0,1);
-	const Point East=Point(1,0);
-	const Point West=Point(-1,0);
-	const Point none=Point(0,0);
+	const Point North=Point(0.f,-1.f);
+	const Point South=Point(0.f,1.f);
+	const Point East=Point(1.f,0.f);
+	const Point West=Point(-1.f,0.f);
+	const Point none=Point(0.f,0.f);
 
 	static int to_degrees(Point p_p){
 		if(p_p==North)return 270;
