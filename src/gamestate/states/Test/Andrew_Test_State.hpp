@@ -20,6 +20,7 @@ private:
 	Wave m_wave_one;
 	Wave m_wave_two;
 	Player m_test_player;
+    World_Data world;
 
 	sf::Font m_debug_font;
 	sf::Text m_debug_text;

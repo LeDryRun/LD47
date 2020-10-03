@@ -36,6 +36,7 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 
 	load_sprites(imagehandler);
 
+    world.init(Point(0, 0), test_layer.get_original_size());
 	m_test_player.create(Point(500, 500), 16);
 }
 
@@ -57,12 +58,24 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 
 	check_gamepad(gamepad);
 	check_keyboard(keyboard);
-	float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
-	v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
-	float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
-	v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
+	
+    float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
+    v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
+    float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
+    v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
 
-	m_test_player.update(Point(v_hor, v_vert), keyboard.get_key('v').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
+    m_test_player.update(world, Point(v_hor, v_vert), keyboard.get_key('^').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
+
+    if (keyboard.get_key(' ').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
+    {
+        if (!m_test_player.get_isLooping())
+            m_test_player.start_loop();
+    }
+    else
+    {
+        if (m_test_player.get_isLooping())
+            m_test_player.validate_loop();
+    }
 
 	bool spawn = mouse.is_clicked();
 
@@ -96,11 +109,6 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	int bulletx = 0;
 	int bullety = 0;
 
-	if (m_bullet_manager.getLiveBullets().size() > 0) {
-		bulletx = 0;// m_test_burst_enemy.getCurrentAnimation().get_current_frame().getRotation();
-		bullety = 0;// m_bullet_manager.getLiveBullets().at(0)->get_center().get_y();
-	}
-
 	m_debug_text.setString("Enemy Spawn: " + std::to_string(bulletx));
 	m_debug_text.setCharacterSize(12);
 	m_debug_text.setFillColor(sf::Color::White);
@@ -120,13 +128,8 @@ void Andrew_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	window.setView(test_layer);
 	window.draw(m_debug_text);
 
-	sf::VertexArray points(sf::LinesStrip, 0);
-	for (Point p : m_test_player.get_Line()) {
-		points.append(sf::Vertex(sf::Vector2f(p.get_x(), p.get_y()), sf::Color::White));
-	}
 
-	window.draw(points);
-	window.draw(m_test_player);
+    m_test_player.draw(world, window);
 	window.draw(m_wave_manager);
 	window.draw(m_bullet_manager);
 
