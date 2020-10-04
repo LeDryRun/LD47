@@ -7,7 +7,8 @@
 #include "Homing_Bullet.hpp"
 #include "Bullet_Blueprint.hpp"
 #include "SFML/Graphics.hpp"
-#include "../Player/Player.hpp"
+
+#include "../../communal/LDUtil.hpp"
 
 class Imagehandler;
 

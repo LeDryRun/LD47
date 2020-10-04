@@ -19,7 +19,7 @@ private:
 	Wave_Manager m_wave_manager;
 	Wave m_wave_one;
 	Wave m_wave_two;
-	Player m_test_player;
+	Player m_test_player = Player(&m_bullet_manager);
     World_Data world;
 
 	sf::Font m_debug_font;

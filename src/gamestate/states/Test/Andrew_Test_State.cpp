@@ -54,10 +54,10 @@ void Andrew_Test_State::update_layer_resolutions(){
 void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad){Duration_Check::start("-Platformer update");
 	Gamestate::update_gui_layer(mouse,keyboard,gamepad);
 
-	mouse.set_layer(test_layer);
+    check_gamepad(gamepad);
+    check_keyboard(keyboard);
 
-	check_gamepad(gamepad);
-	check_keyboard(keyboard);
+	mouse.set_layer(test_layer);
 	
     float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
     v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
@@ -87,18 +87,6 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	}
 
 	m_wave_manager.update();
-
-	if (keyboard.get_key('b').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
-	{
-		if (!m_test_player.get_isLooping())
-			m_test_player.start_loop();
-	}
-	else
-	{
-		if (m_test_player.get_isLooping())
-			m_test_player.validate_loop();
-	}
-
 
 	Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
 	for (int i = 0; i < (int)bullets_hitting_player.size(); i++) {

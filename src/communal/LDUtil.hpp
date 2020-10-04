@@ -3,6 +3,10 @@
 
 #include "../entity/Point.hpp"
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 struct World_Data {
     Point top_left;
     float width;

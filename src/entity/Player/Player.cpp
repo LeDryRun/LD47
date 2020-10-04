@@ -113,6 +113,7 @@ void Player::validate_loop()
     if (v_Line.front() == v_Line.back())
     {
         // send to bullet manager
+        p_BulletMan->capture_bullets(v_Line);
     }
 
     v_Line.clear();

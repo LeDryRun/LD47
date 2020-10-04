@@ -5,6 +5,7 @@
 
 #include "../Circular_Entity.hpp"
 #include "../Bullet/Bullet_Manager.hpp"
+#include "../Player/Player.hpp"
 
 class Enemy : public Circular_Entity
 {
