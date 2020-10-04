@@ -5,7 +5,7 @@
 
 
 void Circular_Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-	target.draw(animations.at(current_animation_int).get_current_frame(), states);
+	target.draw(animations.at(current_animation_int), states);
 }
 void Circular_Entity::animate(){
 	animations.at(current_animation_int).animate();

@@ -8,6 +8,7 @@
 #include "Bullet_Blueprint.hpp"
 #include "SFML/Graphics.hpp"
 #include "../Player/Player.hpp"
+#include "Bullet_Quadtree.hpp"
 
 class Imagehandler;
 
@@ -18,6 +19,8 @@ private:
 	Sine_Bullet sine_bullet;
 	Bullet_Vector live_bullets;
 	Bullet_Vector captured_bullets;
+
+	Bullet_Quadtree tree;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
