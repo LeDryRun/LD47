@@ -84,6 +84,8 @@ void Bullet_Manager::capture_bullets(std::vector<Point> line_p){
         if (intersection_count % 2 == 1)
         {// Odd count means inside shape
             live_bullets[i]->set_returning(true);
+            //live_bullets[i]->set_removing(true);
+            //live_bullets[i]->set_exploding(true);
             //live_bullets.erase(live_bullets.begin() + i);
         }
     }
