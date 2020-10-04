@@ -17,11 +17,9 @@ void Bullet_Manager::load_animations(Imagehandler& imagehandler){
 }
 
 void Bullet_Manager::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-	
 	for(int i=0;i<(int)live_bullets.size();i++){		
 		target.draw(*live_bullets.at(i), states);
 	}
-
 	//target.draw(tree,states);
 } 
 
@@ -47,18 +45,18 @@ void Bullet_Manager::capture_bullets(std::vector<Point> line_p){
     {
         top = p.get_y() < top ? p.get_y() : top;
         bot = p.get_y() > bot ? p.get_y() : bot;
-        left  = p.get_x() < left  ? p.get_y() : left;
-        right = p.get_y() < right ? p.get_y() : right;
+        left  = p.get_x() < left  ? p.get_x() : left;
+        right = p.get_x() > right ? p.get_x() : right;
     }
 
     // Check which bullets are in loop
     // Use bounds to determine which quadtree nodes to check, but all for now
 
     //LINE BOUNDARIES ARE WRONG
-    //live_bullets=tree.get_collidable_bullets_bound(Point(left,top),Point(right,bot));
+    live_bullets=tree.get_collidable_bullets_bound(Point(left,top),Point(right,bot));
    // std::cout<<"linebounds tl="<<left<<","<<top<<" br="<<right<<","<<bot<<std::endl;
 
-    live_bullets=tree.get_all_bullets();
+    //live_bullets=tree.get_all_bullets();
     for (int i = 0; i < live_bullets.size(); i++)
     {
         if (live_bullets[i] == nullptr)
@@ -116,7 +114,7 @@ void Bullet_Manager::add_bullets(std::vector<Bullet_Blueprint> blueprints_p){
 			//std::cout<<"base depth: "<<tree.get_depth()<<std::endl;
 		}else if(blueprints_p.at(i).type==HOMING){
 			//live_bullets.push_back(make_unique<Homing_Bullet>(homing_bullet.create_copy(blueprints_p.at(i))));
-			tree.insert(make_unique<Homing_Bullet>(homing_bullet.create_copy(blueprints_p.at(i))));
+			tree.insert(make_unique<Homing_Bullet>(homing_bullet.create_copy(blueprints_p.at(i),player)));
 			//std::cout<<"base depth: "<<tree.get_depth()<<std::endl;
 		}
 		//std::cout<<endl;

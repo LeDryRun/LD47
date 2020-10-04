@@ -4,17 +4,25 @@
 
 Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
 	state_name="daniel_test_state";
+
+    world.init(Point(0, 0), test_layer.get_original_size());
 	load_sprites(imagehandler);
 
 	player.create(Point(500,500),16);
-	other.create(Point(-30,-30),16);
-	enemy_spawn_timer.create(10);
+	enemy_spawn_timer.create(60);
+	bullet_manager=Bullet_Manager();
+	bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
+	bullet_manager.set_player(player);
+
+	create_waves();
+
+	load_sprites(imagehandler);
 }
 
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
 	player.load_animations(imagehandler);
-	other.load_animations(imagehandler);
 	bullet_manager.load_animations(imagehandler);
+	wave_manager.load_animations(imagehandler);
 }
 
 void Daniel_Test_State::update_layer_resolutions(){
@@ -27,35 +35,23 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 
 	mouse.set_layer(test_layer);
 
-
-	//if(enemy_spawn_timer.do_timer_loop()){
-		for(int i=0;i<10;i++){		
-			Point location(1300,random(50,700));
-			std::vector<Bullet_Blueprint> temp;
-			int r=random(0,2);
-			if(r==2){
-				temp.push_back(Bullet_Blueprint(LINEAR,5,Point(-6,random(-6,6)),location,1,&dummy_enemy));
-			}if(r==1){
-				temp.push_back(Bullet_Blueprint(HOMING,5,Point(-6,random(-6,6)),location,1,&dummy_enemy));
-			}if(r==0){
-				temp.push_back(Bullet_Blueprint(SINE,5,Point(-6,random(-6,6)),location,1,&dummy_enemy));
-			}
-			bullet_manager.add_bullets(temp);
-		}
-	//}
-
 	bullet_manager.update();
+	update_player(mouse,keyboard,gamepad);
 
-	player.update(other,keyboard,gamepad);
-	//if(mouse.is_clicked()){
-		Bullet_Vector bhp=bullet_manager.bullets_colliding_with_hitbox(player.get_hitbox());
-		if(mouse.is_clicked()){std::cout<<bhp.size();}
-		for(int i=0;i<(int)bhp.size();i++){
-			if(player.is_colliding(*bhp.at(i))){
-				bhp.at(i)->set_exploding(true);
-			}
-		}
-	//}
+
+	bool spawn = keyboard.get_key('k').was_just_pressed();
+
+	if (spawn) {
+		wave_manager.add_wave(wave_one);
+		//m_wave_manager.add_wave(m_wave_two);
+		spawn = false;
+	}
+	if(enemy_spawn_timer.do_timer_loop()){
+		add_bullets();
+	}
+	wave_manager.update();
+
+
 	check_gamepad(gamepad);
 	check_keyboard(keyboard);
 
@@ -73,8 +69,8 @@ void Daniel_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	Gamestate::render_background_layer(window);
 	window.setView(test_layer);
 	window.draw(bullet_manager);
-	window.draw(player);
-	window.draw(other);
+	window.draw(wave_manager);
+	player.draw(world,window);
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
 
@@ -105,4 +101,68 @@ void Daniel_Test_State::check_gamepad(Gamepad& gamepad){
 	}else if(gamepad.get_left_stick_x()>0 ){
 
 	}*/
+}
+
+void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad){
+	 float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
+    v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
+    float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
+    v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
+    Point input = Point(v_hor, v_vert);
+   // std::cout<<input.get_x()<<","<<input.get_y()<<std::endl;
+    input.normalize();
+    //std::cout<<input.get_x()<<","<<input.get_y()<<std::endl;
+   	player.update(world, input, keyboard.get_key('^').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
+
+   	   if (keyboard.get_key(' ').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
+    {
+        if (!player.get_isLooping())
+            player.start_loop();
+    }
+    else
+    {
+        if (player.get_isLooping())
+            player.validate_loop();
+    }
+
+    Bullet_Vector bhp=bullet_manager.bullets_colliding_with_hitbox(player.get_hitbox());
+	//if(mouse.is_clicked()){std::cout<<bhp.size();}
+	for(int i=0;i<(int)bhp.size();i++){
+		if(player.is_colliding(*bhp.at(i))){
+			bhp.at(i)->set_exploding(true);
+		}
+	}
+
+}
+
+void Daniel_Test_State::create_waves(){
+	std::vector<EnemyType> enemies;
+	enemies.push_back(EnemyType::kEnemyStraight);
+	enemies.push_back(EnemyType::kEnemyBurst);
+	enemies.push_back(EnemyType::kEnemySine);
+	enemies.push_back(EnemyType::kEnemyV);
+
+	std::deque<Spawn_Data> spawn_data_one;
+	std::deque<Spawn_Data> spawn_data_two;
+
+	spawn_data_one.push_back(Spawn_Data(0, 16, Point(500, 100), 100));
+	spawn_data_one.push_back(Spawn_Data(1, 16, Point(500, 200), 200));
+	spawn_data_one.push_back(Spawn_Data(2, 16, Point(900, 300), 300));
+	spawn_data_one.push_back(Spawn_Data(3, 16, Point(500, 400), 400));
+
+	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 100), 400));
+	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 200), 500));
+	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 300), 600));
+
+	wave_one = Wave(enemies, false, spawn_data_one);
+	wave_two = Wave(enemies, false, spawn_data_two);
+	wave_manager = Wave_Manager(&bullet_manager, &player);
+}
+
+void Daniel_Test_State::add_bullets(){
+	std::vector<Bullet_Blueprint> blueprints;
+
+	//blueprints.push_back(Bullet_Blueprint(SINE,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
+	blueprints.push_back(Bullet_Blueprint(HOMING,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
+	bullet_manager.add_bullets(blueprints);
 }

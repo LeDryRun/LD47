@@ -10,10 +10,20 @@ Sine_Bullet::Sine_Bullet(){
 	damage=5;
 	speed=5;
 	radius=5;
+	mod_speed=6;
+	mod_amount=0.5f;
 }
 
 void Sine_Bullet::update(){
-	movement=direction*speed;
+	if(degrees>359){
+		degrees=0;
+	}else{
+		degrees+=mod_speed;
+	}
+	Point mod=Point(sin_degrees(degrees),sin_degrees(degrees+90));
+	movement=direction+mod*mod_amount;
+	movement.normalize();
+	movement*=speed;
 	Bullet::update();
 }
 

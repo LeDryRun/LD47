@@ -3,9 +3,13 @@
 
 #include "Bullet.hpp" 
 #include "Bullet_Blueprint.hpp" 
+#include "../../communal/Tick_Timer.hpp"
 
 class Sine_Bullet: public Bullet{
 private:
+	int degrees;
+	float mod_speed;
+	float mod_amount;
 public:
 	Sine_Bullet();
 

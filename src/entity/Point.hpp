@@ -30,8 +30,10 @@ public:
 
 	void normalize(){
 		float length=sqrt(x*x+y*y);
-		x=x/length;
-		y=y/length;
+		if(length!=0){
+			x=x/length;
+			y=y/length;
+		}
 	}
 
 	float get_x(){return x;}
