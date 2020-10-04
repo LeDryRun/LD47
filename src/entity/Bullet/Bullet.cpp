@@ -12,20 +12,29 @@ void Bullet::update()
         animate();
         movement=Point(0,0);
     }else if (returning){
-        // Get parent position
-        Point home = sender->get_center();
-
-        Point target = home-get_center();
-        float distance = target.magnitude();
-
-        if (distance < 0.5){
-            sender->take_damage(damage);
-            exploding = true;
+        if (!sender)
+        {
+            removing = true;
             returning = false;
-            movement=Point(0,0);
-        } else {
-            target.normalize();
-            movement = target * speed;
+        }
+        else
+        {
+            // Get parent position
+            Point home = sender->get_center();
+
+            Point target = home - get_center();
+            float distance = target.magnitude();
+
+            if (distance < 5.f) {
+                sender->take_damage(damage);
+                exploding = true;
+                returning = false;
+                movement = Point(0, 0);
+            }
+            else {
+                target.normalize();
+                movement = target * speed;
+            }
         }
     }
     int degrees=atan2_degrees(movement.get_y(),(movement.get_x()))+180;
