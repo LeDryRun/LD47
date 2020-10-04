@@ -101,6 +101,11 @@ void Bullet_Manager::add_bullets(std::vector<Bullet_Blueprint> blueprints_p){
 	}
 }
 
+Bullet_Vector Bullet_Manager::getLiveBullets()
+{
+	return live_bullets;
+}
+
 void Bullet_Manager::update(){
 	for(auto it = live_bullets.begin();it!=live_bullets.end();){
 		(*it)->update();

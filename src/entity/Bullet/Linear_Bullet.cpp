@@ -38,12 +38,14 @@ void Linear_Bullet::create(Point center_p, int radius_p, Point direction_p){
 
 
 
-Linear_Bullet Linear_Bullet::create_copy(Point center_p, int radius_p, Point direction_p){
+Linear_Bullet Linear_Bullet::create_copy(Point center_p, int radius_p, Point direction_p, Enemy* sender){
 	create(center_p,radius_p,direction_p);
+	this->sender = sender;
 	return *this;
 }
 
 Linear_Bullet Linear_Bullet::create_copy(Bullet_Blueprint b_p){
 	create(b_p.center,radius,b_p.direction);
+	this->sender = b_p.sender_;
 	return *this;
 }

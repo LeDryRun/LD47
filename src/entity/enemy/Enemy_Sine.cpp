@@ -1,17 +1,20 @@
-#include "Enemy_Burst.hpp"
-#include <iostream>
+#include "Enemy_Sine.hpp"
+#include "../../communal/LDUtil.hpp"
 #include "../Bullet/Bullet_Manager.hpp"
+#include <math.h>
 
-Enemy_Burst::Enemy_Burst()
+Enemy_Sine::Enemy_Sine()
 {
-	animations.push_back(Animation("Burst_Idle"));
+	animations.push_back(Animation("Sine_Idle"));
 	m_health = 1;
 }
 
-Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
+Enemy_Sine::Enemy_Sine(Bullet_Manager * bullet_manager, Player * player)
 {
-	animations.push_back(Animation("Burst_Idle"));
+	animations.push_back(Animation("Sine_Idle"));
+
 	m_bullet_manager = bullet_manager;
+	m_player = player;
 
 	m_length = 100;
 	m_distance_travelled = 0;
@@ -24,22 +27,17 @@ Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
 	m_fire_timer = 0;
 
 	m_health = 100;
-
-	m_spawning = false;
 	m_spawned = false;
+	m_spawning = false;
 
-	m_bullet_spawn_points.push_back(Point(0, 0));
-	m_bullet_spawn_points.push_back(Point(32, 0));
-	m_bullet_spawn_points.push_back(Point(32, 32));
-	m_bullet_spawn_points.push_back(Point(0, 32));
-
+	m_bullet_spawn_points.push_back(Point(16,16));
 }
 
-Enemy_Burst::~Enemy_Burst()
+Enemy_Sine::~Enemy_Sine()
 {
 }
 
-void Enemy_Burst::update()
+void Enemy_Sine::update()
 {
 	if (m_spawned) {
 		flight_path();
@@ -55,34 +53,28 @@ void Enemy_Burst::update()
 	}
 }
 
-void Enemy_Burst::doSpawn()
-{
-	m_spawning = true;
-}
-
-void Enemy_Burst::flight_path()
+void Enemy_Sine::flight_path()
 {
 	if (m_distance_travelled >= m_length) {
 		m_dir = -m_dir;
 		m_distance_travelled = 0;
 	}
-	
-	sf::Sprite current_animation = animations.at(0).get_current_frame();
-	//rotate_animations( current_animation.getRotation() + 1 );
 
 	set_movement(Point(m_speed*m_dir, 0));
 	//move();
+	sf::Sprite current_animation = animations.at(0).get_current_frame();
+	//rotate_animations(180/M_PI*atan2((m_player->get_center().get_y()-get_center().get_y()),(m_player->get_center().get_x() - get_center().get_x())));
 
 	m_distance_travelled++;
 }
 
-void Enemy_Burst::spawn_path()
+void Enemy_Sine::spawn_path()
 {
 	m_spawning = false;
 	m_spawned = true;
 }
 
-void Enemy_Burst::fire()
+void Enemy_Sine::fire()
 {
 	std::vector<Bullet_Blueprint> bullets;
 	for (int i = 0; i < m_bullet_spawn_points.size(); i++) {
@@ -91,27 +83,33 @@ void Enemy_Burst::fire()
 
 		sf::Vector2f spawn = getCurrentAnimation().get_current_frame().getTransform().transformPoint(x, y);
 
-		Point dir = Point(spawn.x - get_center().get_x(), spawn.y -get_center().get_y());
+		Point dir = Point(-1, 0);
 		dir.normalize();
 
-		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(spawn.x, spawn.y), m_bullet_speed, this));
+		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::SINE, m_damage, dir, Point(get_center().get_x(), get_center().get_y()), m_bullet_speed, this));
 	}
 	m_bullet_manager->add_bullets(bullets);
 }
 
-Animation Enemy_Burst::getCurrentAnimation()
+void Enemy_Sine::doSpawn()
+{
+	m_spawning = true;
+}
+
+Animation Enemy_Sine::getCurrentAnimation()
 {
 	return animations.at(0);
 }
 
-Enemy_Burst Enemy_Burst::create_copy(Point center, int radius)
+Enemy_Sine Enemy_Sine::create_copy(Point center, int radius)
 {
 	create(center, radius);
 	return *this;
 }
 
-Enemy_Burst Enemy_Burst::create_copy(Spawn_Data data)
+Enemy_Sine Enemy_Sine::create_copy(Spawn_Data data)
 {
 	create_copy(data.pos, data.radius);
 	return *this;
 }
+

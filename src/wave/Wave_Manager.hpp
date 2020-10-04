@@ -5,6 +5,8 @@
 #include "../entity/enemy/Enemy.hpp"
 #include "../entity/enemy/Enemy_Straight.hpp"
 #include "../entity/enemy/Enemy_Burst.hpp"
+#include "../entity/enemy/Enemy_Sine.hpp"
+#include "../entity/enemy/Enemy_V.hpp"
 #include "../communal/Tick_Timer.hpp"
 
 #include <deque>
@@ -28,6 +30,8 @@ private:
 	std::vector<Wave> m_wave_buffer;
 	Enemy_Straight m_enemy_straight;
 	Enemy_Burst m_enemy_burst;
+	Enemy_Sine m_enemy_sine;
+	Enemy_V m_enemy_v;
 	Bullet_Manager* m_bullet_manager;
 	Player* m_player;
 	std::vector<Tick_Timer> m_spawn_timers;

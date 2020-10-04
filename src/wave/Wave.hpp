@@ -22,7 +22,10 @@ struct Spawn_Data {
 
 enum EnemyType {
 	kEnemyStraight,
-	kEnemyBurst
+	kEnemyBurst,
+	kEnemySine,
+	kEnemyV,
+	kEnemyHoming
 };
 
 struct Wave {

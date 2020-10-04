@@ -28,7 +28,7 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	mouse.set_layer(test_layer);
 
 
-	if(enemy_spawn_timer.do_timer_loop()){
+	/*if(enemy_spawn_timer.do_timer_loop()){
 		std::vector<Bullet_Blueprint> temp;
 		int r=random(0,2);
 		if(r==2){
@@ -56,7 +56,7 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 
 		ALWAYS SET MOUSE TO BACKGROUND LAYER LAST
 	*/
-
+	
 	mouse.set_layer(background_layer);
 Duration_Check::stop("-Platformer update");}
 

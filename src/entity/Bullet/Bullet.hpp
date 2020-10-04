@@ -2,7 +2,7 @@
 #define BULLET_HPP
 
 #include "../Circular_Entity.hpp"
-
+#include "../enemy/Enemy.hpp"
 #include <vector>
 #include <memory>
 
@@ -14,7 +14,9 @@ protected:
 	int damage=0;
 	bool exploding=false;
 	bool removing=false;
-    bool returning = false;
+  bool returning = false;
+	Enemy* sender;
+
 public:
 	Bullet(){}
 	virtual void update();

@@ -11,7 +11,7 @@ public:
 
 	void update()override;
 	void create(Point center_p, int radius_p, Point direction_p)override;
-	Homing_Bullet create_copy(Point center_p, int radius_p, Point direction_p);
+	Homing_Bullet create_copy(Point center_p, int radius_p, Point direction_p, Enemy* sender);
 	Homing_Bullet create_copy(Bullet_Blueprint);
 
 };
