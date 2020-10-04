@@ -1,22 +1,22 @@
-#ifndef ENEMY_BURST_HPP
-#define ENEMY_BURST_HPP
+#ifndef ENEMY_V_HPP
+#define ENEMY_V_HPP
 
 #include "Enemy.hpp"
 #include "../../wave/Wave.hpp"
 #include "../Player/Player.hpp"
 
-class Enemy_Burst : public Enemy
+class Enemy_V : public Enemy
 {
 public:
-	Enemy_Burst();
-	Enemy_Burst(Bullet_Manager* bullet_manager);
-	~Enemy_Burst();
+	Enemy_V();
+	Enemy_V(Bullet_Manager* bullet_manager);
+	~Enemy_V();
 	virtual void update();
 	virtual void doSpawn();
-	
 	Animation getCurrentAnimation();
-	Enemy_Burst create_copy(Point center, int radius);
-	Enemy_Burst create_copy(Spawn_Data data);
+
+	Enemy_V create_copy(Point center, int radius);
+	Enemy_V create_copy(Spawn_Data data);
 
 private:
 	int m_length;
@@ -28,4 +28,4 @@ private:
 	virtual void fire();
 };
 
-#endif //ENEMY_STRAIGHT_HPP
+#endif

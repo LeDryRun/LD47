@@ -3,6 +3,10 @@
 
 #include "../entity/Point.hpp"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif //M_PI
+
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }

@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "../Circular_Entity.hpp"
-#include "../Bullet/Bullet_Manager.hpp"
-#include "../Player/Player.hpp"
+
+class Bullet_Manager;
+class Bullet;
 
 class Enemy : public Circular_Entity
 {

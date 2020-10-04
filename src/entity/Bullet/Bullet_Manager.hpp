@@ -31,6 +31,8 @@ public:
 	void capture_bullets(std::vector<Point> line_p);
 	void add_bullets(std::vector<Bullet_Blueprint>);
 
+	Bullet_Vector getLiveBullets();
+
 	void update_player_position(Point);
 
 	void update();
