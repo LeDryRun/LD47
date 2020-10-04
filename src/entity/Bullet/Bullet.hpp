@@ -14,12 +14,12 @@ protected:
 	int damage=0;
 	bool exploding=false;
 	bool removing=false;
-  bool returning = false;
+    bool returning = false;
 	Enemy* sender;
 
 public:
 	Bullet(){}
-	virtual void update();
+	virtual void update()=0;
 	virtual void create(Point center_p, int radius_p, Point direction_p)=0;
 
 	void set_exploding(bool b_p){exploding=b_p;}

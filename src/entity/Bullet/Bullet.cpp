@@ -1,23 +1,24 @@
 #include "Bullet.hpp"
 
+/*
 void Bullet::update()
 {
     if (returning)
     {
         // Get parent position
-        Point home = Point(0, 0);
+        Point home = sender->get_center();
 
         Point target = get_center() - home;
         float distance = target.magnitude();
 
-        if (distance < 0.1)
+        if (distance < 0.05)
         {
-            // Deal damage to enemy
+            sender->take_damage(damage);
             removing = true;
         }
         else
         {
-            movement = target * 0.1;
+            movement = target * 0.1f;
             direction = target;
             move();
 
@@ -25,3 +26,4 @@ void Bullet::update()
         }
     }
 }
+*/

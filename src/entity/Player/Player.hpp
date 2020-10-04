@@ -13,7 +13,7 @@ class Player : public Circular_Entity
         float i_PlayerSpd = 10.f;
 
         std::vector<Point> v_Line;
-        float f_LineLimit = 1.0f;
+        float f_LineLimit = 5.0f;
         float f_LineLeft = f_LineLimit;
         bool b_isLooping = false;
     public:

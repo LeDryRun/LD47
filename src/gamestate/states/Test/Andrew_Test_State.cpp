@@ -66,8 +66,10 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
     v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
     float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
     v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
+    Point input = Point(v_hor, v_vert);
+    //input.normalize();
 
-    m_test_player.update(world, Point(v_hor, v_vert), keyboard.get_key('^').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
+    m_test_player.update(world, input, keyboard.get_key('^').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
 
     if (keyboard.get_key(' ').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
     {
