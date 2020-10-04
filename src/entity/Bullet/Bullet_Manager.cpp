@@ -1,10 +1,12 @@
 #include "Bullet_Manager.hpp"
 #include "../../image/Imagehandler.hpp"
 
-Bullet_Manager::Bullet_Manager():tree(Point(10,10),Point(1360,760),0){
+Bullet_Manager::Bullet_Manager():tree(Point(0,0),Point(1366,768),0){
 
 }
-
+void Bullet_Manager::create(Point top_left_p,Point bottom_right_p){
+	tree = Bullet_Quadtree(top_left_p,bottom_right_p,0);
+}
 void Bullet_Manager::load_animations(Imagehandler& imagehandler){
 	linear_bullet.load_animations(imagehandler);
 	sine_bullet.load_animations(imagehandler);
@@ -20,7 +22,7 @@ void Bullet_Manager::draw(sf::RenderTarget& target, sf::RenderStates states) con
 		target.draw(*live_bullets.at(i), states);
 	}
 
-	target.draw(tree,states);
+	//target.draw(tree,states);
 	//for(int i=0;i<(int)tree.rectangles.size();i++){
 	//	target.draw(tree.rectangles.at(i),states);
 		//std::cout<<tree.rectangles.at(i).getPosition().x<<std::endl;
@@ -43,6 +45,62 @@ Bullet_Vector Bullet_Manager::bullets_colliding_with_hitbox(Circular_Hitbox hitb
 }
 
 void Bullet_Manager::capture_bullets(std::vector<Point> line_p){
+    // Determine bounds of loop
+    float top = line_p.front().get_y();
+    float bot = line_p.front().get_y();
+    float left  = line_p.front().get_x();
+    float right = line_p.front().get_x();
+
+    for (Point p : line_p)
+    {
+        top = p.get_y() < top ? p.get_y() : top;
+        bot = p.get_y() > bot ? p.get_y() : bot;
+        left  = p.get_x() < left  ? p.get_y() : left;
+        right = p.get_y() < right ? p.get_y() : right;
+    }
+
+    // Check which bullets are in loop
+    // Use bounds to determine which quadtree nodes to check, but all for now
+    live_bullets=tree.get_collidable_bullets_bound(Point(left,top),Point(right,bot));
+    for (int i = 0; i < live_bullets.size(); i++)
+    {
+        if (live_bullets[i] == nullptr)
+            continue;
+
+        Point test = live_bullets[i]->get_center();
+        int intersection_count = 0;
+
+        
+        for (int i = 0; i < line_p.size() - 2; i++)
+        {
+            Point A1 = line_p[i];
+            Point A2 = line_p[i + 1];
+
+            // If segment is at least partially to the right of bullet
+            if (A1.get_x() > test.get_x() || A2.get_x() > test.get_x())
+            {
+                if (sgn(A1.get_y() - test.get_y()) != sgn(A2.get_y() - test.get_y()))
+                {
+                    float intersect_x, intersect_y;
+                    if (get_line_intersection(
+                        test.get_x(), test.get_y(), test.get_x() + 10000, test.get_y(), A1.get_x(), A1.get_y(), A2.get_x(), A2.get_y(),
+                        &intersect_x, &intersect_y))
+                    {
+                        intersection_count++;
+                    }
+                }
+            }
+        }
+        
+
+        if (intersection_count % 2 == 1)
+        {// Odd count means inside shape
+            live_bullets[i]->set_returning(true);
+            //live_bullets[i]->set_removing(true);
+            //live_bullets[i]->set_exploding(true);
+            //live_bullets.erase(live_bullets.begin() + i);
+        }
+    }
 }
 
 void Bullet_Manager::add_bullets(std::vector<Bullet_Blueprint> blueprints_p){
@@ -63,6 +121,11 @@ void Bullet_Manager::add_bullets(std::vector<Bullet_Blueprint> blueprints_p){
 		}
 		//std::cout<<endl;
 	}
+}
+
+Bullet_Vector Bullet_Manager::getLiveBullets()
+{
+	return live_bullets;
 }
 
 void Bullet_Manager::update(){

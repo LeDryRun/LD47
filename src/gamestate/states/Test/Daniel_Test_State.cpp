@@ -28,21 +28,19 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	mouse.set_layer(test_layer);
 
 
-	//if(enemy_spawn_timer.do_timer_loop()){
-	//if(mouse.is_clicked()){
-		//Point location=Point(mouse.get_layer_x(),mouse.get_layer_y());
-		Point location=Point(1200,random(50,700));
+	if(enemy_spawn_timer.do_timer_loop()){
+		Point location(1300,random(50,700));
 		std::vector<Bullet_Blueprint> temp;
 		int r=random(0,2);
 		if(r==2){
-			temp.push_back(Bullet_Blueprint(LINEAR,5,Point(-6,random(-6,6)),location,1));
+			temp.push_back(Bullet_Blueprint(LINEAR,5,Point(-6,random(-6,6)),location,1,&dummy_enemy));
 		}if(r==1){
-			temp.push_back(Bullet_Blueprint(HOMING,5,Point(-6,random(-6,6)),location,1));
+			temp.push_back(Bullet_Blueprint(HOMING,5,Point(-6,random(-6,6)),location,1,&dummy_enemy));
 		}if(r==0){
-			temp.push_back(Bullet_Blueprint(SINE,5,Point(-6,random(-6,6)),location,1));
+			temp.push_back(Bullet_Blueprint(SINE,5,Point(-6,random(-6,6)),location,1,&dummy_enemy));
 		}
 		bullet_manager.add_bullets(temp);
-	//}
+	}
 
 	bullet_manager.update();
 
@@ -63,7 +61,7 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 
 		ALWAYS SET MOUSE TO BACKGROUND LAYER LAST
 	*/
-
+	
 	mouse.set_layer(background_layer);
 Duration_Check::stop("-Platformer update");}
 

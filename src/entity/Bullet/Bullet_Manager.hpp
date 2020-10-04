@@ -9,6 +9,7 @@
 #include "SFML/Graphics.hpp"
 #include "../Player/Player.hpp"
 #include "Bullet_Quadtree.hpp"
+#include "../../communal/LDUtil.hpp"
 
 class Imagehandler;
 
@@ -26,12 +27,15 @@ private:
 
 public:
 	Bullet_Manager();
+	void create(Point top_left_p,Point bottom_right_p);
 
 	void load_animations(Imagehandler&);
 
 	Bullet_Vector bullets_colliding_with_hitbox(Circular_Hitbox hitbox_p);
 	void capture_bullets(std::vector<Point> line_p);
 	void add_bullets(std::vector<Bullet_Blueprint>);
+
+	Bullet_Vector getLiveBullets();
 
 	void update_player_position(Point);
 
