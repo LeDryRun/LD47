@@ -194,6 +194,8 @@ Bullet_Vector Bullet_Quadtree::get_collidable_bullets_bound(Point tl_p,Point br_
 			//else{bottom_right_child->rect.setOutlineColor(sf::Color::White);}
 			
 		}else{
+			rect.setOutlineColor(sf::Color::Red);
+			rect.setOutlineThickness(5.0f);
 			return_vector=bullets;
 		}
 	}
@@ -202,13 +204,12 @@ Bullet_Vector Bullet_Quadtree::get_collidable_bullets_bound(Point tl_p,Point br_
 
 
 bool Bullet_Quadtree::colliding_with_bound(Point tl_p,Point br_p){
-	bool x_col=false;
-	bool y_col=false;
-	x_col=((tl_p.get_x()>top_left_bound.get_x() && tl_p.get_x()<bottom_right_bound.get_x())
-		||(br_p.get_x()>top_left_bound.get_x() && br_p.get_x()<bottom_right_bound.get_x()));
-	y_col=((tl_p.get_y()>top_left_bound.get_y() && tl_p.get_y()<bottom_right_bound.get_y())
-		||(br_p.get_y()>top_left_bound.get_y() && br_p.get_y()<bottom_right_bound.get_y()));
-	return x_col&&y_col;
+	if(tl_p.get_x()>=bottom_right_bound.get_x() || top_left_bound.get_x()>=br_p.get_x())
+		return false;
+	if(tl_p.get_y()>=bottom_right_bound.get_y() || top_left_bound.get_y()>=br_p.get_y())
+		return false;
+
+	return true;
 }
 
 

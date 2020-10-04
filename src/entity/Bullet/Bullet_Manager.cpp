@@ -23,21 +23,13 @@ void Bullet_Manager::draw(sf::RenderTarget& target, sf::RenderStates states) con
 	}
 
 	//target.draw(tree,states);
-	//for(int i=0;i<(int)tree.rectangles.size();i++){
-	//	target.draw(tree.rectangles.at(i),states);
-		//std::cout<<tree.rectangles.at(i).getPosition().x<<std::endl;
-	 //}
 } 
 
 
 
 Bullet_Vector Bullet_Manager::bullets_colliding_with_hitbox(Circular_Hitbox hitbox_p){
 	Bullet_Vector colliding_bullets=Bullet_Vector();
-	/*for(int i=0;i<(int)live_bullets.size();i++){
-		if(live_bullets.at(i)->get_hitbox().is_colliding(hitbox_p)){
-			colliding_bullets.push_back(live_bullets.at(i));
-		}
-	}*/
+	//colliding_bullets=live_bullets;
 	//colliding_bullets=tree.get_collidable_bullets(hitbox_p.get_center());
 	colliding_bullets=tree.get_collidable_bullets_bound(hitbox_p.get_center()-Point(hitbox_p.get_radius(),hitbox_p.get_radius()),
 		hitbox_p.get_center()+Point(hitbox_p.get_radius(),hitbox_p.get_radius()));
@@ -61,7 +53,12 @@ void Bullet_Manager::capture_bullets(std::vector<Point> line_p){
 
     // Check which bullets are in loop
     // Use bounds to determine which quadtree nodes to check, but all for now
-    live_bullets=tree.get_collidable_bullets_bound(Point(left,top),Point(right,bot));
+
+    //LINE BOUNDARIES ARE WRONG
+    //live_bullets=tree.get_collidable_bullets_bound(Point(left,top),Point(right,bot));
+   // std::cout<<"linebounds tl="<<left<<","<<top<<" br="<<right<<","<<bot<<std::endl;
+
+    live_bullets=tree.get_all_bullets();
     for (int i = 0; i < live_bullets.size(); i++)
     {
         if (live_bullets[i] == nullptr)

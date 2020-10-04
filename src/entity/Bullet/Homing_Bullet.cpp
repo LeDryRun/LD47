@@ -13,44 +13,8 @@ Homing_Bullet::Homing_Bullet(){
 }
 
 void Homing_Bullet::update(){
-	if(exploding){
-		current_animation_int=1;
-		if(animations.at(1).is_finished()){
-			removing=true;
-		}
-		animate();
-    }
-    else if (returning)
-    {
-        movement = Point(0, -5);
-        move();
-
-        /*
-        // Get parent position
-        Point home = sender->get_center();
-
-        Point target = get_center() - home;
-        float distance = target.magnitude();
-
-        if (distance < 0.05)
-        {
-            sender->take_damage(damage);
-            removing = true;
-        }
-        else
-        {
-            movement = target * 0.1f;
-            direction = target;
-            move();
-
-            movement = Point(0, 0);
-        }
-        */
-    }
-    else
-    {
-		move();
-	}
+	movement=direction*speed;
+	Bullet::update();
 }
 
 void Homing_Bullet::create(Point center_p, int radius_p, Point direction_p){
