@@ -7,7 +7,8 @@
 #include "Homing_Bullet.hpp"
 #include "Bullet_Blueprint.hpp"
 #include "SFML/Graphics.hpp"
-
+#include "../Player/Player.hpp"
+#include "Bullet_Quadtree.hpp"
 #include "../../communal/LDUtil.hpp"
 
 class Imagehandler;
@@ -20,10 +21,13 @@ private:
 	Bullet_Vector live_bullets;
 	Bullet_Vector captured_bullets;
 
+	Bullet_Quadtree tree;
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:
 	Bullet_Manager();
+	void create(Point top_left_p,Point bottom_right_p);
 
 	void load_animations(Imagehandler&);
 

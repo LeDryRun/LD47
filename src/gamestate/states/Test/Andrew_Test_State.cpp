@@ -5,6 +5,7 @@
 
 Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
 	state_name="andrew_test_state";
+    world.init(Point(0, 0), test_layer.get_original_size());
 
 	if (!m_debug_font.loadFromFile("../assets/font/System_Breach_wide.ttf"))
 	{
@@ -14,6 +15,7 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	m_debug_text.setFont(m_debug_font);
 
 	m_bullet_manager = Bullet_Manager();
+	m_bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
 
 	std::vector<EnemyType> enemies;
 	enemies.push_back(EnemyType::kEnemyStraight);
@@ -39,7 +41,6 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 
 	load_sprites(imagehandler);
 
-    world.init(Point(0, 0), test_layer.get_original_size());
 	m_test_player.create(Point(500, 500), 16);
 }
 
@@ -93,11 +94,13 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 
 	m_wave_manager.update();
 
-	Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
-	for (int i = 0; i < (int)bullets_hitting_player.size(); i++) {
-		bullets_hitting_player.at(i)->set_exploding(true);
-	}
 	m_bullet_manager.update();
+	/*Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
+	for (int i = 0; i < (int)bullets_hitting_player.size(); i++) {
+		if(m_test_player.is_colliding(*bullets_hitting_player.at(i))){
+			bullets_hitting_player.at(i)->set_exploding(true);
+		}
+	}*/
 
 	int bulletx = 0;
 	int bullety = 0;

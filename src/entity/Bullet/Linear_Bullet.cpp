@@ -13,15 +13,8 @@ Linear_Bullet::Linear_Bullet(){
 }
 
 void Linear_Bullet::update(){
-	if(exploding){
-		current_animation_int=1;
-		if(animations.at(1).is_finished()){
-			removing=true;
-		}
-		animate();
-	}else{
-		move();
-	}
+	movement=direction*speed;
+	Bullet::update();
 }
 
 void Linear_Bullet::create(Point center_p, int radius_p, Point direction_p){
