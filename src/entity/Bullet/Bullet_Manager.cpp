@@ -73,6 +73,9 @@ void Bullet_Manager::capture_bullets(std::vector<Point> line_p){
             Point A1 = line_p[i];
             Point A2 = line_p[i + 1];
 
+            if (&A1 == nullptr || &A2 == nullptr)
+                continue;
+
             // If segment is at least partially to the right of bullet
             if (A1.get_x() > test.get_x() || A2.get_x() > test.get_x())
             {
