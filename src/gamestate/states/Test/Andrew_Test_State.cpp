@@ -88,19 +88,18 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	if (spawn) {
 		m_wave_manager.add_wave(m_wave_one);
 		//m_wave_manager.add_wave(m_wave_two);
-		std::cout << "Spawn!\n";
 		spawn = false;
 	}
 
 	m_wave_manager.update();
 
 	m_bullet_manager.update();
-	/*Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
+	Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
 	for (int i = 0; i < (int)bullets_hitting_player.size(); i++) {
 		if(m_test_player.is_colliding(*bullets_hitting_player.at(i))){
 			bullets_hitting_player.at(i)->set_exploding(true);
 		}
-	}*/
+	}
 
 	int bulletx = 0;
 	int bullety = 0;
