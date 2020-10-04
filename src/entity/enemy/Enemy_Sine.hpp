@@ -15,8 +15,10 @@ public:
 	virtual void doSpawn();
 	Animation getCurrentAnimation();
 
+	virtual EnemyType get_type();
 	Enemy_Sine create_copy(Point center, int radius);
 	Enemy_Sine create_copy(Spawn_Data data);
+
 
 private:
 	int m_length;
