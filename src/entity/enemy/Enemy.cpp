@@ -1,4 +1,5 @@
 #include "Enemy.hpp"
+#include "../Bullet/Bullet_Manager.hpp"
 
 Enemy::Enemy(Bullet_Manager* bullet_manager)
 	: m_bullet_manager(bullet_manager)

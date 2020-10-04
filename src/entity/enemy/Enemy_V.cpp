@@ -1,18 +1,17 @@
-#include "Enemy_Straight.hpp"
+#include "Enemy_V.hpp"
 #include "../Bullet/Bullet_Manager.hpp"
 
-Enemy_Straight::Enemy_Straight()
+Enemy_V::Enemy_V()
 {
-	animations.push_back(Animation("Straight_Idle"));
+	animations.push_back(Animation("Fish_Idle"));
 	m_health = 1;
 }
 
-Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
+Enemy_V::Enemy_V(Bullet_Manager * bullet_manager)
 {
-	animations.push_back(Animation("Straight_Idle"));
+	animations.push_back(Animation("Fish_Idle"));
 
 	m_bullet_manager = bullet_manager;
-	m_player = player;
 
 	m_length = 100;
 	m_distance_travelled = 0;
@@ -27,18 +26,16 @@ Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
 	m_health = 100;
 	m_spawned = false;
 	m_spawning = false;
-
-	m_bullet_spawn_points.push_back(Point(0, 0));
-	m_bullet_spawn_points.push_back(Point(32, 0));
-	m_bullet_spawn_points.push_back(Point(32, 32));
-	m_bullet_spawn_points.push_back(Point(0, 32));
+	
+	m_bullet_spawn_points.push_back(Point(16,16));
+	m_bullet_spawn_points.push_back(Point(16,16));
 }
 
-Enemy_Straight::~Enemy_Straight()
+Enemy_V::~Enemy_V()
 {
 }
 
-void Enemy_Straight::update()
+void Enemy_V::update()
 {
 	if (m_spawned) {
 		flight_path();
@@ -54,26 +51,26 @@ void Enemy_Straight::update()
 	}
 }
 
-void Enemy_Straight::flight_path()
+void Enemy_V::flight_path()
 {
 	if (m_distance_travelled >= m_length) {
 		m_dir = -m_dir;
 		m_distance_travelled = 0;
 	}
 
-	set_movement(Point(m_speed*m_dir,0));
+	set_movement(Point(0, m_speed*m_dir));
 	move();
 
 	m_distance_travelled++;
 }
 
-void Enemy_Straight::spawn_path()
+void Enemy_V::spawn_path()
 {
 	m_spawning = false;
 	m_spawned = true;
 }
 
-void Enemy_Straight::fire()
+void Enemy_V::fire()
 {
 	std::vector<Bullet_Blueprint> bullets;
 	for (int i = 0; i < m_bullet_spawn_points.size(); i++) {
@@ -81,33 +78,36 @@ void Enemy_Straight::fire()
 		float y = m_bullet_spawn_points.at(i).get_y();
 
 		sf::Vector2f spawn = getCurrentAnimation().get_current_frame().getTransform().transformPoint(x, y);
-		
-		Point dir = Point(m_player->get_center().get_x() - spawn.x, m_player->get_center().get_y() - spawn.y);
+		sf::Vector2f corner = getCurrentAnimation().get_current_frame().getTransform().transformPoint(i==0?0:32, 32);
 
-		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(spawn.x, spawn.y), m_bullet_speed, this));
+		Point dir = Point(corner.x - spawn.x, corner.y - spawn.y);
+		dir.normalize();
+
+		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(spawn.x, spawn.y), m_bullet_speed,this));
 	}
 	m_bullet_manager->add_bullets(bullets);
 }
 
-void Enemy_Straight::doSpawn()
+void Enemy_V::doSpawn()
 {
 	m_spawning = true;
 }
 
-Animation Enemy_Straight::getCurrentAnimation()
+Animation Enemy_V::getCurrentAnimation()
 {
 	return animations.at(0);
 }
 
-Enemy_Straight Enemy_Straight::create_copy(Point center, int radius)
+Enemy_V Enemy_V::create_copy(Point center, int radius)
 {
 	create(center, radius);
 	return *this;
 }
 
-Enemy_Straight Enemy_Straight::create_copy(Spawn_Data data)
+Enemy_V Enemy_V::create_copy(Spawn_Data data)
 {
 	create_copy(data.pos, data.radius);
 	return *this;
 }
+
 

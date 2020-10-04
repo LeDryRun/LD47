@@ -41,6 +41,10 @@ void Imagehandler::load(){
 	load_animation_sheet("../assets/image/animations/default_player");
 	load_animation_sheet("../assets/image/animations/circle_animations");
 	load_animation_sheet("../assets/image/animations/bullets");
+	load_animation_sheet("../assets/image/animations/Straight");
+	load_animation_sheet("../assets/image/animations/Burst");
+	load_animation_sheet("../assets/image/animations/Sine");
+	load_animation_sheet("../assets/image/animations/Fish");
 }
 
 void Imagehandler::load_text_input_box(Text_Input_Box& tib){
