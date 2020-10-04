@@ -29,9 +29,6 @@ Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
 	m_spawning = false;
 
 	m_bullet_spawn_points.push_back(Point(0, 0));
-	m_bullet_spawn_points.push_back(Point(32, 0));
-	m_bullet_spawn_points.push_back(Point(32, 32));
-	m_bullet_spawn_points.push_back(Point(0, 32));
 }
 
 Enemy_Straight::~Enemy_Straight()
@@ -64,6 +61,9 @@ void Enemy_Straight::flight_path()
 	set_movement(Point(m_speed*m_dir,0));
 	move();
 
+	sf::Sprite current_animation = animations.at(0).get_current_frame();
+	rotate_animations(180 + 180 / M_PI * atan2((m_player->get_center().get_y() - get_center().get_y()), (m_player->get_center().get_x() - get_center().get_x())));
+
 	m_distance_travelled++;
 }
 
@@ -80,11 +80,15 @@ void Enemy_Straight::fire()
 		float x = m_bullet_spawn_points.at(i).get_x();
 		float y = m_bullet_spawn_points.at(i).get_y();
 
-		sf::Vector2f spawn = getCurrentAnimation().get_current_frame().getTransform().transformPoint(x, y);
-		
-		Point dir = Point(m_player->get_center().get_x() - spawn.x, m_player->get_center().get_y() - spawn.y);
+		float rot = getCurrentAnimation().get_current_frame().getRotation();
 
-		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(spawn.x, spawn.y), m_bullet_speed, this));
+
+		sf::Vector2f spawn = getCurrentAnimation().get_current_frame().getTransform().transformPoint(x, y);
+
+		Point dir = Point(-cos(rot*M_PI / 180), -sin(rot*M_PI / 180));
+		dir.normalize();
+
+		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(get_center().get_x(), get_center().get_y()), m_bullet_speed, this));
 	}
 	m_bullet_manager->add_bullets(bullets);
 }

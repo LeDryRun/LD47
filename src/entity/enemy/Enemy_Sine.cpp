@@ -61,9 +61,9 @@ void Enemy_Sine::flight_path()
 	}
 
 	set_movement(Point(m_speed*m_dir, 0));
-	//move();
+	move();
 	sf::Sprite current_animation = animations.at(0).get_current_frame();
-	//rotate_animations(180/M_PI*atan2((m_player->get_center().get_y()-get_center().get_y()),(m_player->get_center().get_x() - get_center().get_x())));
+	rotate_animations(180+180/M_PI*atan2((m_player->get_center().get_y()-get_center().get_y()),(m_player->get_center().get_x() - get_center().get_x())));
 
 	m_distance_travelled++;
 }
@@ -81,9 +81,12 @@ void Enemy_Sine::fire()
 		float x = m_bullet_spawn_points.at(i).get_x();
 		float y = m_bullet_spawn_points.at(i).get_y();
 
-		sf::Vector2f spawn = getCurrentAnimation().get_current_frame().getTransform().transformPoint(x, y);
+		float rot = getCurrentAnimation().get_current_frame().getRotation();
 
-		Point dir = Point(-1, 0);
+
+		sf::Vector2f spawn = getCurrentAnimation().get_current_frame().getTransform().transformPoint(x, y);
+		
+		Point dir = Point(-cos(rot*M_PI/180), -sin(rot*M_PI/180));
 		dir.normalize();
 
 		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::SINE, m_damage, dir, Point(get_center().get_x(), get_center().get_y()), m_bullet_speed, this));

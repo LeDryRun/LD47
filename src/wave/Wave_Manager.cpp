@@ -20,9 +20,9 @@ void Wave_Manager::load_animations(Imagehandler & imagehandler)
 	m_enemy_sine.load_animations(imagehandler);
 	m_enemy_v.load_animations(imagehandler);
 	m_enemy_straight.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
-	m_enemy_burst.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
+	m_enemy_burst.scale_animations(Point(48.0f / 360.0f, 48.0f / 360.0f));
 	m_enemy_sine.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
-	m_enemy_v.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
+	m_enemy_v.scale_animations(Point(32.0f / 343.0f, 32.0f / 323.0f));
 
 }
 
