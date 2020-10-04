@@ -6,27 +6,23 @@
 Enemy_Sine::Enemy_Sine()
 {
 	animations.push_back(Animation("Sine_Idle"));
-	m_health = 1;
+	m_stats = EnemyStats(false, 100, 1, 2, 20, 1, 0);
 }
 
 Enemy_Sine::Enemy_Sine(Bullet_Manager * bullet_manager, Player * player)
 {
 	animations.push_back(Animation("Sine_Idle"));
+	m_stats = EnemyStats(false, 100, 1, 2, 20, 1, 0);
 
 	m_bullet_manager = bullet_manager;
 	m_player = player;
 
 	m_length = 100;
 	m_distance_travelled = 0;
-	m_speed = 1;
 	m_dir = 1;
-	m_damage = 1;
-	m_bullet_speed = 2;
 
-	m_fire_delay = 10;
 	m_fire_timer = 0;
 
-	m_health = 100;
 	m_spawned = false;
 	m_spawning = false;
 
@@ -41,7 +37,7 @@ void Enemy_Sine::update()
 {
 	if (m_spawned) {
 		flight_path();
-		if (m_fire_timer >= m_fire_delay) {
+		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
 			m_fire_timer = 0;
 		}
@@ -60,7 +56,7 @@ void Enemy_Sine::flight_path()
 		m_distance_travelled = 0;
 	}
 
-	set_movement(Point(m_speed*m_dir, 0));
+	set_movement(Point(m_stats.speed_*m_dir, 0));
 	move();
 	sf::Sprite current_animation = animations.at(0).get_current_frame();
 	rotate_animations(180+180/M_PI*atan2((m_player->get_center().get_y()-get_center().get_y()),(m_player->get_center().get_x() - get_center().get_x())));
@@ -72,6 +68,7 @@ void Enemy_Sine::spawn_path()
 {
 	m_spawning = false;
 	m_spawned = true;
+	m_stats.radius_ = get_hitbox().get_radius();
 }
 
 void Enemy_Sine::fire()
@@ -89,7 +86,7 @@ void Enemy_Sine::fire()
 		Point dir = Point(-cos(rot*M_PI/180), -sin(rot*M_PI/180));
 		dir.normalize();
 
-		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::SINE, m_damage, dir, Point(get_center().get_x(), get_center().get_y()), m_bullet_speed, this));
+		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::SINE, m_stats.damage_, dir, Point(get_center().get_x(), get_center().get_y()), m_stats.bullet_speed_, this));
 	}
 	m_bullet_manager->add_bullets(bullets);
 }
@@ -102,6 +99,11 @@ void Enemy_Sine::doSpawn()
 Animation Enemy_Sine::getCurrentAnimation()
 {
 	return animations.at(0);
+}
+
+EnemyType Enemy_Sine::get_type()
+{
+	return kEnemySine;
 }
 
 Enemy_Sine Enemy_Sine::create_copy(Point center, int radius)

@@ -5,7 +5,7 @@
 Enemy_Burst::Enemy_Burst()
 {
 	animations.push_back(Animation("Burst_Idle"));
-	m_health = 1;
+	m_stats = EnemyStats(false, 100, 10, 2, 20, 1, 0);
 }
 
 Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
@@ -13,17 +13,14 @@ Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
 	animations.push_back(Animation("Burst_Idle"));
 	m_bullet_manager = bullet_manager;
 
+	m_stats = EnemyStats(false, 100, 10, 2, 20, 1, 0);
+
 	m_length = 100;
 	m_distance_travelled = 0;
-	m_speed = 1;
 	m_dir = 1;
-	m_damage = 1;
-	m_bullet_speed = 2;
 
-	m_fire_delay = 10;
 	m_fire_timer = 0;
 
-	m_health = 100;
 
 	m_spawning = false;
 	m_spawned = false;
@@ -42,7 +39,7 @@ void Enemy_Burst::update()
 {
 	if (m_spawned) {
 		flight_path();
-		if (m_fire_timer >= m_fire_delay) {
+		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
 			m_fire_timer = 0;
 		}
@@ -69,7 +66,7 @@ void Enemy_Burst::flight_path()
 	sf::Sprite current_animation = animations.at(0).get_current_frame();
 	rotate_animations( current_animation.getRotation() + 1 );
 
-	set_movement(Point(m_speed*m_dir, 0));
+	set_movement(Point(m_stats.speed_*m_dir, 0));
 	move();
 
 	m_distance_travelled++;
@@ -79,6 +76,7 @@ void Enemy_Burst::spawn_path()
 {
 	m_spawning = false;
 	m_spawned = true;
+	m_stats.radius_ = get_hitbox().get_radius();
 }
 
 void Enemy_Burst::fire()
@@ -95,7 +93,7 @@ void Enemy_Burst::fire()
 		Point dir = Point(-cos(rot*M_PI / 180), -sin(rot*M_PI / 180));
 		dir.normalize();
 
-		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(spawn.x, spawn.y), m_bullet_speed, this));
+		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_stats.damage_, dir, Point(spawn.x, spawn.y), m_stats.bullet_speed_, this));
 	}
 	m_bullet_manager->add_bullets(bullets);
 }
@@ -103,6 +101,11 @@ void Enemy_Burst::fire()
 Animation Enemy_Burst::getCurrentAnimation()
 {
 	return animations.at(0);
+}
+
+EnemyType Enemy_Burst::get_type()
+{
+	return kEnemyBurst;
 }
 
 Enemy_Burst Enemy_Burst::create_copy(Point center, int radius)

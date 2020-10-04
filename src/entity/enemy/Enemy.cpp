@@ -16,15 +16,20 @@ Enemy::~Enemy()
 
 bool Enemy::is_alive()
 {
-	return m_health>0;
+	return m_stats.health_>0;
 }
 
 void Enemy::take_damage(float damage)
 {
-	m_health -= damage;
+	m_stats.health_ -= damage;
 }
 
 float Enemy::get_health()
 {
-	return m_health;
+	return m_stats.health_;
+}
+
+EnemyStats Enemy::get_stats()
+{
+	return m_stats;
 }

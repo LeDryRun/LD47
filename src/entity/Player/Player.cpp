@@ -1,9 +1,17 @@
 #include "Player.hpp"
 
+void Player::scale_animations(Point scale_p)
+{
+	for (int i = 0; i < (int)animations.size(); i++) {
+		animations.at(i).scale(scale_p);
+	}
+	s_Ring.setScale(sf::Vector2f(scale_p.get_x(), scale_p.get_y()));
+}
+
 void Player::update(World_Data world, Point move, bool shifted)
 {
     // Set movement based on vector
-    movement = shifted ? move * i_PlayerSpd * 0.5f : move * i_PlayerSpd;
+    movement = shifted ? move * f_PlayerSpd * 0.5f : move * f_PlayerSpd;
 
     // Keep player in screen
     Point next_p = get_center() + movement;
@@ -74,6 +82,8 @@ void Player::update(World_Data world, Point move, bool shifted)
             f_LineLeft -= 0.01f;
         }
     }
+	s_Ring.setRotation(s_Ring.getRotation() + 1);
+	s_Ring.setPosition(get_center().get_x(), get_center().get_y());
 }
 
 void Player::draw(World_Data world, sf::RenderWindow &window)
@@ -92,6 +102,7 @@ void Player::draw(World_Data world, sf::RenderWindow &window)
     active_bounds[3].position = sf::Vector2f(world.active_right, world.active_top);
     active_bounds[4].position = sf::Vector2f(world.active_left, world.active_top);
 
+	window.draw(s_Ring);
     window.draw(active_bounds);
     window.draw(points);
     window.draw(*this);
