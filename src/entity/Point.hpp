@@ -42,6 +42,8 @@ public:
 	void set_point(float x_p, float y_p){set_x(x_p);set_y(y_p);}
 	void set_point(Point new_p){set_x(new_p.get_x());set_y(new_p.get_y());}
 
+    float magnitude(){ return sqrtf(x*x + y*y); }
+
 	void move(float x_p, float y_p){x+=x_p;y+=y_p;}
 	void move(Point p_p){x+=p_p.get_x();y+=p_p.get_y();}
 };
