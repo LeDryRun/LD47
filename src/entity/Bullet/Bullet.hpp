@@ -14,16 +14,19 @@ protected:
 	int damage=0;
 	bool exploding=false;
 	bool removing=false;
+    bool returning = false;
 public:
 	Bullet(){}
-	virtual void update()=0;
+	virtual void update();
 	virtual void create(Point center_p, int radius_p, Point direction_p)=0;
 
 	void set_exploding(bool b_p){exploding=b_p;}
 	void set_removing(bool b_p){removing=b_p;}
+    void set_returning(bool b_p) { returning = b_p; }
 
 	bool is_exploding(){return exploding;}
 	bool is_removing(){return removing;}
+    bool is_returning() { return returning; }
 
 	int get_damage(){return damage;}
 
