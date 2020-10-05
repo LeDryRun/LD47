@@ -24,6 +24,8 @@ public:
 	void load_animations(Imagehandler& imagehandler);
 	void load_templates();
 
+	void create();
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:

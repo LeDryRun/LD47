@@ -94,20 +94,8 @@ void Player::draw(World_Data world, sf::RenderWindow &window)
         points.append(sf::Vertex(sf::Vector2f(p.get_x(), p.get_y()), sf::Color::White));
     }
 
-<<<<<<< HEAD
-    // Draw world bounds
-    sf::VertexArray active_bounds(sf::LinesStrip, 5);
-    active_bounds[0].position = sf::Vector2f(world.active_left, world.active_top);
-    active_bounds[1].position = sf::Vector2f(world.active_left, world.active_bottom);
-    active_bounds[2].position = sf::Vector2f(world.active_right, world.active_bottom);
-    active_bounds[3].position = sf::Vector2f(world.active_right, world.active_top);
-    active_bounds[4].position = sf::Vector2f(world.active_left, world.active_top);
 
 	window.draw(s_Ring);
-    window.draw(active_bounds);
-=======
-	  window.draw(s_Ring);
->>>>>>> master
     window.draw(points);
     window.draw(*this);
 }

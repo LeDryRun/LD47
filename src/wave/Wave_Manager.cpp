@@ -253,10 +253,5 @@ void Wave_Manager::generate_waves()
 	}
 
 	current_waves.push_back(Wave(wave_pool,boss,spawn_data,difficulty));
-
-
-
-	add_wave(wave);
-	
 }
 
