@@ -15,7 +15,7 @@ Gameplay_State::Gameplay_State(Imagehandler& imagehandler, Audiohandler& audioha
 	create_waves();
 
 	load_sprites(imagehandler);
-	player.create(Point(world.width / 2, world.active_bottom - 100), 1);
+	player.create(Point(world.width / 2, world.active_bottom - 100), 2);
 	player.load_ring(imagehandler);
 	bullet_manager.set_player(player);
 	wave_manager.create();
@@ -177,7 +177,7 @@ void Gameplay_State::update_player(Mousey& mouse, Keyblade& keyboard, Gamepad& g
 			if (!bhp.at(i)->is_exploding()) {
 				//std::cout<<"ASKDFA"<<std::endl;
 				player.take_damage(bhp.at(i)->get_damage());
-				if (player.get_HealthLeft() <= 0) {
+				if (player.get_isDeadOver()) {
 					send_data.push_back(Data_Packet("set_state", MANAGER, { "death_state" }));
 				}
 			}
