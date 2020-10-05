@@ -53,6 +53,23 @@ void UIHandler::load_animations(Imagehandler& image_handler)
     a_LineBar[2].set_rotation(90);
 
     a_LineBar[9].set_position(a_LineBar[4].get_position());;
+
+    if (sf::Shader::isAvailable)
+    {
+        // Load shaders
+        if (!sh_Circular.loadFromFile("../assets/shader/sh_3_4_CircularBar.fsh", sf::Shader::Fragment))
+        {// throw a fit
+            cout << "Circular shader failed to load." << endl;
+        }
+        if (!sh_Vertical.loadFromFile("../assets/shader/sh_VerticalBar.fsh", sf::Shader::Fragment))
+        {// throw a fit
+            cout << "Vertical bar shader failed to load." << endl;
+        }
+    }
+    else
+    {//you're out of luck as far as shaders go
+        cout << "Shaders not supported. Some UI elements may not appear correctly." << endl;
+    }
 }
 
 
@@ -66,27 +83,18 @@ void UIHandler::draw(sf::RenderWindow& window)
 {
     // Draw health
     window.draw(a_Health[0].get_current_frame());
-    sf::Shader circular;
-    if (circular.loadFromFile("../assets/shader/sh_3_4_CircularBar.fsh", sf::Shader::Fragment))
-    {
-        circular.setUniform("BaseTexture", sf::Shader::CurrentTexture);
-        circular.setUniform("uv_topLeft", sf::Vector2f(0.0, 0.5));
-        circular.setUniform("uv_botRight", sf::Vector2f(1.0, 1.0));
-        circular.setUniform("percentage", f_Health_Ratio);
-        window.draw(a_Health[1].get_current_frame(), &circular);
-    }else{
-        cout<<"not loading shader"<<std::endl;
-    }
+    sh_Circular.setUniform("BaseTexture", sf::Shader::CurrentTexture);
+    sh_Circular.setUniform("uv_topLeft", sf::Vector2f(0.0, 0.5));
+    sh_Circular.setUniform("uv_botRight", sf::Vector2f(1.0, 1.0));
+    sh_Circular.setUniform("percentage", f_Health_Ratio);
+    window.draw(a_Health[1].get_current_frame(), &sh_Circular);
 
     // Draw Line bar
     for (int i = 0; i < 9; i++)
     { window.draw(a_LineBar[i].get_current_frame()); }
-    sf::Shader vertical;
-    if (vertical.loadFromFile("../assets/shader/sh_VerticalBar.fsh", sf::Shader::Fragment))
-    {
-        vertical.setUniform("BaseTexture", sf::Shader::CurrentTexture);
-        vertical.setUniform("v_bounds", sf::Vector2f(0.66, 1.0));
-        vertical.setUniform("percentage", f_Line_Ratio);
-        window.draw(a_LineBar[9].get_current_frame(), &vertical);
-    }
+
+    sh_Vertical.setUniform("BaseTexture", sf::Shader::CurrentTexture);
+    sh_Vertical.setUniform("v_bounds", sf::Vector2f(0.66, 1.0));
+    sh_Vertical.setUniform("percentage", f_Line_Ratio);
+    window.draw(a_LineBar[9].get_current_frame(), &sh_Vertical);
 }
