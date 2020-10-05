@@ -42,6 +42,7 @@ public:
 	void update_player(Mousey&,Keyblade&,Gamepad&);
 
 	void add_bullets();
+	void reset(Imagehandler& imagehandler,Audiohandler& audiohandler);
 };
 
 

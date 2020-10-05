@@ -22,24 +22,23 @@ class Player : public Circular_Entity
         bool b_isLooping = false;
 
     public:
-        Player()
-		{ 
+        Player(){ 
 			animations.push_back(Animation("Player_Core_Idle"));
 			if (!t_Ring.loadFromFile("../assets/image/animations/Player_Bod.png", sf::IntRect(0, 0, 310, 310))) {
 				std::cout << "Failed to load Ring Texture!\n";
 			}
+            t_Ring.setSmooth(true);
 			s_Ring.setTexture(t_Ring);
 			s_Ring.setOrigin(t_Ring.getSize().x / 2, t_Ring.getSize().y / 2);
-			
 		}
         Player(Bullet_Manager* b_man)
         {
             animations.push_back(Animation("Player_Core_Idle"));
             p_BulletMan = b_man;
-			animations.push_back(Animation("Player_Core_Idle"));
 			if (!t_Ring.loadFromFile("../assets/image/animations/Player_Bod.png", sf::IntRect(0, 0, 310, 310))) {
 				std::cout << "Failed to load Ring Texture!\n";
 			}
+            t_Ring.setSmooth(true);
 			s_Ring.setTexture(t_Ring);
 			s_Ring.setOrigin(t_Ring.getSize().x / 2, t_Ring.getSize().y / 2);
         }

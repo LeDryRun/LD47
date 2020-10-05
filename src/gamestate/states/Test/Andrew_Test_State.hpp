@@ -15,7 +15,7 @@ private:
 
 	Layer test_layer;
 
-	Bullet_Manager m_bullet_manager;
+	/*Bullet_Manager m_bullet_manager;
 	Wave_Manager m_wave_manager;
 	Wave m_wave_one;
 	Wave m_wave_two;
@@ -23,7 +23,7 @@ private:
     World_Data world;
 
 	sf::Font m_debug_font;
-	sf::Text m_debug_text;
+	sf::Text m_debug_text;*/
 
 public:
 	Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler);
