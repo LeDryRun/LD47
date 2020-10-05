@@ -112,20 +112,51 @@ void Daniel_Test_State::check_gamepad(Gamepad& gamepad){
 }
 
 void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad){
-	 float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
-    v_hor = fabs(gamepad.get_left_stick_x()) > 0 ? gamepad.get_left_stick_x() / 100.f : v_hor;
+    // Player directional input
+    float v_hor = keyboard.get_key('d').is_pressed() - keyboard.get_key('a').is_pressed();
+    if (v_hor != 0.0f)
+    {
+        if (ui_handler.get_is_gamepad_active())
+            ui_handler.toggle_control_scheme();
+    }
+    else if (fabs(gamepad.get_left_stick_x()) > 0)
+    {
+        v_hor = gamepad.get_left_stick_x() / 100.f;
+        if (!ui_handler.get_is_gamepad_active())
+            ui_handler.toggle_control_scheme();
+    }
     float v_vert = keyboard.get_key('s').is_pressed() - keyboard.get_key('w').is_pressed();
-    v_vert = fabs(gamepad.get_left_stick_y()) > 0 ? gamepad.get_left_stick_y() / 100.f : v_vert;
+    if (v_vert != 0.0f)
+    {
+        if (ui_handler.get_is_gamepad_active())
+            ui_handler.toggle_control_scheme();
+    }
+    else if (fabs(gamepad.get_left_stick_y()) > 0)
+    {
+        v_vert = gamepad.get_left_stick_y() / 100.f;
+        if (!ui_handler.get_is_gamepad_active())
+            ui_handler.toggle_control_scheme();
+    }
     Point input = Point(v_hor, v_vert);
-   // std::cout<<input.get_x()<<","<<input.get_y()<<std::endl;
     input.normalize();
-    //std::cout<<input.get_x()<<","<<input.get_y()<<std::endl;
    	player.update(world, input, keyboard.get_key('^').is_pressed() || gamepad.is_pressed(GAMEPAD_X));
 
-   	   if (keyboard.get_key(' ').is_pressed() || gamepad.is_pressed(GAMEPAD_A))
+    // Player button input
+   	if (keyboard.get_key(' ').is_pressed())
     {
         if (!player.get_isLooping())
             player.start_loop();
+
+        if (ui_handler.get_is_gamepad_active())
+            ui_handler.toggle_control_scheme();
+    }
+    else if (gamepad.is_pressed(GAMEPAD_A))
+    {
+        if (!player.get_isLooping())
+            player.start_loop();
+
+        if (!ui_handler.get_is_gamepad_active())
+            ui_handler.toggle_control_scheme();
     }
     else
     {
@@ -133,6 +164,7 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
             player.validate_loop();
     }
 
+    // Check collision of bullets with player
     Bullet_Vector bhp=bullet_manager.bullets_colliding_with_hitbox(player.get_hitbox());
 	//if(mouse.is_clicked()){std::cout<<bhp.size();}
 	for(int i=0;i<(int)bhp.size();i++){

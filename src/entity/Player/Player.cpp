@@ -44,7 +44,7 @@ void Player::update(World_Data world, Point move, bool shifted)
     movement = Point(0,0);
 
     // Add points if looping
-    if (b_isLooping)
+    if (b_isLooping && !b_isHoldingLoop)
     {
         // Don't add duplicate points
         if (f_LineLeft > 0 && get_center() != v_Line.back())
@@ -74,14 +74,26 @@ void Player::update(World_Data world, Point move, bool shifted)
                         v_Line.back() = Point(intersect_x, intersect_y);
                         v_Line.erase(v_Line.begin(), v_Line.begin() + i);
 
-                        f_LineLeft = 0.0f;
+                        b_isHoldingLoop = true;
                         break;
                     }
                 }
             }
-            f_LineLeft -= 0.01f;
+
+            f_LineLeft = shifted ? f_LineLeft - 0.005f : f_LineLeft - 0.01f;
         }
     }
+    else if (!b_isHoldingLoop)
+    {
+        if (f_LineLeft < f_LineLimit)
+        {
+            f_LineLeft += 0.1f;
+            if (f_LineLeft > f_LineLimit)
+                f_LineLeft = f_LineLimit;
+        }
+    }
+
+
 	s_Ring.setRotation(s_Ring.getRotation() + 1);
 	s_Ring.setPosition(get_center().get_x(), get_center().get_y());
 }
@@ -114,8 +126,6 @@ void Player::take_damage(float damage)
 void Player::start_loop()
 {
     b_isLooping = true;
-
-    f_LineLeft = f_LineLimit;
     v_Line.clear();
     v_Line.push_back(get_center());
 }
@@ -123,6 +133,7 @@ void Player::start_loop()
 void Player::validate_loop() 
 {
     b_isLooping = false;
+    b_isHoldingLoop = false;
 
     if (v_Line.size() > 2 && v_Line.front() == v_Line.back())
     {
@@ -130,6 +141,5 @@ void Player::validate_loop()
         p_BulletMan->capture_bullets(v_Line);
     }
 
-    f_LineLeft = f_LineLimit;
     v_Line.clear();
 }
