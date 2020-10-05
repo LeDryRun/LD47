@@ -32,6 +32,7 @@ public:
 
 private:
 	int m_length;
+	int m_travel_min, m_travel_max;
 	int m_distance_travelled;
 	int m_dir;
 	bool m_open;

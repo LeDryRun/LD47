@@ -9,13 +9,14 @@
 #include "../entity/enemy/Enemy_V.hpp"
 #include "../entity/enemy/Enemy_Boss.hpp"
 #include "../communal/Tick_Timer.hpp"
+#include "../gamestate/states/Test/UIHandler.hpp"
 
 #include <deque>
 
 class Wave_Manager : public sf::Drawable
 {
 public:
-	Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World_Data* world_data);
+	Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World_Data* world_data, UIHandler* ui_handler);
 	Wave_Manager();
 	~Wave_Manager();
 
@@ -46,6 +47,7 @@ private:
 	Bullet_Manager* bullet_manager;
 	Player* player;
 	World_Data* world_data;
+	UIHandler* ui_handler;
 
 	int waves_defeated=0;
 	float current_difficulty=0;
