@@ -15,7 +15,7 @@ Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	create_waves();
 
 	load_sprites(imagehandler);
-	player.create(Point(500,500),16);
+	player.create(Point(world.width / 2, world.active_bottom - 100), 1);
 	bullet_manager.set_player(player);
 	wave_manager.create();
 }
@@ -31,7 +31,7 @@ void Daniel_Test_State::reset(Imagehandler& imagehandler,Audiohandler& audiohand
 	create_waves();
 
 	load_sprites(imagehandler);
-	player.create(Point(500,500),16);
+	player.create(Point(world.width / 2, world.active_bottom - 100), 1);
 	bullet_manager.set_player(player);
 	wave_manager.create();
 }
@@ -83,7 +83,8 @@ void Daniel_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	window.draw(bullet_manager);
 	window.draw(wave_manager);
 	player.draw(world,window);
- 	 ui_handler.draw(window);
+    render_bounds(window);
+ 	ui_handler.draw(window);
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
 
@@ -150,6 +151,18 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
 		}
 	}
 
+}
+
+void Daniel_Test_State::render_bounds(sf::RenderWindow& window)
+{
+    // Create world bounds
+    sf::VertexArray active_bounds(sf::LinesStrip, 5);
+    active_bounds[0].position = sf::Vector2f(world.active_left, world.active_top);
+    active_bounds[1].position = sf::Vector2f(world.active_left, world.active_bottom);
+    active_bounds[2].position = sf::Vector2f(world.active_right, world.active_bottom);
+    active_bounds[3].position = sf::Vector2f(world.active_right, world.active_top);
+    active_bounds[4].position = sf::Vector2f(world.active_left, world.active_top);
+    window.draw(active_bounds);
 }
 
 void Daniel_Test_State::create_waves(){
