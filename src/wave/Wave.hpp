@@ -17,12 +17,13 @@ enum EnemyType {
 };
 struct Spawn_Data {
 
-	Spawn_Data(int enemy_type, bool elite, Point pos, float spawn_delay_p)
+	Spawn_Data(int enemy_type, bool elite, bool moving, Point pos, float spawn_delay_p)
 		: enemy_type(enemy_type),elite(elite), pos(pos), spawn_delay(spawn_delay_p){}
 
 	int enemy_type;
 	Point pos;
 	bool elite;
+	bool moving=false;
 	Tick_Timer spawn_delay;
 	float radius=5;
 };

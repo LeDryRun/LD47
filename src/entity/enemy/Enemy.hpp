@@ -39,6 +39,7 @@ public:
 	float get_health();
 	EnemyStats get_stats();
 	virtual EnemyType get_type() = 0;
+	void set_moving(bool b_p){moving=b_p;}
 
 
 protected:
@@ -50,6 +51,7 @@ protected:
 	std::vector<Point> m_bullet_spawn_points;
 	EnemyStats m_stats;
 	Point m_spawn_point;
+	bool moving=false;
 
 	virtual void flight_path() = 0;
 	virtual void spawn_path() = 0;

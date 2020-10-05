@@ -8,7 +8,7 @@ Enemy_V::Enemy_V()
 	animations.push_back(Animation("Fish_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-	m_stats = EnemyStats(false, 100, 5, 2, 20, 1, 0);
+	m_stats = EnemyStats(false, 10, 5, 2, 20, 1, 0);
 }
 
 Enemy_V::Enemy_V(Bullet_Manager * bullet_manager)
@@ -18,7 +18,7 @@ Enemy_V::Enemy_V(Bullet_Manager * bullet_manager)
 	animations.push_back(Animation("Fish_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-	m_stats = EnemyStats(false, 100, 5, 2, 20, 1, 0);
+	m_stats = EnemyStats(false, 10, 5, 2, 30, 1, 0);
 
 	m_bullet_manager = bullet_manager;
 
@@ -65,7 +65,9 @@ void Enemy_V::flight_path()
 	}
 
 	set_movement(Point(0, m_stats.speed_*m_dir));
-	move();
+
+	if(moving)
+		move();
 
 	m_distance_travelled++;
 }
@@ -139,6 +141,7 @@ Enemy_V Enemy_V::create_copy(Point center, int radius)
 Enemy_V Enemy_V::create_copy(Spawn_Data data)
 {
 	create_copy(data.pos, data.radius);
+	moving=data.moving;
 	return *this;
 }
 

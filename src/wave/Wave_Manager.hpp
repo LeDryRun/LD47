@@ -24,6 +24,8 @@ public:
 	void load_animations(Imagehandler& imagehandler);
 	void load_templates();
 
+	void add_enemy(Spawn_Data);
+
 	void create();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -47,6 +49,7 @@ private:
 	std::vector<Wave> wave_templates;
 
 	Tick_Timer next_wave;
+	int initial_wave_time;
 
 };
 
