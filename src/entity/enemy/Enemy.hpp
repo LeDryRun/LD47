@@ -33,6 +33,7 @@ public:
 	~Enemy();
 	virtual void update() = 0;
 	virtual void doSpawn() = 0;
+	virtual std::vector<Spawn_Data> get_babies();
 
 	bool is_alive();
 	void take_damage(float damage);

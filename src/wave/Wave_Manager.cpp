@@ -18,6 +18,7 @@ Wave_Manager::Wave_Manager()
 {	
 }
 
+
 void Wave_Manager::create(){
 	initial_wave_time=3000;
 	next_wave=Tick_Timer(initial_wave_time);

@@ -13,7 +13,8 @@ enum EnemyType {
 	kEnemyBurst,
 	kEnemySine,
 	kEnemyV,
-	kEnemyHoming
+	kEnemyHoming,
+	kEnemyBoss
 };
 struct Spawn_Data {
 

@@ -7,6 +7,7 @@
 #include "../entity/enemy/Enemy_Burst.hpp"
 #include "../entity/enemy/Enemy_Sine.hpp"
 #include "../entity/enemy/Enemy_V.hpp"
+#include "../entity/enemy/Enemy_Boss.hpp"
 #include "../communal/Tick_Timer.hpp"
 
 #include <deque>
