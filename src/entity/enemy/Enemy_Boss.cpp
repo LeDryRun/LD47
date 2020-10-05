@@ -1,6 +1,7 @@
 #include "Enemy_Boss.hpp"
 #include "../Bullet/Bullet_Manager.hpp"
 #include <iostream>
+#include "../../wave/Wave_Manager.hpp"
 
 Enemy_Boss::Enemy_Boss()
 {
@@ -8,8 +9,8 @@ Enemy_Boss::Enemy_Boss()
 	animations.push_back(Animation("boss_west"));
 	animations.push_back(Animation("boss_east"));
 	m_stats = EnemyStats(true, 1000, 10, 5, 10, 2.0f, 0);
-	m_cycle_timer = Tick_Timer(1000);
-	
+	m_cycle_timer = Tick_Timer(m_baby_spawn_tick_time);
+	m_procreate = false;
 }
 
 Enemy_Boss::Enemy_Boss(Bullet_Manager * bullet_manager, Player* player, World_Data* world_data)
@@ -44,8 +45,9 @@ Enemy_Boss::Enemy_Boss(Bullet_Manager * bullet_manager, Player* player, World_Da
 	m_bullet_spawn_points.push_back(Point(306.0f / 2 + 362.0f, 463.0f - 89.0f));
 	m_bullet_spawn_points.push_back(Point(306.0f / 2 + 362.0f, 463.0f - 89.0f));
 
-	m_cycle_timer = Tick_Timer(1000);
+	m_cycle_timer = Tick_Timer(m_baby_spawn_tick_time);
 	m_open = true;
+	m_procreate = false;
 }
 
 Enemy_Boss::~Enemy_Boss()
@@ -89,6 +91,21 @@ std::vector<Spawn_Data> Enemy_Boss::get_babies()
 	return m_babies;
 }
 
+bool Enemy_Boss::is_procreating()
+{
+	return m_procreate;
+}
+
+bool Enemy_Boss::is_open()
+{
+	return m_open;
+}
+
+void Enemy_Boss::set_procreating(bool procreate)
+{
+	m_procreate = procreate;
+}
+
 void Enemy_Boss::set_origin(Point p_p)
 {
 	animations.at(0).set_origin(p_p.get_x(), p_p.get_y());
@@ -112,6 +129,9 @@ EnemyType Enemy_Boss::get_type()
 Enemy_Boss Enemy_Boss::create_copy(Point center, int radius)
 {
 	m_spawn_point = center;
+
+	update_template(center);
+
 	create(Point(center.get_x(), -2 * radius), radius);
 
 	m_stats.radius_ = radius;
@@ -148,7 +168,7 @@ void Enemy_Boss::spawn_path()
 
 	set_origin(Point(body.getLocalBounds().width/2, body.getLocalBounds().height/2));
 
-	if (targety - posy != 0) {
+	if (targety > posy) {
 		Point dir(0, targety - posy);
 		dir.normalize();
 
@@ -164,6 +184,7 @@ void Enemy_Boss::spawn_path()
 void Enemy_Boss::fire()
 {
 	if (m_open) {
+		m_procreate = true;
 		std::vector<Bullet_Blueprint> bullets;
 		for (int i = 0; i < m_bullet_spawn_points.size(); i++) {
 			float x = m_bullet_spawn_points.at(i).get_x();
@@ -179,10 +200,6 @@ void Enemy_Boss::fire()
 			bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_stats.damage_, dir, Point(spawn.x, spawn.y), m_stats.bullet_speed_, this));
 		}
 		m_bullet_manager->add_bullets(bullets);
-	}
-	else {
-		/*Spawn_Data local_baby = Spawn_Data(kEnemyStraight, 16, get_center(), 100);
-		m_babies.push_back(local_baby);*/
 	}
 }
 
@@ -219,4 +236,20 @@ void Enemy_Boss::update_arms()
 		animations.at(4).set_rotation(0);*/
 	}
 
+}
+
+void Enemy_Boss::update_template(Point center)
+{
+	m_babies = {
+		Spawn_Data(kEnemyStraight,false,false,Point(0.5*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 400),0),
+		Spawn_Data(kEnemyStraight,false,false,Point(1.5*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 400),m_baby_spawn_tick_time*1/7),
+		Spawn_Data(kEnemyStraight,false,false,Point(2.5*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 400),m_baby_spawn_tick_time*2/7),
+		Spawn_Data(kEnemyStraight,false,false,Point(3.5*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 400),m_baby_spawn_tick_time*3/7),
+
+		Spawn_Data(kEnemyStraight,false,false,Point(0.75*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 200),m_baby_spawn_tick_time*4/7),
+		Spawn_Data(kEnemyStraight,false,false,Point(1.75*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 200),m_baby_spawn_tick_time*5/7),
+		Spawn_Data(kEnemyStraight,false,false,Point(2.75*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 200),m_baby_spawn_tick_time*6/7),
+		Spawn_Data(kEnemyStraight,false,false,Point(3.75*m_world_data->active_width / 4 + m_world_data->active_left, get_center().get_y() + 200),m_baby_spawn_tick_time),
+
+	};
 }
