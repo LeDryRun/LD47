@@ -17,6 +17,7 @@ class UIHandler
         Animation a_PowerUpShelf;
         std::vector<Animation> v_Powerups;
 
+        float f_Health_Ratio = 1.0f;
         float f_Line_Ratio = 1.0f;
 
     public:

@@ -99,6 +99,17 @@ void Player::draw(World_Data world, sf::RenderWindow &window)
     window.draw(*this);
 }
 
+void Player::take_damage(float damage)
+{
+    f_HealthLeft -= damage;
+
+    if (f_HealthLeft <= 0.0f)
+    {
+        f_HealthLeft = 0.0f;
+        // Player die behaviour
+    }
+}
+
 void Player::start_loop()
 {
     b_isLooping = true;
@@ -118,5 +129,6 @@ void Player::validate_loop()
         p_BulletMan->capture_bullets(v_Line);
     }
 
+    f_LineLeft = f_LineLimit;
     v_Line.clear();
 }

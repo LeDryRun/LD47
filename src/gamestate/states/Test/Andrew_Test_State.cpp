@@ -103,6 +103,8 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	Bullet_Vector bullets_hitting_player = m_bullet_manager.bullets_colliding_with_hitbox(m_test_player.get_hitbox());
 	for (int i = 0; i < (int)bullets_hitting_player.size(); i++) {
 		if(m_test_player.is_colliding(*bullets_hitting_player.at(i))){
+            if (!bullets_hitting_player.at(i)->is_exploding())
+                m_test_player.take_damage(bullets_hitting_player.at(i)->get_damage());
 			bullets_hitting_player.at(i)->set_exploding(true);
 		}
 	}
@@ -111,7 +113,9 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	float wave_difficulty = m_wave_manager.get_wave_difficulty();
 
 	m_debug_text.setString("Current Wave: " + std::to_string(wave) + "\nWave Difficulty: " + std::to_string(wave_difficulty));
-  ui_handler.update(1.0f, m_test_player.get_LineRatio());
+    
+    //m_test_player.take_damage(10);
+    ui_handler.update(m_test_player.get_HealthRatio(), m_test_player.get_LineRatio());
 	m_debug_text.setCharacterSize(12);
 	m_debug_text.setFillColor(sf::Color::White);
 

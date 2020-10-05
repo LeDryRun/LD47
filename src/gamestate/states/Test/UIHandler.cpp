@@ -59,13 +59,22 @@ void UIHandler::load_animations(Imagehandler& image_handler)
 void UIHandler::update(float health_ratio, float line_ratio)
 {
     f_Line_Ratio = line_ratio;
+    f_Health_Ratio = health_ratio;
 }
 
 void UIHandler::draw(sf::RenderWindow& window)
 {
     // Draw health
     window.draw(a_Health[0].get_current_frame());
-    window.draw(a_Health[1].get_current_frame());
+    sf::Shader circular;
+    if (circular.loadFromFile("../assets/shader/sh_3_4_CircularBar.fsh", sf::Shader::Fragment))
+    {
+        circular.setUniform("BaseTexture", sf::Shader::CurrentTexture);
+        circular.setUniform("uv_topLeft", sf::Vector2f(0.0, 0.5));
+        circular.setUniform("uv_botRight", sf::Vector2f(1.0, 1.0));
+        circular.setUniform("percentage", f_Health_Ratio);
+        window.draw(a_Health[1].get_current_frame(), &circular);
+    }
 
     // Draw Line bar
     for (int i = 0; i < 9; i++)
