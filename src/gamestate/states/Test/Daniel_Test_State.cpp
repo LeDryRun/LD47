@@ -216,7 +216,7 @@ void Daniel_Test_State::create_waves(){
 
 	wave_one = Wave(enemies, false, spawn_data_one);
 	wave_two = Wave(enemies, false, spawn_data_two);*/
-	wave_manager = Wave_Manager(&bullet_manager, &player, &world);
+	wave_manager = Wave_Manager(&bullet_manager, &player, &world, &ui_handler);
 
 }
 

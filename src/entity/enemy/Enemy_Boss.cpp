@@ -24,7 +24,6 @@ Enemy_Boss::Enemy_Boss(Bullet_Manager * bullet_manager, Player* player, World_Da
 
 	m_bullet_manager = bullet_manager;
 
-	m_length = 200;
 	m_distance_travelled = 0;
 	m_dir = 1;
 
@@ -77,7 +76,6 @@ void Enemy_Boss::update()
 void Enemy_Boss::doSpawn()
 {
 	m_spawning = true;
-	m_length = m_world_data->active_width + m_world_data->active_left - get_center().get_x() - 50;
 }
 
 void Enemy_Boss::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -146,9 +144,11 @@ Enemy_Boss Enemy_Boss::create_copy(Spawn_Data data)
 
 void Enemy_Boss::flight_path()
 {
-	if (m_distance_travelled >= m_length) {
+	if (get_center().get_x() + 100 >= m_world_data->active_right && m_dir > 0) {
 		m_dir = -m_dir;
-		m_distance_travelled = 0;
+	}
+	else if (get_center().get_x() - 100 <= m_world_data->active_left && m_dir < 0) {
+		m_dir = -m_dir;
 	}
 
 	sf::Sprite current_animation = getCurrentAnimation().get_current_frame();

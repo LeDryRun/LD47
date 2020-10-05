@@ -194,7 +194,7 @@ void UIHandler::load_animations(Imagehandler& image_handler)
 
 void UIHandler::update(float health_ratio, float line_ratio, float boss_ratio)
 {
-	t_score_text.setString("Score: " + get_score());
+	t_score_text.setString("Score: " + std::to_string(get_score()));
 
     f_Line_Ratio = line_ratio;
     f_Health_Ratio = health_ratio;
