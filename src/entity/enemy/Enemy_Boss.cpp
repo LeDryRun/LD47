@@ -77,7 +77,7 @@ void Enemy_Boss::update()
 void Enemy_Boss::doSpawn()
 {
 	m_spawning = true;
-	m_length = m_world_data->active_width - get_center().get_x() - 50;
+	m_length = m_world_data->active_width + m_world_data->active_left - get_center().get_x() - 50;
 }
 
 void Enemy_Boss::draw(sf::RenderTarget & target, sf::RenderStates states) const
