@@ -4,6 +4,7 @@
 Enemy_V::Enemy_V()
 {
 	animations.push_back(Animation("Fish_Idle"));
+
 	animations.push_back(Animation("Fish_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
@@ -13,6 +14,7 @@ Enemy_V::Enemy_V()
 Enemy_V::Enemy_V(Bullet_Manager * bullet_manager)
 {
 	animations.push_back(Animation("Fish_Idle"));
+
 	animations.push_back(Animation("Fish_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
@@ -87,7 +89,6 @@ void Enemy_V::spawn_path()
 		m_spawning = false;
 		m_spawned = true;
 	}
-
 }
 
 void Enemy_V::fire()

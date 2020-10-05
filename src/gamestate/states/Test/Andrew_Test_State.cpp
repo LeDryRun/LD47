@@ -4,7 +4,7 @@
 
 
 Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
-	state_name="andrew_test_state";
+/*	state_name="andrew_test_state";
     world.init(Point(0, 0), test_layer.get_original_size());
 
 	if (!m_debug_font.loadFromFile("../assets/font/System_Breach_wide.ttf"))
@@ -39,20 +39,23 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	m_wave_two = Wave(enemies, false, spawn_data_two);
 	m_wave_manager = Wave_Manager(&m_bullet_manager, &m_test_player, &world);
 
+
     ui_handler.load_animations(imagehandler);
 
 	load_sprites(imagehandler);
 
 	m_test_player.create(Point(500, 500), 2);
 
-    uptime.restart();
+    uptime.restart();*/
+
 }
 
 void Andrew_Test_State::load_sprites(Imagehandler& imagehandler){
-	m_bullet_manager.load_animations(imagehandler);
+	/*m_bullet_manager.load_animations(imagehandler);
 	m_test_player.load_animations(imagehandler);
 	m_wave_manager.load_animations(imagehandler);
-	m_test_player.scale_animations(Point(32.0f/310.0f,32.0f/310.0f));
+	m_test_player.scale_animations(Point(32.0f/310.0f,32.0f/310.0f));*/
+
 }
 
 void Andrew_Test_State::update_layer_resolutions(){
@@ -61,7 +64,7 @@ void Andrew_Test_State::update_layer_resolutions(){
 }
 
 void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad){Duration_Check::start("-Platformer update");
-	Gamestate::update_gui_layer(mouse,keyboard,gamepad);
+	/*Gamestate::update_gui_layer(mouse,keyboard,gamepad);
 
     check_gamepad(gamepad);
     check_keyboard(keyboard);
@@ -113,7 +116,7 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	float wave_difficulty = m_wave_manager.get_wave_difficulty();
 
 	m_debug_text.setString("Current Wave: " + std::to_string(wave) + "\nWave Difficulty: " + std::to_string(wave_difficulty));
-    
+
     //m_test_player.take_damage(10);
     ui_handler.update(m_test_player.get_HealthRatio(), m_test_player.get_LineRatio());
 	m_debug_text.setCharacterSize(12);
@@ -129,7 +132,7 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 Duration_Check::stop("-Platformer update");}
 
 void Andrew_Test_State::render(sf::RenderWindow& window){Duration_Check::start("-Platformer render");
-
+/*
 	Gamestate::render_background_layer(window);
 	window.setView(test_layer);
 	window.draw(m_debug_text);
@@ -149,7 +152,7 @@ void Andrew_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 
   ui_handler.draw(window);
 
-	Gamestate::render_gui_layer(window);
+	Gamestate::render_gui_layer(window);*/
 Duration_Check::stop("-Platformer render");}
 
 

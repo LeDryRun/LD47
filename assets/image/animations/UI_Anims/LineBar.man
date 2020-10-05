@@ -1,0 +1,5 @@
+Linebar_corner:10x10,1r1c,1f
+Linebar_side:10x462,1r1c,1f
+Linebar_topbot:30x10,1r1c,1f
+Linebar_back:30x462,1r1c,1f
+Linebar_bar:30x462,1r1c,1f

@@ -47,6 +47,7 @@ void Enemy_Burst::update()
 	if (m_spawned) {
 		set_current_animation(0);
 		flight_path();
+
 		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
 			m_fire_timer = 0;
@@ -86,7 +87,7 @@ void Enemy_Burst::spawn_path()
 	float posy = get_center().get_y();
 	float targety = m_spawn_point.get_y();
 
-	if (targety - posy != 0) {
+	if (targety > posy  ) {
 		Point dir(0, targety - posy);
 		dir.normalize();
 
@@ -100,12 +101,10 @@ void Enemy_Burst::spawn_path()
 		m_spawning = false;
 		m_spawned = true;
 	}
-
 }
 
 void Enemy_Burst::fire()
-{
-	std::vector<Bullet_Blueprint> bullets;
+{	std::vector<Bullet_Blueprint> bullets;
 	for (int i = 0; i < m_bullet_spawn_points.size(); i++) {
 		float x = m_bullet_spawn_points.at(i).get_x();
 		float y = m_bullet_spawn_points.at(i).get_y();

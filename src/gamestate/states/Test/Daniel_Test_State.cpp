@@ -3,26 +3,44 @@
 
 
 Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
+	seed();
 	state_name="daniel_test_state";
 
     world.init(Point(0, 0), test_layer.get_original_size());
-	load_sprites(imagehandler);
 
-	player.create(Point(500,500),16);
 	enemy_spawn_timer.create(60);
 	bullet_manager=Bullet_Manager();
 	bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
-	bullet_manager.set_player(player);
 
 	create_waves();
 
 	load_sprites(imagehandler);
+	player.create(Point(500,500),16);
+	bullet_manager.set_player(player);
+	wave_manager.create();
+}
+
+void Daniel_Test_State::reset(Imagehandler& imagehandler,Audiohandler& audiohandler){
+    world.init(Point(0, 0), test_layer.get_original_size());
+
+	enemy_spawn_timer.create(60);
+	bullet_manager=Bullet_Manager();
+	bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
+	player=Player();
+	wave_manager=Wave_Manager();
+	create_waves();
+
+	load_sprites(imagehandler);
+	player.create(Point(500,500),16);
+	bullet_manager.set_player(player);
+	wave_manager.create();
 }
 
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
 	player.load_animations(imagehandler);
 	bullet_manager.load_animations(imagehandler);
 	wave_manager.load_animations(imagehandler);
+	player.scale_animations(Point(32.0f/310.0f,32.0f/310.0f));
 }
 
 void Daniel_Test_State::update_layer_resolutions(){
@@ -38,14 +56,6 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	bullet_manager.update();
 	update_player(mouse,keyboard,gamepad);
 
-
-	bool spawn = keyboard.get_key('k').was_just_pressed();
-
-	if (spawn) {
-		wave_manager.add_wave(wave_one);
-		//m_wave_manager.add_wave(m_wave_two);
-		spawn = false;
-	}
 	if(enemy_spawn_timer.do_timer_loop()){
 		add_bullets();
 	}
@@ -136,7 +146,7 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
 }
 
 void Daniel_Test_State::create_waves(){
-	std::vector<EnemyType> enemies;
+	/*std::vector<EnemyType> enemies;
 	enemies.push_back(EnemyType::kEnemyStraight);
 	enemies.push_back(EnemyType::kEnemyBurst);
 	enemies.push_back(EnemyType::kEnemySine);
@@ -155,14 +165,15 @@ void Daniel_Test_State::create_waves(){
 	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 300), 600));
 
 	wave_one = Wave(enemies, false, spawn_data_one);
-	wave_two = Wave(enemies, false, spawn_data_two);
-	//wave_manager = Wave_Manager(&bullet_manager, &player);
+	wave_two = Wave(enemies, false, spawn_data_two);*/
+	wave_manager = Wave_Manager(&bullet_manager, &player, &world);
+
 }
 
 void Daniel_Test_State::add_bullets(){
 	std::vector<Bullet_Blueprint> blueprints;
 
 	//blueprints.push_back(Bullet_Blueprint(SINE,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
-	blueprints.push_back(Bullet_Blueprint(HOMING,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
+	//blueprints.push_back(Bullet_Blueprint(HOMING,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
 	bullet_manager.add_bullets(blueprints);
 }

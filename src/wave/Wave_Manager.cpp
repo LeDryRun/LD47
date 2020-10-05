@@ -1,43 +1,84 @@
 #include "Wave_Manager.hpp"
 #include "../communal/Communal.hpp"
 
-#include <unordered_map>
-#include <functional>
-#include <set>
 
 Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World_Data* world_data)
-	: m_bullet_manager(bullet_manager), m_player(player), m_world_data(world_data)
+	: bullet_manager(bullet_manager), player(player), world_data(world_data)
 {
-	m_enemy_straight = Enemy_Straight(m_bullet_manager, m_player);
-	m_enemy_burst = Enemy_Burst(m_bullet_manager);
-	m_enemy_sine = Enemy_Sine(m_bullet_manager, m_player);
-	m_enemy_v = Enemy_V(m_bullet_manager);
+	enemy_straight = Enemy_Straight(bullet_manager, player);
+	enemy_burst = Enemy_Burst(bullet_manager);
+	enemy_sine = Enemy_Sine(bullet_manager, player);
+	enemy_v = Enemy_V(bullet_manager);
+	enemies= std::vector<Enemy*>();
+	load_templates();
 
-	m_wave_number = 0;
-	m_wave_difficulty = 0;
 }
 
 Wave_Manager::Wave_Manager()
-{	m_wave_number = 0;
-	m_wave_difficulty = 0;
+{	
+}
+
+void Wave_Manager::create(){
+	//next_wave=Tick_Timer(100);
+	generate_waves();
+	//enemies.push_back(new Enemy_V(enemy_v.create_copy(Spawn_Data(0,false,Point(400,30),0))));
+	//enemies.at(0)->doSpawn();
+
 }
 
 void Wave_Manager::load_animations(Imagehandler & imagehandler)
 {
-	m_enemy_straight.load_animations(imagehandler);
-	m_enemy_burst.load_animations(imagehandler);
-	m_enemy_sine.load_animations(imagehandler);
-	m_enemy_v.load_animations(imagehandler);
-	m_enemy_straight.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
-	m_enemy_burst.scale_animations(Point(48.0f / 360.0f, 48.0f / 360.0f));
-	m_enemy_sine.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
-	m_enemy_v.scale_animations(Point(32.0f / 343.0f, 32.0f / 323.0f));
-
+	enemy_straight.load_animations(imagehandler);
+	enemy_burst.load_animations(imagehandler);
+	enemy_sine.load_animations(imagehandler);
+	enemy_v.load_animations(imagehandler);
+	enemy_straight.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
+	enemy_burst.scale_animations(Point(48.0f / 360.0f, 48.0f / 360.0f));
+	enemy_sine.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
+	enemy_v.scale_animations(Point(32.0f / 343.0f, 32.0f / 323.0f));
 }
 
-void Wave_Manager::load_templates()
-{
-	Point center = Point(m_world_data->width / 2, m_world_data->height / 2);
+void Wave_Manager::load_templates(){
+
+	Enemy_Type_Pool type_pool={{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV},{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV}};
+	std::vector<Spawn_Data> spawn_data={
+		Spawn_Data(0,false,Point(0.5f,0.05f),30),
+		Spawn_Data(1,false,Point(0.2f,0.05f),1)
+	};
+	int wave_difficulty=5;
+
+	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+
+	type_pool={{kEnemyStraight}};
+	spawn_data={
+		Spawn_Data(0,false,Point(0.1f,0.05f),0),
+		Spawn_Data(0,false,Point(0.3f,2.0f),40),
+		Spawn_Data(0,false,Point(0.5f,0.05f),80),
+
+	};
+	wave_difficulty=5;
+
+	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+
+	type_pool={{kEnemyBurst}};
+	spawn_data={
+		Spawn_Data(0,false,Point(0.1f,0.1f),0),
+		Spawn_Data(0,false,Point(0.5f,0.2f),20),
+		Spawn_Data(0,false,Point(0.2f,0.35f),40),
+		Spawn_Data(0,false,Point(0.3f,0.15f),60),
+		Spawn_Data(0,false,Point(0.7f,0.25f),80),
+		Spawn_Data(0,false,Point(0.6f,0.05f),100),
+		Spawn_Data(0,false,Point(0.8f,0.3f),120),
+
+	};
+	wave_difficulty=5;
+
+	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+
+	/*Point center = Point(m_world_data->width / 2, m_world_data->height / 2);
 
 	std::vector<EnemyType> enemies;
 	enemies.push_back(EnemyType::kEnemyStraight);
@@ -50,35 +91,61 @@ void Wave_Manager::load_templates()
 	//single enemy
 	spawn_data.push_back(Spawn_Data(0, 16, Point(500, 100), 100));
 
-	m_wave_templates.push_back(Wave(enemies,false,spawn_data));
+	m_wave_templates.push_back(Wave(enemies,false,spawn_data));*/
 }
 
-int Wave_Manager::get_current_wave()
-{
-	return m_wave_number;
-}
 
-float Wave_Manager::get_wave_difficulty()
-{
-	return m_wave_difficulty;
-}
 
 Wave_Manager::~Wave_Manager()
 {
-	for (int i = 0; i < m_enemies.size(); i++) {
-		delete m_enemies.at(i);
+	for (int i = 0; i < enemies.size(); i++) {
+		delete enemies.at(i);
 	}
 }
 
-void Wave_Manager::add_wave(const Wave & wave)
-{
-	m_wave_buffer.push_back(wave);
-	m_spawn_timers.push_back(NULL);
-	m_wave_number++;
-}
 
 void Wave_Manager::update()
 {
+
+	//determine current desired difficulty level based on time spent in game/number of waves defeated
+
+
+	//determine current actual difficulty level	based on current spawning waves and persistent enemies
+
+
+	// if neccessary push back new wave based on difference between desired and actual using templates
+
+	// for current waves spawn enemies if neccessary
+
+	for(int i=0;i<(int)current_waves.size();i++){
+		current_waves.at(i).update();
+		for(int j=0;j<(int)current_waves.at(i).enemies_to_spawn.size();j++){
+			Spawn_Data spawn_data=current_waves.at(i).enemies_to_spawn.at(j);
+			switch(static_cast<EnemyType>(spawn_data.enemy_type)){
+				case kEnemyStraight:enemies.push_back(new Enemy_Straight(enemy_straight.create_copy(spawn_data)));enemies.back()->doSpawn();break;
+				case kEnemyBurst:enemies.push_back(new Enemy_Burst(enemy_burst.create_copy(spawn_data)));enemies.back()->doSpawn();break;
+				case kEnemySine:enemies.push_back(new Enemy_Sine(enemy_sine.create_copy(spawn_data)));enemies.back()->doSpawn();break;
+				case kEnemyV:enemies.push_back(new Enemy_V(enemy_v.create_copy(spawn_data)));enemies.back()->doSpawn();break;
+				default:break;
+			}
+		}
+		current_waves.at(i).enemies_to_spawn.clear();
+		if(current_waves.at(i).spawn_data.size()==0){
+			current_waves.erase(current_waves.begin()+i);
+		}
+	}
+
+	// for current enemies update
+
+	for(int i=0;i<(int)enemies.size();i++){
+		enemies.at(i)->update();
+	}
+
+
+
+
+
+	/*
 	for (int i = 0; i < m_wave_buffer.size(); i++) {
 		if (m_wave_buffer.at(i).spawn_data.size() > 0) {
 			if(&m_spawn_timers.at(i) == NULL)
@@ -141,103 +208,50 @@ void Wave_Manager::update()
 
 	for (int i = 0; i < m_enemies.size(); i++) {
 		m_enemies.at(i)->update();
-	}
+	}*/
+
 }
 
 void Wave_Manager::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	for (int i = 0; i < m_enemies.size(); i++) {
-		target.draw(*m_enemies.at(i));
+	for (int i = 0; i < enemies.size(); i++) {
+		target.draw(*enemies.at(i));
 	}
 }
 
 void Wave_Manager::generate_waves()
 {
-	m_wave_difficulty = 10 * m_wave_number + 12;
 
-	std::unordered_map< EnemyType, float> difficulty_map;
-	
-	difficulty_map.emplace(kEnemyStraight, m_enemy_straight.get_stats().get_difficulty_score());
-	difficulty_map.emplace(kEnemyBurst, m_enemy_burst.get_stats().get_difficulty_score());
-	difficulty_map.emplace(kEnemySine, m_enemy_sine.get_stats().get_difficulty_score());
-	difficulty_map.emplace(kEnemyV, m_enemy_v.get_stats().get_difficulty_score());
+	Point center = Point(world_data->width / 2, world_data->height / 2);
+	Point opos;
 
-	typedef std::function<bool(std::pair<EnemyType, float>, std::pair<EnemyType, float>)> Comparator;
-	Comparator compFunctor =
-		[](std::pair<EnemyType, float> elem1, std::pair<EnemyType, float> elem2)
-	{
-		return elem1.second > elem2.second;
-	};
-	std::set<std::pair<EnemyType, float>, Comparator> difficulty_set(
-		difficulty_map.begin(), difficulty_map.end(), compFunctor);
-	
-	std::vector<Enemy*> difficulty_order;
 
-	for (std::pair<EnemyType, float> element : difficulty_set) {
-		switch (element.first) {
-		case kEnemyStraight:
-			difficulty_order.push_back(&m_enemy_straight);
-			break;
-		case kEnemyBurst:
-			difficulty_order.push_back(&m_enemy_burst);
-			break;
-		case kEnemySine:
-			difficulty_order.push_back(&m_enemy_sine);
-			break;
-		case kEnemyV:
-			difficulty_order.push_back(&m_enemy_v);
-			break;
-		}
+	//AI LOGIC
+	int r= random(0,wave_templates.size()-1);
+
+	Wave blueprint= wave_templates.at(r);
+
+	Enemy_Type_Pool wave_pool={};
+	std::vector<Spawn_Data> spawn_data=blueprint.spawn_data;
+	bool boss=blueprint.boss;
+	int difficulty=0;
+
+	std::vector<EnemyType> types_chosen={};
+	for(int i=0;i<(int)blueprint.enemy_type_pool.size();i++){
+		int pool_size=blueprint.enemy_type_pool.at(i).size()-1;
+
+		//AI LOGIC
+		r= random(0,pool_size);
+
+		types_chosen.push_back(blueprint.enemy_type_pool.at(i).at(r));
 	}
 
-	std::unordered_map< EnemyType, int > enemy_count;
-
-	enemy_count.emplace(kEnemyStraight, 0);
-	enemy_count.emplace(kEnemyBurst, 0);
-	enemy_count.emplace(kEnemySine, 0);
-	enemy_count.emplace(kEnemyV, 0);
-
-	float difficulty_total = 0;
-
-	while (difficulty_total < m_wave_difficulty) {
-		float added_difficulty = 0;
-		for (int i = 0; i < difficulty_order.size(); i++) {
-			if (difficulty_total + difficulty_order.at(i)->get_stats().get_difficulty_score() < m_wave_difficulty) {
-				EnemyType type = difficulty_order.at(i)->get_type();
-				enemy_count.at(type) = enemy_count.at(type) + 1;
-				added_difficulty = difficulty_map.at(type);
-				break;
-			}
-		}
-		difficulty_total += added_difficulty;
-		if (added_difficulty == 0)
-			break;
+	for(int i=0;i<(int)spawn_data.size();i++){
+		spawn_data.at(i).enemy_type=(int)types_chosen.at(spawn_data.at(i).enemy_type);
+		opos=spawn_data.at(i).pos;
+		spawn_data.at(i).pos=Point(opos.get_x()*world_data->active_width+world_data->active_left,opos.get_y()*world_data->active_height+world_data->active_top);
 	}
 
-	std::vector<EnemyType> enemies;
-	enemies.push_back(EnemyType::kEnemyStraight);
-	enemies.push_back(EnemyType::kEnemyBurst);
-	enemies.push_back(EnemyType::kEnemySine);
-	enemies.push_back(EnemyType::kEnemyV);
-
-	std::deque<Spawn_Data> spawn_data;
-
-	int x_min = (int)m_world_data->active_left + 100;
-	int x_max = (int)m_world_data->active_right - 100;
-
-	int y_max = (int)m_world_data->active_bottom - 400;
-	int y_min = (int)m_world_data->active_top;
-
-
-	for (std::pair<EnemyType, int> element : enemy_count) {
-		for (int i = 0; i < element.second; i++){
-			spawn_data.push_back(Spawn_Data(element.first, 16, Point(random(x_min, x_max), random(y_min, y_max)), 100));
-		}
-	}
-
-	Wave wave = Wave(enemies, false, spawn_data);
-
-	add_wave(wave);
-	
+	current_waves.push_back(Wave(wave_pool,boss,spawn_data,difficulty));
 }
 

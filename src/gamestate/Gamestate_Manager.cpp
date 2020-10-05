@@ -62,6 +62,7 @@ bool Gamestate_Manager::set_state(Data_Packet data){
 			gamepad.set_button_mode(true);
 			gamepad.set_current_layer("gui");
 			current_state=main_menu_state;
+			//reset_game();
 		}else if(state=="pause_menu"){
 			gamepad.set_button_mode(true);
 			gamepad.set_current_layer("gui");
@@ -86,6 +87,8 @@ void Gamestate_Manager::receive_data(Data_Packet data_p){
 		}else if(data_p.get_interaction_level()==MANAGER){
 			if(data_p.get_data_type()=="set_state"){
 				set_state(data_p);
+			}else if(data_p.get_data_type()=="reset"){
+				reset_game();
 			}else{
 				std::cout<<"ERROR: manager recieved invalid data: "<<data_p.get_data_type()<<std::endl;
 			}

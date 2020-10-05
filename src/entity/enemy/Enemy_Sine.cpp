@@ -6,6 +6,7 @@
 Enemy_Sine::Enemy_Sine()
 {
 	animations.push_back(Animation("Sine_Idle"));
+
 	animations.push_back(Animation("Sine_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
@@ -91,7 +92,6 @@ void Enemy_Sine::spawn_path()
 		m_spawning = false;
 		m_spawned = true;
 	}
-
 }
 
 void Enemy_Sine::fire()

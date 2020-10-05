@@ -69,6 +69,7 @@ class Player : public Circular_Entity
         void update(World_Data world, Point move, bool shifted);
         void draw(World_Data world, sf::RenderWindow& window);
 		virtual void scale_animations(Point);
+
         void take_damage(float damage);
         void start_loop();
         void validate_loop();
