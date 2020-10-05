@@ -19,7 +19,7 @@ Enemy_Boss::Enemy_Boss(Bullet_Manager * bullet_manager, Player* player, World_Da
 	animations.push_back(Animation("boss_body"));
 	animations.push_back(Animation("boss_west"));
 	animations.push_back(Animation("boss_east"));
-	m_stats = EnemyStats(true, 1000, 10, 5, 10, 2.0f, 0);
+	m_stats = EnemyStats(true, 1000, 10, 5, 15, 2.0f, 0);
 	m_enemy_straight = Enemy_Straight(m_bullet_manager, m_player);
 
 	m_bullet_manager = bullet_manager;
