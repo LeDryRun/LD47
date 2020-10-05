@@ -9,6 +9,7 @@ Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World
 	enemy_burst = Enemy_Burst(bullet_manager);
 	enemy_sine = Enemy_Sine(bullet_manager, player);
 	enemy_v = Enemy_V(bullet_manager);
+	enemy_boss = Enemy_Boss(bullet_manager, player, world_data);
 	enemies= std::vector<Enemy*>();
 	load_templates();
 
@@ -35,16 +36,19 @@ void Wave_Manager::load_animations(Imagehandler & imagehandler)
 	enemy_burst.load_animations(imagehandler);
 	enemy_sine.load_animations(imagehandler);
 	enemy_v.load_animations(imagehandler);
+	enemy_boss.load_animations(imagehandler);
 	enemy_straight.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
 	enemy_burst.scale_animations(Point(48.0f / 360.0f, 48.0f / 360.0f));
 	enemy_sine.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
 	enemy_v.scale_animations(Point(32.0f / 343.0f, 32.0f / 323.0f));
+	enemy_boss.scale_animations(Point(64.0f / 306.0f, 64.0f / 306.0f));
 }
 
 void Wave_Manager::load_templates(){
 	std::vector<Wave> tier;
 
 	Enemy_Type_Pool type_pool={{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV}};
+
 	std::vector<Spawn_Data> spawn_data={
 		Spawn_Data(0,false,false,Point(0.25f,0.3f),300),
 		Spawn_Data(0,false,false,Point(0.5f,0.3f),600),
@@ -163,11 +167,13 @@ Wave_Manager::~Wave_Manager()
 
 
 void Wave_Manager::add_enemy(Spawn_Data spawn_data){
+
 	switch(static_cast<EnemyType>(spawn_data.enemy_type)){
 		case kEnemyStraight:enemies.push_back(new Enemy_Straight(enemy_straight.create_copy(spawn_data)));enemies.back()->doSpawn();break;
 		case kEnemyBurst:enemies.push_back(new Enemy_Burst(enemy_burst.create_copy(spawn_data)));enemies.back()->doSpawn();break;
 		case kEnemySine:enemies.push_back(new Enemy_Sine(enemy_sine.create_copy(spawn_data)));enemies.back()->doSpawn();break;
 		case kEnemyV:enemies.push_back(new Enemy_V(enemy_v.create_copy(spawn_data)));enemies.back()->doSpawn();break;
+		case kEnemyBoss:enemies.push_back(new Enemy_Boss(enemy_boss.create_copy(spawn_data))); enemies.back()->doSpawn(); break;
 		default:break;
 	}
 }
@@ -200,6 +206,15 @@ void Wave_Manager::update()
 	current_difficulty=0;
 	for(int i=0;i<(int)enemies.size();i++){
 		if(enemies.at(i)->is_alive()){
+			if (enemies.at(i)->get_type() == kEnemyBoss) {
+				if (((Enemy_Boss*)enemies.at(i))->is_procreating() && !((Enemy_Boss*)enemies.at(i))->is_open()) {
+					std::vector<Spawn_Data> babies = enemies.at(i)->get_babies();
+					for (int j = 0; j < babies.size(); j++) {
+						add_enemy(babies.at(j));
+					}
+					((Enemy_Boss*)enemies.at(i))->set_procreating(false);
+				}
+			}
 			enemies.at(i)->update();
 			current_difficulty+=enemies.at(i)->difficulty;
 		}else{

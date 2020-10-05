@@ -71,6 +71,7 @@ public:
 			sprites[i].setRotation(rotation);
 		}
 	}
+    int get_rotation() { return rotation; };
 
 	void set_origin(float x, float y) {
 		for (int i = 0; i < number_of_frames; i++) {

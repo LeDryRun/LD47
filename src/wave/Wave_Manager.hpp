@@ -41,6 +41,7 @@ private:
 	Enemy_Burst enemy_burst;
 	Enemy_Sine enemy_sine;
 	Enemy_V enemy_v;
+	Enemy_Boss enemy_boss;
 
 	Bullet_Manager* bullet_manager;
 	Player* player;
