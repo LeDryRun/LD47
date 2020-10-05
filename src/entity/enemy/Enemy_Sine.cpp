@@ -78,7 +78,7 @@ void Enemy_Sine::spawn_path()
 	float targety = m_spawn_point.get_y();
 	rotate_animations(-90);
 
-	if (targety - posy != 0) {
+	if (targety > posy) {
 		Point dir(0, targety - posy);
 		dir.normalize();
 

@@ -6,6 +6,8 @@
 #include "../../../entity/Bullet/Bullet_Manager.hpp"
 #include "../../../wave/Wave_Manager.hpp"
 #include "../../../communal/Tick_Timer.hpp"
+#include "UIHandler.hpp"
+
 
 class Daniel_Test_State:public Gamestate{
 private:
@@ -17,8 +19,7 @@ private:
 	Bullet_Manager bullet_manager;
 	Wave_Manager wave_manager;
 
-	Wave wave_one;
-	Wave wave_two;
+    UIHandler ui_handler = UIHandler(world);
 
 	Player player = Player(&bullet_manager);
 

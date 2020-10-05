@@ -75,8 +75,8 @@ public:
 	void update_layer_resolutions();
 
 	void reset_game(){
-	//	delete daniel_test_state;
-	//	daniel_test_state= new Daniel_Test_State(imagehandler,audiohandler);
+		delete daniel_test_state;
+		daniel_test_state= new Daniel_Test_State(imagehandler,audiohandler);
 	}
 };
 

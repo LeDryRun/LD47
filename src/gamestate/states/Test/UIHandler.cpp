@@ -74,6 +74,8 @@ void UIHandler::draw(sf::RenderWindow& window)
         circular.setUniform("uv_botRight", sf::Vector2f(1.0, 1.0));
         circular.setUniform("percentage", f_Health_Ratio);
         window.draw(a_Health[1].get_current_frame(), &circular);
+    }else{
+        cout<<"not loading shader"<<std::endl;
     }
 
     // Draw Line bar

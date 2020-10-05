@@ -62,7 +62,7 @@ bool Gamestate_Manager::set_state(Data_Packet data){
 			gamepad.set_button_mode(true);
 			gamepad.set_current_layer("gui");
 			current_state=main_menu_state;
-			//reset_game();
+			reset_game();
 		}else if(state=="pause_menu"){
 			gamepad.set_button_mode(true);
 			gamepad.set_current_layer("gui");
@@ -119,6 +119,10 @@ void Gamestate_Manager::update(sf::RenderWindow& window){
 	sf::Event event;
 
 	while(window.pollEvent(event)){
+
+		if(event.type==sf::Event::Closed){
+			send_data.push_back(Data_Packet("close",WINDOW));
+		}
 		if(event.type==sf::Event::KeyPressed ||event.type==sf::Event::KeyReleased){
 			keyboard.event_update(event);
 		}else if(event.type==sf::Event::JoystickButtonPressed||event.type==sf::Event::JoystickButtonReleased

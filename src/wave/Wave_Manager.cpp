@@ -53,7 +53,7 @@ void Wave_Manager::load_templates(){
 	type_pool={{kEnemyStraight}};
 	spawn_data={
 		Spawn_Data(0,false,Point(0.1f,0.05f),0),
-		Spawn_Data(0,false,Point(0.3f,2.0f),40),
+		Spawn_Data(0,false,Point(0.3f,.05f),40),
 		Spawn_Data(0,false,Point(0.5f,0.05f),80),
 
 	};
