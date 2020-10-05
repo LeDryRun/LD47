@@ -116,9 +116,6 @@ void Wave_Manager::load_templates(){
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
 
-	wave_templates.push_back(tier);
-	tier.clear();
-/////////
 
 	type_pool={{kEnemyV},{kEnemyStraight},{kEnemyStraight,kEnemySine}};
 	spawn_data={
@@ -135,6 +132,9 @@ void Wave_Manager::load_templates(){
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
+	wave_templates.push_back(tier);
+	tier.clear();
+/////////
 
 	type_pool={{kEnemyV},{kEnemyBurst},{kEnemySine}};
 	spawn_data={
@@ -162,7 +162,6 @@ void Wave_Manager::load_templates(){
 	tier.push_back(Wave(type_pool, false, spawn_data, wave_difficulty));
 
 
-
 	type_pool={{kEnemyStraight},{kEnemyBurst},{kEnemySine}};
 	spawn_data={
 		Spawn_Data(0,false,false,Point(0.5f,0.1f),0),
@@ -178,6 +177,9 @@ void Wave_Manager::load_templates(){
 	wave_difficulty=40;
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+	wave_templates.push_back(tier);
+	tier.clear();
+////
 
 	type_pool={{kEnemyV},{kEnemyBurst,kEnemyStraight}};
 	spawn_data={
@@ -215,6 +217,10 @@ void Wave_Manager::load_templates(){
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
+
+	wave_templates.push_back(tier);
+	tier.clear();
+////
 
 	type_pool = { {kEnemyBoss} };
 	spawn_data = {
@@ -256,7 +262,7 @@ void Wave_Manager::update()
 
 	//determine current desired difficulty level based on time spent in game/number of waves defeated
 
-	desired_difficulty=(game_tick/200)+waves_defeated*2+10;
+	desired_difficulty=(game_tick/200)+waves_defeated*2;
 	//determine current actual difficulty level	based on current spawning waves and persistent enemies
 
 
@@ -304,7 +310,7 @@ void Wave_Manager::update()
 	if(next_wave.do_timer_loop()){
 		generate_waves();
 	}
-
+	std::cout<<desired_difficulty<<std::endl;
 
 }
 
@@ -316,7 +322,7 @@ void Wave_Manager::draw(sf::RenderTarget & target, sf::RenderStates states) cons
 }
 
 void Wave_Manager::generate_waves()
-{	std::cout<<"generate_waves"<<std::endl;
+{	//std::cout<<"generate_waves"<<std::endl;
 	if(current_waves.size()==0){while(current_difficulty<desired_difficulty){
 
 	Point center = Point(world_data->width / 2, world_data->height / 2);
@@ -325,9 +331,8 @@ void Wave_Manager::generate_waves()
 
 	//AI LOGIC
 	int tier=-1;
-	int desired_tier=(int)((desired_difficulty-current_difficulty)/10)%10;
+	int desired_tier=(int)((desired_difficulty-current_difficulty)/10);
 	std::vector<int> possibles=std::vector<int>();
-	std::cout<<"desired="<<desired_difficulty<<" c="<<current_difficulty<<" d_tier="<<desired_tier<<" possibles="<<possibles.size()<<std::endl;
 	do{
 		if(desired_tier<0){
 			tier=0;
@@ -348,6 +353,7 @@ void Wave_Manager::generate_waves()
 				desired_tier--;
 			}
 		}
+		std::cout<<"desired="<<desired_difficulty<<" c="<<current_difficulty<<" d_tier="<<desired_tier<<" possibles="<<possibles.size()<<std::endl;
 		//std::cout<<"desired="<<desired_difficulty<<"c="<<current_difficulty<<"d_tier="<<desired_tier<<"possibles="<<possibles.size();
 	}while(tier==-1);
 
