@@ -175,11 +175,27 @@ void UIHandler::load_animations(Imagehandler& image_handler)
     {//you're out of luck as far as shaders go
         cout << "Shaders not supported. Some UI elements may not appear correctly." << endl;
     }
+
+
+	if (!f_score_font.loadFromFile("../assets/font/System_Breach_wide.ttf"))
+	{
+		std::cout << "Error Loading Font!";
+	}
+
+	t_score_text.setFont(f_score_font);
+
+	t_score_text.setCharacterSize(18);
+	t_score_text.setFillColor(sf::Color::White);
+
+	t_score_text.setPosition(a_LeftPanel[0].get_position().get_x() + 10, a_LeftPanel[0].get_position().get_y() + 10);
+
 }
 
 
 void UIHandler::update(float health_ratio, float line_ratio, float boss_ratio)
 {
+	t_score_text.setString("Score: " + get_score());
+
     f_Line_Ratio = line_ratio;
     f_Health_Ratio = health_ratio;
 
@@ -242,4 +258,6 @@ void UIHandler::draw(sf::RenderWindow& window)
         window.draw(a_TutorialPanel[1].get_current_frame());
     else
         window.draw(a_TutorialPanel[0].get_current_frame());
+
+	window.draw(t_score_text);
 }
