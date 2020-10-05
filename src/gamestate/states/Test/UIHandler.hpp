@@ -14,9 +14,12 @@ class UIHandler
         Animation a_Health[2];
         Animation a_LineBar[10];
         Animation a_BossBar[10];
+        Animation a_LeftPanel[9];
         Animation a_TutorialPanel[2];
         Animation a_PowerUpShelf;
         std::vector<Animation> v_Powerups;
+
+        int i_score = 0;
 
         bool b_gamepadControlActive = false;
         bool b_isBossActive = false;
@@ -33,6 +36,10 @@ class UIHandler
         UIHandler() {};
         UIHandler(const UIHandler& original);
         UIHandler(World_Data& world_pointer) { world = &world_pointer; };
+
+        int get_score() { return i_score; };
+        void set_score(int i) { i_score = i; };
+        void add_score(int i) { i_score += i; };
 
         bool get_is_gamepad_active() { return b_gamepadControlActive; };
         void set_is_gamepad_active(bool b) { b_gamepadControlActive = b; };

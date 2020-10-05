@@ -58,6 +58,10 @@ void UIHandler::load_animations(Imagehandler& image_handler)
     a_LineBar[8].set_rotation(180);
     a_LineBar[6].set_rotation(-90);
 
+    float f_lineBarScaleY = 0.8f;
+    a_LineBar[5].scale(Point(1.0f, f_lineBarScaleY)); // 462 tall
+    a_LineBar[4].scale(Point(1.0f, f_lineBarScaleY));
+    a_LineBar[3].scale(Point(1.0f, f_lineBarScaleY));
     a_LineBar[5].set_position(a_LineBar[8].get_position() - Point(0.0f, a_LineBar[8].get_frame_height() / 2 + a_LineBar[5].get_frame_height() / 2));
     a_LineBar[4].set_position(a_LineBar[5].get_position() - Point(a_LineBar[5].get_frame_width() / 2 + a_LineBar[4].get_frame_width() / 2, 0.0f));
     a_LineBar[3].set_position(a_LineBar[4].get_position() - Point(a_LineBar[4].get_frame_width() / 2 + a_LineBar[3].get_frame_width() / 2, 0.0f));
@@ -67,6 +71,7 @@ void UIHandler::load_animations(Imagehandler& image_handler)
     a_LineBar[0].set_position(a_LineBar[1].get_position() - Point(a_LineBar[1].get_frame_width() / 2 + a_LineBar[0].get_frame_width() / 2, 0.0f));
     a_LineBar[2].set_rotation(90);
 
+    a_LineBar[9].scale(Point(1.0f, f_lineBarScaleY));
     a_LineBar[9].set_position(a_LineBar[4].get_position());;
 
     // Boss Bar
@@ -89,7 +94,6 @@ void UIHandler::load_animations(Imagehandler& image_handler)
     }
 
     a_BossBar[8].set_position(Point(world->active_right + 15 + (a_BossBar[8].get_frame_width() / 2) + a_BossBar[7].get_frame_width() + a_BossBar[6].get_frame_width(), world->active_bottom - (a_BossBar[8].get_frame_height() / 2)));
-    //a_BossBar[8].set_position(Point(world->active_left - (a_BossBar[8].get_frame_width() / 2) - 15, world->active_bottom - (a_BossBar[8].get_frame_height() / 2)));
     a_BossBar[7].set_position(a_BossBar[8].get_position() - Point(a_BossBar[8].get_frame_width() / 2 + a_BossBar[7].get_frame_width() / 2, 0.0f));
     a_BossBar[6].set_position(a_BossBar[7].get_position() - Point(a_BossBar[7].get_frame_width() / 2 + a_BossBar[6].get_frame_width() / 2, 0.0f));
     a_BossBar[8].set_rotation(180);
@@ -110,6 +114,45 @@ void UIHandler::load_animations(Imagehandler& image_handler)
 
     a_BossBar[9].scale(Point(1.0f, f_barScaleY));
     a_BossBar[9].set_position(a_BossBar[4].get_position());;
+
+    // Left Pane;
+    a_LeftPanel[0] = Animation("Linebar_corner");
+    a_LeftPanel[1] = Animation("Linebar_topbot");
+    a_LeftPanel[2] = Animation("Linebar_corner");
+    a_LeftPanel[3] = Animation("Linebar_side");
+    a_LeftPanel[4] = Animation("Linebar_back");
+    a_LeftPanel[5] = Animation("Linebar_side");
+    a_LeftPanel[6] = Animation("Linebar_corner");
+    a_LeftPanel[7] = Animation("Linebar_topbot");
+    a_LeftPanel[8] = Animation("Linebar_corner");
+
+    for (int i = 0; i < 9; i++)
+    {
+        image_handler.load_animation(a_LeftPanel[i]);
+        a_LeftPanel[i].set_looping(false);
+        a_LeftPanel[i].scale(Point(1.f, 1.f));
+    }
+
+    Point PanelScale = Point(7.5f, 1.08f);
+    a_LeftPanel[7].scale(Point(PanelScale.get_x(), 1.0));
+    a_LeftPanel[8].set_position(Point(a_LineBar[0].get_position().get_x() - 15 - (a_LineBar[0].get_frame_width() / 2) - (a_LeftPanel->get_frame_width() / 2), a_Health[0].get_position().get_y() - 15 - (a_Health[0].get_frame_width() / 2)));
+    a_LeftPanel[7].set_position(a_LeftPanel[8].get_position() - Point(a_LeftPanel[8].get_frame_width() / 2 + a_LeftPanel[7].get_frame_width() / 2, 0.0f));
+    a_LeftPanel[6].set_position(a_LeftPanel[7].get_position() - Point(a_LeftPanel[7].get_frame_width() / 2 + a_LeftPanel[6].get_frame_width() / 2, 0.0f));
+    a_LeftPanel[8].set_rotation(180);
+    a_LeftPanel[6].set_rotation(-90);
+
+    a_LeftPanel[5].scale(Point(1.0, PanelScale.get_y())); // 462 tall
+    a_LeftPanel[4].scale(PanelScale);
+    a_LeftPanel[3].scale(Point(1.0, PanelScale.get_y()));
+    a_LeftPanel[5].set_position(a_LeftPanel[8].get_position() - Point(0.0f, a_LeftPanel[8].get_frame_height() / 2 + a_LeftPanel[5].get_frame_height() / 2));
+    a_LeftPanel[4].set_position(a_LeftPanel[5].get_position() - Point(a_LeftPanel[5].get_frame_width() / 2 + a_LeftPanel[4].get_frame_width() / 2, 0.0f));
+    a_LeftPanel[3].set_position(a_LeftPanel[4].get_position() - Point(a_LeftPanel[4].get_frame_width() / 2 + a_LeftPanel[3].get_frame_width() / 2, 0.0f));
+
+    a_LeftPanel[1].scale(Point(PanelScale.get_x(), 1.0));
+    a_LeftPanel[2].set_position(a_LeftPanel[5].get_position() - Point(0.0f, a_LeftPanel[5].get_frame_height() / 2 + a_LeftPanel[2].get_frame_height() / 2));
+    a_LeftPanel[1].set_position(a_LeftPanel[2].get_position() - Point(a_LeftPanel[2].get_frame_width() / 2 + a_LeftPanel[1].get_frame_width() / 2, 0.0f));
+    a_LeftPanel[0].set_position(a_LeftPanel[1].get_position() - Point(a_LeftPanel[1].get_frame_width() / 2 + a_LeftPanel[0].get_frame_width() / 2, 0.0f));
+    a_LeftPanel[2].set_rotation(90);
 
     // Load shaders
     if (sf::Shader::isAvailable)
@@ -186,6 +229,12 @@ void UIHandler::draw(sf::RenderWindow& window)
         sh_Alpha.setUniform("BaseTexture", sf::Shader::CurrentTexture);
         sh_Alpha.setUniform("alpha", 0.0f);
         window.draw(a_BossBar[9].get_current_frame(), &sh_Alpha);
+    }
+
+    // Draw left panel
+    for (int i = 0; i < 9; i++)
+    {
+        window.draw(a_LeftPanel[i].get_current_frame());
     }
 
     // Draw tutorial message
