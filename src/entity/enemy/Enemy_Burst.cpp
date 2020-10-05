@@ -88,12 +88,17 @@ void Enemy_Burst::spawn_path()
 	float posy = get_center().get_y();
 	float targety = m_spawn_point.get_y();
 
-	if (targety > posy  ) {
+	/*if (targety > posy  ) {
 		Point dir(0, targety - posy);
 		dir.normalize();
 
 		set_movement(Point(0, m_stats.speed_*dir.get_y()));
-		move();
+        */
+    if (targety - posy > 1) {
+        float move_y = my_lerp(posy, targety, 0.05);
+        movement = Point(0.0, move_y - posy);
+		
+        move();
 
 		if (animations.at(current_animation_int).is_finished())
 			set_current_animation(0);
