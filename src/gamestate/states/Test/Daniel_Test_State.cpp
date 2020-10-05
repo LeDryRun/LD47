@@ -16,6 +16,7 @@ Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& au
 
 	load_sprites(imagehandler);
 	player.create(Point(world.width / 2, world.active_bottom - 100), 1);
+    player.load_ring(imagehandler);
 	bullet_manager.set_player(player);
 	wave_manager.create();
 }
@@ -33,7 +34,6 @@ void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
 	//panelx.setScale(1.5f,1.5f);
 
 	wave_manager.load_animations(imagehandler);
-	player.scale_animations(Point(32.0f/310.0f,32.0f/310.0f));
 }
 
 void Daniel_Test_State::update_layer_resolutions(){
