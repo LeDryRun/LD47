@@ -112,7 +112,7 @@ void Player::validate_loop()
 {
     b_isLooping = false;
 
-    if (v_Line.front() == v_Line.back())
+    if (v_Line.size() > 2 && v_Line.front() == v_Line.back())
     {
         // send to bullet manager
         p_BulletMan->capture_bullets(v_Line);
