@@ -44,6 +44,7 @@ public:
 
 	void create_waves();
 	void update_player(Mousey&,Keyblade&,Gamepad&);
+    void render_bounds(sf::RenderWindow& window);
 
 	void add_bullets();
 };
