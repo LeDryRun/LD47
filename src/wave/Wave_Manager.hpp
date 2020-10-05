@@ -25,6 +25,8 @@ public:
 	void load_animations(Imagehandler& imagehandler);
 	void load_templates();
 
+	void set_testing_wave(int x_p,  int y_p){testing_wave_x=x_p;testing_wave_y=y_p;}
+
 	void add_enemy(Spawn_Data);
 
 	void create();
@@ -47,10 +49,13 @@ private:
 	int waves_defeated=0;
 	float current_difficulty=0;
 	float desired_difficulty=0;
-	std::vector<Wave> wave_templates;
+	std::vector<std::vector<Wave>> wave_templates;
 
 	Tick_Timer next_wave;
 	int initial_wave_time;
+	int game_tick=0;
+	int testing_wave_x=-1;
+	int testing_wave_y=-1;
 
 };
 

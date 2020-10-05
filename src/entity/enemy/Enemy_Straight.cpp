@@ -14,7 +14,6 @@ Enemy_Straight::Enemy_Straight()
 Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
 {
 	animations.push_back(Animation("Straight_Idle"));
-
 	animations.push_back(Animation("Straight_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);

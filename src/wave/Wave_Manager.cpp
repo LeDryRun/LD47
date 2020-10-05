@@ -23,6 +23,7 @@ void Wave_Manager::create(){
 	initial_wave_time=3000;
 	next_wave=Tick_Timer(initial_wave_time);
 	generate_waves();
+	desired_difficulty=10;
 	//enemies.push_back(new Enemy_V(enemy_v.create_copy(Spawn_Data(0,false,Point(400,30),0))));
 	//enemies.at(0)->doSpawn();
 
@@ -41,65 +42,114 @@ void Wave_Manager::load_animations(Imagehandler & imagehandler)
 }
 
 void Wave_Manager::load_templates(){
+	std::vector<Wave> tier;
 
 	Enemy_Type_Pool type_pool={{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV}};
 	std::vector<Spawn_Data> spawn_data={
-		Spawn_Data(0,false,false,Point(0.5f,0.1f),30),
-		Spawn_Data(0,false,false,Point(0.2f,0.1f),60),
-		Spawn_Data(0,false,false,Point(0.7f,0.1f),1)
+		Spawn_Data(0,false,false,Point(0.25f,0.3f),300),
+		Spawn_Data(0,false,false,Point(0.5f,0.3f),600),
+		Spawn_Data(0,false,false,Point(0.75f,0.3f),0)
 	};
-	int wave_difficulty=1;
+	int wave_difficulty=10;
 
-	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
 
-	type_pool={{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV},{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV},{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV}};
+
+	type_pool={{kEnemyV},{kEnemyStraight}};
 	spawn_data={
-		Spawn_Data(0,false,false,Point(0.5f,0.1f),30),
-		Spawn_Data(1,false,false,Point(0.2f,0.1f),60),
-		Spawn_Data(2,false,false,Point(0.7f,0.1f),1)
-	};
-	wave_difficulty=1;
-
-	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
-
-	type_pool={{kEnemyStraight}};
-	spawn_data={
-		Spawn_Data(0,false,false,Point(0.1f,0.1f),0),
-		Spawn_Data(0,false,false,Point(0.3f,.1f),40),
-		Spawn_Data(0,false,false,Point(0.5f,0.1f),80),
+		Spawn_Data(1,false,false,Point(0.2f,0.2f),0),
+		Spawn_Data(1,false,false,Point(0.8f,0.2f),0),
+		Spawn_Data(0,false,false,Point(0.5f,0.2f),0),
 
 	};
-	wave_difficulty=2;
+	wave_difficulty=10;
 
-	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
-
-	type_pool={{kEnemySine}};
-	spawn_data={
-		Spawn_Data(0,false,true,Point(0.1f,0.1f),0),
-		Spawn_Data(0,false,true,Point(0.3f,.1f),40),
-		Spawn_Data(0,false,true,Point(0.5f,0.1f),80),
-
-	};
-	wave_difficulty=2;
-
-	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
 
 	type_pool={{kEnemyBurst}};
 	spawn_data={
-		Spawn_Data(0,false,false,Point(0.1f,0.1f),0),
-		Spawn_Data(0,false,false,Point(0.5f,0.2f),20),
-		Spawn_Data(0,false,false,Point(0.2f,0.35f),40),
-		Spawn_Data(0,false,false,Point(0.3f,0.15f),60),
-		Spawn_Data(0,false,false,Point(0.7f,0.25f),80),
-		Spawn_Data(0,false,false,Point(0.9f,0.25f),100),
-		Spawn_Data(0,false,false,Point(0.8f,0.3f),120),
+		Spawn_Data(0,false,false,Point(0.5f,0.2f),0),
+		Spawn_Data(0,false,false,Point(0.5f,0.4f),0),
+		Spawn_Data(0,false,false,Point(0.5f,0.6f),0),
 
 	};
-	wave_difficulty=5;
+	wave_difficulty=10;
 
-	wave_templates.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+	wave_templates.push_back(tier);
+	tier.clear();
+/////////
+	type_pool={{kEnemySine},{kEnemyV}};
+	spawn_data={
+		Spawn_Data(0,false,true,Point(0.2f,0.3f),0),
+		Spawn_Data(0,false,true,Point(0.5f,0.2f),0),
+		Spawn_Data(0,false,false,Point(0.8f,0.3f),0),
+		Spawn_Data(1,false,false,Point(0.2f,0.2f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.3f),0),
+		Spawn_Data(1,false,false,Point(0.8f,0.2f),0),
+
+	};
+	wave_difficulty=20;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+	wave_templates.push_back(tier);
+	tier.clear();
+/////////
+
+	type_pool={{kEnemyBurst},{kEnemyStraight}};
+	spawn_data={
+		Spawn_Data(0,false,true,Point(0.5f,0.3f),0),
+		Spawn_Data(0,false,true,Point(0.5f,0.6f),0),
+		Spawn_Data(1,false,false,Point(0.2f,0.1f),0),
+		Spawn_Data(1,false,false,Point(0.8f,0.1f),0),
+		Spawn_Data(1,false,false,Point(0.2f,0.9f),0),
+		Spawn_Data(1,false,false,Point(0.8f,0.9f),0),
+
+	};
+	wave_difficulty=30;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+	wave_templates.push_back(tier);
+	tier.clear();
+///////////
+	type_pool={{kEnemyV},{kEnemyStraight},{kEnemyStraight,kEnemySine}};
+	spawn_data={
+		Spawn_Data(0,false,true,Point(0.1f,0.3f),0),
+		Spawn_Data(0,false,true,Point(0.5f,0.3f),0),
+		Spawn_Data(1,false,false,Point(0.9f,0.3f),0),
+		Spawn_Data(1,false,false,Point(0.3f,0.15f),0),
+		Spawn_Data(1,false,false,Point(0.7f,0.15f),0),
+		Spawn_Data(2,false,false,Point(0.4f,0.15f),0),
+		Spawn_Data(2,false,false,Point(0.6f,0.15f),0),
+
+	};
+	wave_difficulty=40;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+
+	type_pool={{kEnemyV},{kEnemyBurst},{kEnemySine}};
+	spawn_data={
+		Spawn_Data(0,false,true,Point(0.25f,0.35f),0),
+		Spawn_Data(0,false,true,Point(0.5f,0.25f),0),
+		Spawn_Data(0,false,false,Point(0.75f,0.35f),0),
+		Spawn_Data(0,false,false,Point(0.5,0.45f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.35f),0),
+		Spawn_Data(2,false,false,Point(0.25f,0.25f),0),
+		Spawn_Data(2,false,false,Point(0.75f,0.25f),0),
+
+	};
+	wave_difficulty=40;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+	wave_templates.push_back(tier);
+	tier.clear();
 }
 
 
@@ -123,11 +173,11 @@ void Wave_Manager::add_enemy(Spawn_Data spawn_data){
 }
 
 void Wave_Manager::update()
-{
+{game_tick++;
 
 	//determine current desired difficulty level based on time spent in game/number of waves defeated
 
-
+	desired_difficulty=(game_tick/200)+waves_defeated*2+10;
 	//determine current actual difficulty level	based on current spawning waves and persistent enemies
 
 
@@ -147,10 +197,11 @@ void Wave_Manager::update()
 	}
 
 	// for current enemies update
-
+	current_difficulty=0;
 	for(int i=0;i<(int)enemies.size();i++){
 		if(enemies.at(i)->is_alive()){
 			enemies.at(i)->update();
+			current_difficulty+=enemies.at(i)->difficulty;
 		}else{
 			enemies.erase(enemies.begin()+i);
 			i--;
@@ -176,41 +227,89 @@ void Wave_Manager::draw(sf::RenderTarget & target, sf::RenderStates states) cons
 }
 
 void Wave_Manager::generate_waves()
-{
+{if(current_waves.size()==0){while(current_difficulty<desired_difficulty){
 
 	Point center = Point(world_data->width / 2, world_data->height / 2);
 	Point opos;
 
 
 	//AI LOGIC
-	int r= random(0,wave_templates.size()-1);
+	int tier=-1;
+	int desired_tier=(int)(desired_difficulty-current_difficulty)%10;
+	std::vector<int> possibles=std::vector<int>();
+	std::cout<<"desired="<<desired_difficulty<<" c="<<current_difficulty<<" d_tier="<<desired_tier<<" possibles="<<wave_templates.at(desired_tier).size();
+	do{
+		if(desired_tier<0){
+			tier=0;
+		}else if(desired_tier>=wave_templates.size()){
+			desired_tier--;
+		}else{
+			for(int i=0;i<(int)wave_templates.at(desired_tier).size();i++){
+				std::cout<<wave_templates.at(desired_tier).at(i).time_used<<std::endl;
+				if(wave_templates.at(desired_tier).at(i).time_used<7000){
+					possibles.push_back(i);
+					if(tier==-1){
+						current_difficulty+=wave_templates.at(desired_tier).at(i).difficulty;
+						tier=desired_tier;
+					}
+				}
+			}
+			if(possibles.size()==0){
+				desired_tier--;
+			}
+		}
+		std::cout<<"desired="<<desired_difficulty<<"c="<<current_difficulty<<"d_tier="<<desired_tier<<"possibles="<<possibles.size();
+	}while(tier==-1);
 
-	Wave blueprint= wave_templates.at(r);
+	std::cout<<std::endl<<std::endl;
 
-	Enemy_Type_Pool wave_pool={};
-	std::vector<Spawn_Data> spawn_data=blueprint.spawn_data;
-	bool boss=blueprint.boss;
-	int difficulty=0;
 
-	std::vector<EnemyType> types_chosen={};
-	for(int i=0;i<(int)blueprint.enemy_type_pool.size();i++){
-		int pool_size=blueprint.enemy_type_pool.at(i).size()-1;
+	if(tier!=-1){
 
-		//AI LOGIC
-		r= random(0,pool_size);
 
-		types_chosen.push_back(blueprint.enemy_type_pool.at(i).at(r));
+		int r=random(0,possibles.size()-1);
+		r=possibles.at(r);
+
+		if(testing_wave_x!=-1){
+			tier=testing_wave_x;
+			r=testing_wave_y;
+		}
+
+	//std::cout<<r<<std::endl;
+
+		Wave blueprint= wave_templates.at(tier).at(r);
+
+		wave_templates.at(tier).at(r).time_used=game_tick;
+
+		current_difficulty+=blueprint.difficulty;
+
+		Enemy_Type_Pool wave_pool={};
+		std::vector<Spawn_Data> spawn_data=blueprint.spawn_data;
+		bool boss=blueprint.boss;
+		int difficulty=0;
+
+		std::vector<EnemyType> types_chosen={};
+		for(int i=0;i<(int)blueprint.enemy_type_pool.size();i++){
+			int pool_size=blueprint.enemy_type_pool.at(i).size()-1;
+
+			//AI LOGIC
+			r= random(0,pool_size);
+
+			types_chosen.push_back(blueprint.enemy_type_pool.at(i).at(r));
+		}
+
+		for(int i=0;i<(int)spawn_data.size();i++){
+			spawn_data.at(i).enemy_type=(int)types_chosen.at(spawn_data.at(i).enemy_type);
+			opos=spawn_data.at(i).pos;
+			spawn_data.at(i).pos=Point(opos.get_x()*world_data->active_width+world_data->active_left,opos.get_y()*world_data->active_height+world_data->active_top)
+				/*+Point(random(-50,50),random(-50,50))*/;
+		}
+
+		current_waves.push_back(Wave(wave_pool,boss,spawn_data,difficulty));
+
+		next_wave.set_max(initial_wave_time+waves_defeated*20);
+
 	}
-
-	for(int i=0;i<(int)spawn_data.size();i++){
-		spawn_data.at(i).enemy_type=(int)types_chosen.at(spawn_data.at(i).enemy_type);
-		opos=spawn_data.at(i).pos;
-		spawn_data.at(i).pos=Point(opos.get_x()*world_data->active_width+world_data->active_left,opos.get_y()*world_data->active_height+world_data->active_top)
-			+Point(random(-20,20),random(-20,20));
-	}
-
-	current_waves.push_back(Wave(wave_pool,boss,spawn_data,difficulty));
-
-	next_wave.set_max(initial_wave_time+waves_defeated*20);
-}
+		
+}}}
 
