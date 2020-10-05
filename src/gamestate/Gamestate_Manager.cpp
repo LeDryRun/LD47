@@ -10,6 +10,7 @@ Gamestate_Manager::Gamestate_Manager(){
 	andrew_test_state= new Andrew_Test_State(imagehandler,audiohandler);
 	daniel_test_state= new Daniel_Test_State(imagehandler,audiohandler);
 	horus_test_state= new Horus_Test_State(imagehandler,audiohandler);
+	death_state= new Death_State(imagehandler);
 	
 	gamepad.set_button_mode(true);
 	gamepad.set_current_layer("gui");
@@ -34,6 +35,7 @@ void Gamestate_Manager::update_layer_resolutions(){
 	andrew_test_state->update_layer_resolutions();
 	daniel_test_state->update_layer_resolutions();
 	horus_test_state->update_layer_resolutions();
+	death_state->update_layer_resolutions();
 }
 
 bool Gamestate_Manager::set_state(Data_Packet data){
@@ -67,6 +69,10 @@ bool Gamestate_Manager::set_state(Data_Packet data){
 			gamepad.set_button_mode(true);
 			gamepad.set_current_layer("gui");
 			current_state=pause_menu_state;
+		}else if(state=="death_state"){
+			gamepad.set_button_mode(true);
+			gamepad.set_current_layer("gui");
+			current_state=death_state;
 		}else if(state=="options_menu"){
 			gamepad.set_button_mode(true);
 			gamepad.set_current_layer("gui");

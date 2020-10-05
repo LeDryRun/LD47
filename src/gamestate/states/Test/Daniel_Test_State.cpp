@@ -19,6 +19,7 @@ Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& au
     player.load_ring(imagehandler);
 	bullet_manager.set_player(player);
 	wave_manager.create();
+	wave_manager.set_testing_wave(-1,-1);
 }
 
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
@@ -172,6 +173,9 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
             if (!bhp.at(i)->is_exploding()){
             	//std::cout<<"ASKDFA"<<std::endl;
                 player.take_damage(bhp.at(i)->get_damage());
+                if(player.get_HealthLeft()<=0){
+                	send_data.push_back(Data_Packet("set_state",MANAGER,{"death_state"}));
+                }
             }
 			bhp.at(i)->set_exploding(true);
 		}

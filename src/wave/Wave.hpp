@@ -50,6 +50,8 @@ struct Wave {
 	std::vector<Spawn_Data> spawn_data;
 	int difficulty;
 
+	int time_used=-8000;
+
 };
 
 

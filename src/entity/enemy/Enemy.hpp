@@ -42,6 +42,8 @@ public:
 	virtual EnemyType get_type() = 0;
 	void set_moving(bool b_p){moving=b_p;}
 
+	int difficulty=1;
+
 
 protected:
 	int m_fire_timer;
