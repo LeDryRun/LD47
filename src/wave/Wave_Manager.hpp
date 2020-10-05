@@ -7,6 +7,7 @@
 #include "../entity/enemy/Enemy_Burst.hpp"
 #include "../entity/enemy/Enemy_Sine.hpp"
 #include "../entity/enemy/Enemy_V.hpp"
+#include "../entity/enemy/Enemy_Boss.hpp"
 #include "../communal/Tick_Timer.hpp"
 
 #include <deque>
@@ -35,6 +36,7 @@ private:
 	Enemy_Burst m_enemy_burst;
 	Enemy_Sine m_enemy_sine;
 	Enemy_V m_enemy_v;
+	Enemy_Boss m_enemy_boss;
 	Bullet_Manager* m_bullet_manager;
 	Player* m_player;
 	World_Data* m_world_data;

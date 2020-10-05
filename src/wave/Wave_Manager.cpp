@@ -12,6 +12,7 @@ Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World
 	m_enemy_burst = Enemy_Burst(m_bullet_manager);
 	m_enemy_sine = Enemy_Sine(m_bullet_manager, m_player);
 	m_enemy_v = Enemy_V(m_bullet_manager);
+	m_enemy_boss = Enemy_Boss(m_bullet_manager);
 
 	m_wave_number = 0;
 	m_wave_difficulty = 0;
@@ -28,10 +29,13 @@ void Wave_Manager::load_animations(Imagehandler & imagehandler)
 	m_enemy_burst.load_animations(imagehandler);
 	m_enemy_sine.load_animations(imagehandler);
 	m_enemy_v.load_animations(imagehandler);
+	m_enemy_boss.load_animations(imagehandler);
+
 	m_enemy_straight.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
 	m_enemy_burst.scale_animations(Point(48.0f / 360.0f, 48.0f / 360.0f));
 	m_enemy_sine.scale_animations(Point(32.0f / 360.0f, 32.0f / 360.0f));
 	m_enemy_v.scale_animations(Point(32.0f / 343.0f, 32.0f / 323.0f));
+	m_enemy_boss.scale_animations(Point(64.0f / 308.0f, 64.0f / 308.0f));
 
 }
 
@@ -104,6 +108,11 @@ void Wave_Manager::update()
 					break;
 				case kEnemyV:
 					m_enemies.push_back(new Enemy_V(m_enemy_v.create_copy(m_wave_buffer.at(i).spawn_data.front())));
+					m_enemies.back()->doSpawn();
+					m_wave_buffer.at(i).spawn_data.pop_front();
+					break;
+				case kEnemyBoss:
+					m_enemies.push_back(new Enemy_Boss(m_enemy_boss.create_copy(m_wave_buffer.at(i).spawn_data.front())));
 					m_enemies.back()->doSpawn();
 					m_wave_buffer.at(i).spawn_data.pop_front();
 					break;

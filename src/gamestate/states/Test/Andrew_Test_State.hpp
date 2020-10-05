@@ -7,6 +7,7 @@
 #include "../../../entity/Platformer_Controller.hpp"
 #include "../../../entity/enemy/Enemy_Straight.hpp"
 #include "../../../entity/enemy/Enemy_Burst.hpp"
+#include "../../../entity/enemy/Enemy_Boss.hpp"
 #include "../../../entity/Bullet/Bullet_Manager.hpp"
 #include "../../../wave/Wave_Manager.hpp"
 #include "UIHandler.hpp"
@@ -22,6 +23,7 @@ private:
 	Wave m_wave_one;
 	Wave m_wave_two;
 	Player m_test_player = Player(&m_bullet_manager);
+	Enemy_Boss m_enemy_boss = Enemy_Boss(&m_bullet_manager);
     World_Data world;
 
     UIHandler ui_handler = UIHandler(world);

@@ -1,0 +1,5 @@
+boss_body:308x464,1r1c,1f
+boss_west_wing:196x235,1r1c,1f
+boss_west_gun:152x242,1r1c,1f
+boss_east_wing:208x212,1r1c,1f
+boss_east_gun:183x225,1r1c,1f

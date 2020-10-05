@@ -25,7 +25,8 @@ enum EnemyType {
 	kEnemyBurst,
 	kEnemySine,
 	kEnemyV,
-	kEnemyHoming
+	kEnemyHoming,
+	kEnemyBoss
 };
 
 struct Wave {

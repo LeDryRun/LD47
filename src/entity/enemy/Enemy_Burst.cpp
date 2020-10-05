@@ -1,5 +1,4 @@
 #include "Enemy_Burst.hpp"
-#include <iostream>
 #include "../Bullet/Bullet_Manager.hpp"
 
 Enemy_Burst::Enemy_Burst()

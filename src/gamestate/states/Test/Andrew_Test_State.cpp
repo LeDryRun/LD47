@@ -18,25 +18,14 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	m_bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
 
 	std::vector<EnemyType> enemies;
-	enemies.push_back(EnemyType::kEnemyStraight);
-	enemies.push_back(EnemyType::kEnemyBurst);
-	enemies.push_back(EnemyType::kEnemySine);
-	enemies.push_back(EnemyType::kEnemyV);
+	enemies.push_back(EnemyType::kEnemyBoss);
 
 	std::deque<Spawn_Data> spawn_data_one;
 	std::deque<Spawn_Data> spawn_data_two;
 
-	spawn_data_one.push_back(Spawn_Data(0, 16, Point(500, 100), 100));
-	spawn_data_one.push_back(Spawn_Data(1, 16, Point(500, 200), 200));
-	spawn_data_one.push_back(Spawn_Data(2, 16, Point(500, 300), 300));
-	spawn_data_one.push_back(Spawn_Data(3, 16, Point(500, 400), 400));
-
-	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 100), 400));
-	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 200), 500));
-	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 300), 600));
+	spawn_data_one.push_back(Spawn_Data(0, 0, Point(500, 200), 100));
 
 	m_wave_one = Wave(enemies, false, spawn_data_one);
-	m_wave_two = Wave(enemies, false, spawn_data_two);
 	m_wave_manager = Wave_Manager(&m_bullet_manager, &m_test_player, &world);
 
     ui_handler.load_animations(imagehandler);
@@ -91,9 +80,9 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	bool spawn = mouse.is_clicked();
 
 	if (spawn) {
-		//m_wave_manager.add_wave(m_wave_one);
+		m_wave_manager.add_wave(m_wave_one);
 		//m_wave_manager.add_wave(m_wave_two);
-		m_wave_manager.generate_waves();
+		//m_wave_manager.generate_waves();
 		spawn = false;
 	}
 
