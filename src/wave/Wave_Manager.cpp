@@ -2,8 +2,8 @@
 #include "../communal/Communal.hpp"
 
 
-Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World_Data* world_data)
-	: bullet_manager(bullet_manager), player(player), world_data(world_data)
+Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World_Data* world_data, UIHandler* ui_handler)
+	: bullet_manager(bullet_manager), player(player), world_data(world_data), ui_handler(ui_handler)
 {
 	enemy_straight = Enemy_Straight(bullet_manager, player);
 	enemy_burst = Enemy_Burst(bullet_manager);
@@ -157,7 +157,7 @@ void Wave_Manager::load_templates(){
 		Spawn_Data(0,false,true,Point(0.5f,0.1f),0),
 
 	};
-	wave_difficulty = 1;
+	wave_difficulty = 45;
 
 	tier.push_back(Wave(type_pool, false, spawn_data, wave_difficulty));
 
@@ -229,6 +229,7 @@ void Wave_Manager::update()
 		}else{
 			enemies.erase(enemies.begin()+i);
 			i--;
+			ui_handler->set_score(ui_handler->get_score() + 1);
 		}
 	}
 
