@@ -100,9 +100,6 @@ void Wave_Manager::load_templates(){
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
-	wave_templates.push_back(tier);
-	tier.clear();
-/////////
 
 	type_pool={{kEnemyBurst},{kEnemyStraight}};
 	spawn_data={
@@ -118,9 +115,11 @@ void Wave_Manager::load_templates(){
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
+
 	wave_templates.push_back(tier);
 	tier.clear();
-///////////
+/////////
+
 	type_pool={{kEnemyV},{kEnemyStraight},{kEnemyStraight,kEnemySine}};
 	spawn_data={
 		Spawn_Data(0,false,true,Point(0.1f,0.3f),0),
@@ -151,6 +150,71 @@ void Wave_Manager::load_templates(){
 	wave_difficulty=40;
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+	type_pool = { {kEnemyBoss} };
+	spawn_data = {
+		Spawn_Data(0,false,true,Point(0.5f,0.1f),0),
+
+	};
+
+	wave_difficulty = 40;
+
+	tier.push_back(Wave(type_pool, false, spawn_data, wave_difficulty));
+
+
+
+	type_pool={{kEnemyStraight},{kEnemyBurst},{kEnemySine}};
+	spawn_data={
+		Spawn_Data(0,false,false,Point(0.5f,0.1f),0),
+		Spawn_Data(0,false,false,Point(0.2f,0.9f),0),
+		Spawn_Data(0,false,false,Point(0.8f,0.9f),0),
+		Spawn_Data(0,false,false,Point(0.5f,0.9f),0),
+		Spawn_Data(1,false,false,Point(0.35f,0.5f),0),
+		Spawn_Data(1,false,false,Point(0.7f,0.5f),0),
+		Spawn_Data(2,false,false,Point(0.25f,0.25f),0),
+		Spawn_Data(2,false,false,Point(0.75f,0.25f),0),
+
+	};
+	wave_difficulty=40;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+	type_pool={{kEnemyV},{kEnemyBurst,kEnemyStraight}};
+	spawn_data={
+		Spawn_Data(0,false,false,Point(0.15f,0.15f),0),
+		Spawn_Data(0,false,false,Point(0.15f,0.3f),0),
+		Spawn_Data(0,false,false,Point(0.15f,0.45f),0),
+		Spawn_Data(0,false,false,Point(0.85f,0.15f),0),
+		Spawn_Data(0,false,false,Point(0.85f,0.3f),0),
+		Spawn_Data(0,false,false,Point(0.85f,0.45f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.2f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.4f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.6f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.8f),0),
+
+	};
+	wave_difficulty=40;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
+
+	type_pool={{kEnemyV},{kEnemyBurst},{kEnemyStraight},{kEnemySine}};
+	spawn_data={
+		Spawn_Data(0,false,false,Point(0.35f,0.30f),0),
+		Spawn_Data(0,false,false,Point(0.7f,0.30f),0),
+		Spawn_Data(1,false,false,Point(0.5f,0.45f),0),
+		Spawn_Data(2,false,false,Point(0.1f,0.15f),0),
+		Spawn_Data(2,false,false,Point(0.5f,0.15f),0),
+		Spawn_Data(2,false,false,Point(0.9f,0.15f),0),
+		Spawn_Data(3,false,false,Point(0.35f,0.15f),0),
+		Spawn_Data(3,false,false,Point(0.5f,0.30f),0),
+		Spawn_Data(3,false,false,Point(0.7f,0.15f),0),
+
+	};
+	wave_difficulty=40;
+
+	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
+
 
 	type_pool = { {kEnemyBoss} };
 	spawn_data = {
