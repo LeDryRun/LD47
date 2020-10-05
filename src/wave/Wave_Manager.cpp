@@ -1,9 +1,6 @@
 #include "Wave_Manager.hpp"
 #include "../communal/Communal.hpp"
 
-//#include <unordered_map>
-//#include <functional>
-//#include <set>
 
 Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World_Data* world_data)
 	: bullet_manager(bullet_manager), player(player), world_data(world_data)
@@ -26,6 +23,7 @@ void Wave_Manager::create(){
 	generate_waves();
 	//enemies.push_back(new Enemy_V(enemy_v.create_copy(Spawn_Data(0,false,Point(400,30),0))));
 	//enemies.at(0)->doSpawn();
+
 }
 
 void Wave_Manager::load_animations(Imagehandler & imagehandler)
@@ -95,6 +93,7 @@ void Wave_Manager::load_templates(){
 
 	m_wave_templates.push_back(Wave(enemies,false,spawn_data));*/
 }
+
 
 
 Wave_Manager::~Wave_Manager()
@@ -223,7 +222,6 @@ void Wave_Manager::draw(sf::RenderTarget & target, sf::RenderStates states) cons
 void Wave_Manager::generate_waves()
 {
 
-
 	Point center = Point(world_data->width / 2, world_data->height / 2);
 	Point opos;
 
@@ -258,92 +256,7 @@ void Wave_Manager::generate_waves()
 
 
 
-
-	/*m_wave_difficulty = 10 * m_wave_number + 12;
-
-	std::unordered_map< EnemyType, float> difficulty_map;
-	
-	difficulty_map.emplace(kEnemyStraight, m_enemy_straight.get_stats().get_difficulty_score());
-	difficulty_map.emplace(kEnemyBurst, m_enemy_burst.get_stats().get_difficulty_score());
-	difficulty_map.emplace(kEnemySine, m_enemy_sine.get_stats().get_difficulty_score());
-	difficulty_map.emplace(kEnemyV, m_enemy_v.get_stats().get_difficulty_score());
-
-	typedef std::function<bool(std::pair<EnemyType, float>, std::pair<EnemyType, float>)> Comparator;
-	Comparator compFunctor =
-		[](std::pair<EnemyType, float> elem1, std::pair<EnemyType, float> elem2)
-	{
-		return elem1.second > elem2.second;
-	};
-	std::set<std::pair<EnemyType, float>, Comparator> difficulty_set(
-		difficulty_map.begin(), difficulty_map.end(), compFunctor);
-	
-	std::vector<Enemy*> difficulty_order;
-
-	for (std::pair<EnemyType, float> element : difficulty_set) {
-		switch (element.first) {
-		case kEnemyStraight:
-			difficulty_order.push_back(&m_enemy_straight);
-			break;
-		case kEnemyBurst:
-			difficulty_order.push_back(&m_enemy_burst);
-			break;
-		case kEnemySine:
-			difficulty_order.push_back(&m_enemy_sine);
-			break;
-		case kEnemyV:
-			difficulty_order.push_back(&m_enemy_v);
-			break;
-		}
-	}
-
-	std::unordered_map< EnemyType, int > enemy_count;
-
-	enemy_count.emplace(kEnemyStraight, 0);
-	enemy_count.emplace(kEnemyBurst, 0);
-	enemy_count.emplace(kEnemySine, 0);
-	enemy_count.emplace(kEnemyV, 0);
-
-	float difficulty_total = 0;
-
-	while (difficulty_total < m_wave_difficulty) {
-		float added_difficulty = 0;
-		for (int i = 0; i < difficulty_order.size(); i++) {
-			if (difficulty_total + difficulty_order.at(i)->get_stats().get_difficulty_score() < m_wave_difficulty) {
-				EnemyType type = difficulty_order.at(i)->get_type();
-				enemy_count.at(type) = enemy_count.at(type) + 1;
-				added_difficulty = difficulty_map.at(type);
-				break;
-			}
-		}
-		difficulty_total += added_difficulty;
-		if (added_difficulty == 0)
-			break;
-	}
-
-	std::vector<EnemyType> enemies;
-	enemies.push_back(EnemyType::kEnemyStraight);
-	enemies.push_back(EnemyType::kEnemyBurst);
-	enemies.push_back(EnemyType::kEnemySine);
-	enemies.push_back(EnemyType::kEnemyV);
-
-	std::deque<Spawn_Data> spawn_data;
-
-	int x_min = (int)m_world_data->active_left + 100;
-	int x_max = (int)m_world_data->active_right - 100;
-
-	int y_max = (int)m_world_data->active_bottom - 400;
-	int y_min = (int)m_world_data->active_top;
-
-
-	for (std::pair<EnemyType, int> element : enemy_count) {
-		for (int i = 0; i < element.second; i++){
-			spawn_data.push_back(Spawn_Data(element.first, 16, Point(random(x_min, x_max), random(y_min, y_max)), 100));
-		}
-	}
-
-	Wave wave = Wave(enemies, false, spawn_data);
-
-	add_wave(wave);*/
+	add_wave(wave);
 	
 }
 

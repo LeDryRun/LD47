@@ -4,12 +4,21 @@
 Enemy_Straight::Enemy_Straight()
 {
 	animations.push_back(Animation("Straight_Idle"));
+
+	animations.push_back(Animation("Straight_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
+
 	m_stats = EnemyStats(false, 100, 1, 2, 30, 1, 0);
 }
 
 Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
 {
 	animations.push_back(Animation("Straight_Idle"));
+
+	animations.push_back(Animation("Straight_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
 	m_stats = EnemyStats(false, 100, 1, 2, 30, 1, 0);
 
 	m_bullet_manager = bullet_manager;
@@ -33,7 +42,9 @@ Enemy_Straight::~Enemy_Straight()
 
 void Enemy_Straight::update()
 {
+	animate();
 	if (m_spawned) {
+		set_current_animation(0);
 		flight_path();
 		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
@@ -65,9 +76,27 @@ void Enemy_Straight::flight_path()
 
 void Enemy_Straight::spawn_path()
 {
-	m_spawning = false;
-	m_spawned = true;
-	m_stats.radius_ = get_hitbox().get_radius();
+	float posy = get_center().get_y();
+	float targety = m_spawn_point.get_y();
+
+	if (targety - posy != 0) {
+		Point dir(0, targety - posy);
+		dir.normalize();
+
+		set_movement(Point(0, m_stats.speed_*dir.get_y()));
+		move();
+
+		if (animations.at(current_animation_int).is_finished())
+			set_current_animation(0);
+
+		rotate_animations(180 + 180 / M_PI * atan2((m_player->get_center().get_y() - get_center().get_y()), (m_player->get_center().get_x() - get_center().get_x())));
+
+	}
+	else {
+		m_spawning = false;
+		m_spawned = true;
+	}
+
 }
 
 void Enemy_Straight::fire()
@@ -93,6 +122,7 @@ void Enemy_Straight::fire()
 void Enemy_Straight::doSpawn()
 {
 	m_spawning = true;
+	set_current_animation(1);
 }
 
 Animation Enemy_Straight::getCurrentAnimation()
@@ -107,7 +137,10 @@ EnemyType Enemy_Straight::get_type()
 
 Enemy_Straight Enemy_Straight::create_copy(Point center, int radius)
 {
-	create(center, radius);
+	m_spawn_point = center;
+	create(Point(center.get_x(), -2 * radius), radius);
+
+	m_stats.radius_ = radius;
 	return *this;
 }
 

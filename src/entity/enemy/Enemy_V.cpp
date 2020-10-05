@@ -4,12 +4,20 @@
 Enemy_V::Enemy_V()
 {
 	animations.push_back(Animation("Fish_Idle"));
+
+	animations.push_back(Animation("Fish_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
 	m_stats = EnemyStats(false, 100, 5, 2, 20, 1, 0);
 }
 
 Enemy_V::Enemy_V(Bullet_Manager * bullet_manager)
 {
 	animations.push_back(Animation("Fish_Idle"));
+
+	animations.push_back(Animation("Fish_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
 	m_stats = EnemyStats(false, 100, 5, 2, 20, 1, 0);
 
 	m_bullet_manager = bullet_manager;
@@ -33,7 +41,9 @@ Enemy_V::~Enemy_V()
 
 void Enemy_V::update()
 {
+	animate();
 	if (m_spawned) {
+		set_current_animation(0);
 		flight_path();
 		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
@@ -62,9 +72,23 @@ void Enemy_V::flight_path()
 
 void Enemy_V::spawn_path()
 {
-	m_spawning = false;
-	m_spawned = true;
-	m_stats.radius_ = get_hitbox().get_radius();
+	float posy = get_center().get_y();
+	float targety = m_spawn_point.get_y();
+
+	if (targety - posy != 0) {
+		Point dir(0, targety - posy);
+		dir.normalize();
+
+		set_movement(Point(0, m_stats.speed_*dir.get_y()));
+		move();
+
+		if (animations.at(current_animation_int).is_finished())
+			set_current_animation(0);
+	}
+	else {
+		m_spawning = false;
+		m_spawned = true;
+	}
 }
 
 void Enemy_V::fire()
@@ -89,6 +113,7 @@ void Enemy_V::doSpawn()
 {
 	rotate_animations(-90);
 	m_spawning = true;
+	set_current_animation(1);
 }
 
 Animation Enemy_V::getCurrentAnimation()
@@ -103,7 +128,11 @@ EnemyType Enemy_V::get_type()
 
 Enemy_V Enemy_V::create_copy(Point center, int radius)
 {
-	create(center, radius);
+	m_spawn_point = center;
+	create(Point(center.get_x(), -2 * radius), radius);
+
+	m_stats.radius_ = radius;
+
 	return *this;
 }
 

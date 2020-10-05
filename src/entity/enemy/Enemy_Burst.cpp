@@ -5,12 +5,18 @@
 Enemy_Burst::Enemy_Burst()
 {
 	animations.push_back(Animation("Burst_Idle"));
+	animations.push_back(Animation("Burst_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
 	m_stats = EnemyStats(false, 100, 10, 2, 20, 1, 0);
 }
 
 Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
 {
 	animations.push_back(Animation("Burst_Idle"));
+	animations.push_back(Animation("Burst_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
 	m_bullet_manager = bullet_manager;
 
 	m_stats = EnemyStats(false, 100, 10, 2, 20, 1, 0);
@@ -37,7 +43,9 @@ Enemy_Burst::~Enemy_Burst()
 
 void Enemy_Burst::update()
 {
+	animate();
 	if (m_spawned) {
+		set_current_animation(0);
 		flight_path();
 		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
@@ -54,6 +62,7 @@ void Enemy_Burst::update()
 void Enemy_Burst::doSpawn()
 {
 	m_spawning = true;
+	set_current_animation(1);
 }
 
 void Enemy_Burst::flight_path()
@@ -62,7 +71,7 @@ void Enemy_Burst::flight_path()
 		m_dir = -m_dir;
 		m_distance_travelled = 0;
 	}
-	
+		
 	sf::Sprite current_animation = animations.at(0).get_current_frame();
 	rotate_animations( current_animation.getRotation() + 1 );
 
@@ -74,9 +83,23 @@ void Enemy_Burst::flight_path()
 
 void Enemy_Burst::spawn_path()
 {
-	m_spawning = false;
-	m_spawned = true;
-	m_stats.radius_ = get_hitbox().get_radius();
+	float posy = get_center().get_y();
+	float targety = m_spawn_point.get_y();
+
+	if (targety - posy != 0) {
+		Point dir(0, targety - posy);
+		dir.normalize();
+
+		set_movement(Point(0, m_stats.speed_*dir.get_y()));
+		move();
+
+		if (animations.at(current_animation_int).is_finished())
+			set_current_animation(0);
+	}
+	else {
+		m_spawning = false;
+		m_spawned = true;
+	}
 }
 
 void Enemy_Burst::fire()
@@ -110,7 +133,10 @@ EnemyType Enemy_Burst::get_type()
 
 Enemy_Burst Enemy_Burst::create_copy(Point center, int radius)
 {
-	create(center, radius);
+	m_spawn_point = center;
+	create(Point(center.get_x(), -2 * radius), radius);
+
+	m_stats.radius_ = radius;
 	return *this;
 }
 

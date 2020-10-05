@@ -88,12 +88,13 @@ void Player::update(World_Data world, Point move, bool shifted)
 
 void Player::draw(World_Data world, sf::RenderWindow &window)
 {
-    // Draw capture line
+    // Create capture line
     sf::VertexArray points(sf::LinesStrip, 0);
     for (Point p : v_Line) {
         points.append(sf::Vertex(sf::Vector2f(p.get_x(), p.get_y()), sf::Color::White));
     }
 
+<<<<<<< HEAD
     // Draw world bounds
     sf::VertexArray active_bounds(sf::LinesStrip, 5);
     active_bounds[0].position = sf::Vector2f(world.active_left, world.active_top);
@@ -104,8 +105,22 @@ void Player::draw(World_Data world, sf::RenderWindow &window)
 
 	window.draw(s_Ring);
     window.draw(active_bounds);
+=======
+	  window.draw(s_Ring);
+>>>>>>> master
     window.draw(points);
     window.draw(*this);
+}
+
+void Player::take_damage(float damage)
+{
+    f_HealthLeft -= damage;
+
+    if (f_HealthLeft <= 0.0f)
+    {
+        f_HealthLeft = 0.0f;
+        // Player die behaviour
+    }
 }
 
 void Player::start_loop()
@@ -121,11 +136,12 @@ void Player::validate_loop()
 {
     b_isLooping = false;
 
-    if (v_Line.front() == v_Line.back())
+    if (v_Line.size() > 2 && v_Line.front() == v_Line.back())
     {
         // send to bullet manager
         p_BulletMan->capture_bullets(v_Line);
     }
 
+    f_LineLeft = f_LineLimit;
     v_Line.clear();
 }

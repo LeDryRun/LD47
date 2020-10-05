@@ -49,6 +49,7 @@ protected:
 	Bullet_Manager* m_bullet_manager;
 	std::vector<Point> m_bullet_spawn_points;
 	EnemyStats m_stats;
+	Point m_spawn_point;
 
 	virtual void flight_path() = 0;
 	virtual void spawn_path() = 0;

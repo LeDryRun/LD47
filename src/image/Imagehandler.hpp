@@ -10,7 +10,6 @@
 #include "../gui/Text_Input_Box.hpp"
 #include "../gui/Slider.hpp"
 
-
 class Imagehandler{
 private:
 	std::vector<std::unique_ptr<Animation_Sheet>> animation_sheets;
@@ -34,7 +33,6 @@ private:
 
 	sf::Font font;
 
-
 public:
 	Imagehandler();
 	void load();
@@ -52,8 +50,6 @@ public:
 	void load_sf_text(sf::Text& text);
 
 	void load_animation_sheet(std::string file_p);
-
-
 };
 
 #endif

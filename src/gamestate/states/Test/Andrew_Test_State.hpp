@@ -9,9 +9,11 @@
 #include "../../../entity/enemy/Enemy_Burst.hpp"
 #include "../../../entity/Bullet/Bullet_Manager.hpp"
 #include "../../../wave/Wave_Manager.hpp"
+#include "UIHandler.hpp"
 
 class Andrew_Test_State:public Gamestate{
 private:
+    sf::Clock uptime;
 
 	Layer test_layer;
 
@@ -21,6 +23,8 @@ private:
 	Wave m_wave_two;
 	Player m_test_player = Player(&m_bullet_manager);
     World_Data world;
+
+    UIHandler ui_handler = UIHandler(world);
 
 	sf::Font m_debug_font;
 	sf::Text m_debug_text;*/

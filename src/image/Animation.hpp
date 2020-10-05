@@ -44,7 +44,8 @@ public:
 	Animation(std::string n_p){name=n_p;}
 	void load(sf::Texture&,int, int, int,int);
 	void load(sf::Texture& ,Animation_Blueprint);
-
+    
+    Point get_position() { return Point(get_current_frame().getPosition().x, get_current_frame().getPosition().y); };
 	void set_position(int,int);
 	void set_position(Point p_p){
 		set_position(p_p.get_x(),p_p.get_y());
@@ -75,6 +76,9 @@ public:
 		for(int i=0;i<number_of_frames;i++){
 			sprites[i].scale(scale.get_x(),scale.get_y());
 		}
+
+        frame_width *= scale.get_x();
+        frame_height *= scale.get_y();
 	}
 
 	void set_h_mirror(bool b_p);
