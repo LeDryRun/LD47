@@ -21,6 +21,9 @@ private:
 
     UIHandler ui_handler = UIHandler(world);
 
+    sf::Sprite panel;
+    sf::Sprite panelx;
+
 	Player player = Player(&bullet_manager);
 
     World_Data world;
@@ -44,7 +47,6 @@ public:
     void render_bounds(sf::RenderWindow& window);
 
 	void add_bullets();
-	void reset(Imagehandler& imagehandler,Audiohandler& audiohandler);
 };
 
 

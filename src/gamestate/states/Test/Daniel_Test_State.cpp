@@ -20,26 +20,18 @@ Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	wave_manager.create();
 }
 
-void Daniel_Test_State::reset(Imagehandler& imagehandler,Audiohandler& audiohandler){
-    world.init(Point(0, 0), test_layer.get_original_size());
-
-	enemy_spawn_timer.create(60);
-	bullet_manager=Bullet_Manager();
-	bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
-	player=Player();
-	wave_manager=Wave_Manager();
-	create_waves();
-
-	load_sprites(imagehandler);
-	player.create(Point(world.width / 2, world.active_bottom - 100), 1);
-	bullet_manager.set_player(player);
-	wave_manager.create();
-}
-
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
     ui_handler.load_animations(imagehandler);
 	player.load_animations(imagehandler);
 	bullet_manager.load_animations(imagehandler);
+	imagehandler.load_sprite(panel,"panel");
+	imagehandler.load_sprite(panelx,"panelx");
+
+	//panel.setPosition(1100,260);
+	//panelx.setPosition(1100,260);
+	//panel.setScale(1.5f,1.5f);
+	//panelx.setScale(1.5f,1.5f);
+
 	wave_manager.load_animations(imagehandler);
 	player.scale_animations(Point(32.0f/310.0f,32.0f/310.0f));
 }
@@ -82,6 +74,8 @@ void Daniel_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	window.setView(test_layer);
 	window.draw(bullet_manager);
 	window.draw(wave_manager);
+	//window.draw(panel);
+	//window.draw(panelx);
 	player.draw(world,window);
     render_bounds(window);
  	ui_handler.draw(window);
@@ -176,7 +170,7 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
 	for(int i=0;i<(int)bhp.size();i++){
 		if(player.is_colliding(*bhp.at(i))){
             if (!bhp.at(i)->is_exploding()){
-            	std::cout<<"ASKDFA"<<std::endl;
+            	//std::cout<<"ASKDFA"<<std::endl;
                 player.take_damage(bhp.at(i)->get_damage());
             }
 			bhp.at(i)->set_exploding(true);

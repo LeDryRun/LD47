@@ -6,6 +6,7 @@
 class Main_Menu_State :public Gamestate{
 private:
 	sf::Sprite game_title;
+	sf::Sprite o;
 public:
 	void update(Mousey&,Keyblade&,Gamepad&);
 	void render(sf::RenderWindow& window);

@@ -28,6 +28,9 @@ void Main_Menu_State::load_sprites(Imagehandler& imagehandler){
 
 	imagehandler.load_sprite(game_title,"game_title");
 	game_title.setPosition(180,130);
+	imagehandler.load_sprite(o,"o");
+	o.setScale(0.6f,0.6f);
+	o.setPosition(600,130);
 }
 
 void Main_Menu_State::update(Mousey& mouse,Keyblade& keyboard, Gamepad& gamepad){
@@ -40,6 +43,7 @@ void Main_Menu_State::render(sf::RenderWindow& window){
 	Duration_Check::start("-MM render");
 	Gamestate::render(window);
 	window.draw(game_title);
+	window.draw(o);
 	Duration_Check::stop("-MM render");
 }
 

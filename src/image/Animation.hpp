@@ -72,6 +72,16 @@ public:
 		}
 	}
 
+	void set_origin(float x, float y) {
+		for (int i = 0; i < number_of_frames; i++) {
+			sprites[i].setOrigin(x, y);
+		}
+	}
+
+	void set_origin(Point daniels_butthole) {
+		set_origin(daniels_butthole.get_x(), daniels_butthole.get_y());
+	}
+
 	void scale(Point scale){
 		for(int i=0;i<number_of_frames;i++){
 			sprites[i].scale(scale.get_x(),scale.get_y());

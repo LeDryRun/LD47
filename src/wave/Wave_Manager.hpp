@@ -7,6 +7,7 @@
 #include "../entity/enemy/Enemy_Burst.hpp"
 #include "../entity/enemy/Enemy_Sine.hpp"
 #include "../entity/enemy/Enemy_V.hpp"
+#include "../entity/enemy/Enemy_Boss.hpp"
 #include "../communal/Tick_Timer.hpp"
 
 #include <deque>
@@ -23,6 +24,8 @@ public:
 	void generate_waves();
 	void load_animations(Imagehandler& imagehandler);
 	void load_templates();
+
+	void add_enemy(Spawn_Data);
 
 	void create();
 
@@ -47,6 +50,7 @@ private:
 	std::vector<Wave> wave_templates;
 
 	Tick_Timer next_wave;
+	int initial_wave_time;
 
 };
 

@@ -8,8 +8,7 @@ Enemy_Straight::Enemy_Straight()
 	animations.push_back(Animation("Straight_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-
-	m_stats = EnemyStats(false, 100, 1, 2, 30, 1, 0);
+	m_stats = EnemyStats(false, 10, 1, 2, 30, 1, 0);
 }
 
 Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
@@ -19,7 +18,7 @@ Enemy_Straight::Enemy_Straight(Bullet_Manager * bullet_manager, Player * player)
 	animations.push_back(Animation("Straight_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-	m_stats = EnemyStats(false, 100, 1, 2, 30, 1, 0);
+	m_stats = EnemyStats(false, 10, 1, 2, 30, 1, 0);
 
 	m_bullet_manager = bullet_manager;
 	m_player = player;
@@ -66,7 +65,8 @@ void Enemy_Straight::flight_path()
 	}
 
 	set_movement(Point(m_stats.speed_*m_dir,0));
-	move();
+	if(moving)
+		move();
 
 	sf::Sprite current_animation = animations.at(0).get_current_frame();
 	rotate_animations(180 + 180 / M_PI * atan2((m_player->get_center().get_y() - get_center().get_y()), (m_player->get_center().get_x() - get_center().get_x())));
@@ -148,6 +148,7 @@ Enemy_Straight Enemy_Straight::create_copy(Point center, int radius)
 Enemy_Straight Enemy_Straight::create_copy(Spawn_Data data)
 {
 	create_copy(data.pos, data.radius);
+	moving=data.moving;
 	return *this;
 }
 

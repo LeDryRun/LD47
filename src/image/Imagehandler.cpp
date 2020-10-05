@@ -13,6 +13,8 @@ void Imagehandler::load(){
 
 	game_title.loadFromFile("../assets/image/Title.png");
 	panel.loadFromFile("../assets/image/panel.png");
+	panelx.loadFromFile("../assets/image/panelxbox.png");
+	o.loadFromFile("../assets/image/o.png");
 
 	menu_background.loadFromFile("../assets/image/menu_background.png");
 	menu_background.setSmooth(true);
@@ -48,10 +50,11 @@ void Imagehandler::load(){
 	load_animation_sheet("../assets/image/animations/Sine");
 	load_animation_sheet("../assets/image/animations/Fish");
 	load_animation_sheet("../assets/image/animations/Player_Core");
-  	load_animation_sheet("../assets/image/animations/UI_Anims/health");
-  	load_animation_sheet("../assets/image/animations/UI_Anims/LineBar");
-    load_animation_sheet("../assets/image/animations/UI_Anims/panel");
-    load_animation_sheet("../assets/image/animations/UI_Anims/panelxbox");
+  load_animation_sheet("../assets/image/animations/UI_Anims/health");
+  load_animation_sheet("../assets/image/animations/UI_Anims/LineBar");
+  load_animation_sheet("../assets/image/animations/UI_Anims/panel");
+  load_animation_sheet("../assets/image/animations/UI_Anims/panelxbox");
+	load_animation_sheet("../assets/image/animations/boss");
 }
 
 void Imagehandler::load_text_input_box(Text_Input_Box& tib){
@@ -75,6 +78,10 @@ void Imagehandler::load_sprite(sf::Sprite& sprite, std::string name_p){
 		sprite.setTexture(game_title,true);
 	}else if(name_p=="panel"){
 		sprite.setTexture(panel,true);
+	}else if(name_p=="panelx"){
+		sprite.setTexture(panelx,true);
+	}else if(name_p=="o"){
+		sprite.setTexture(o,true);
 	}
 	else{
 		std::cout<<"\nERROR: sprite not found: "<<name_p<<std::endl;

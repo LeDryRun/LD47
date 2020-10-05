@@ -1,5 +1,4 @@
 #include "Enemy_Burst.hpp"
-#include <iostream>
 #include "../Bullet/Bullet_Manager.hpp"
 
 Enemy_Burst::Enemy_Burst()
@@ -8,7 +7,7 @@ Enemy_Burst::Enemy_Burst()
 	animations.push_back(Animation("Burst_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-	m_stats = EnemyStats(false, 100, 10, 2, 20, 1, 0);
+	m_stats = EnemyStats(false, 10, 10, 2, 20, 1, 0);
 }
 
 Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
@@ -19,7 +18,7 @@ Enemy_Burst::Enemy_Burst(Bullet_Manager * bullet_manager)
 	animations.at(1).set_desired_fps(1);
 	m_bullet_manager = bullet_manager;
 
-	m_stats = EnemyStats(false, 100, 10, 2, 20, 1, 0);
+	m_stats = EnemyStats(false, 10, 10, 2, 30, 1, 0);
 
 	m_length = 100;
 	m_distance_travelled = 0;
@@ -77,7 +76,9 @@ void Enemy_Burst::flight_path()
 	rotate_animations( current_animation.getRotation() + 1 );
 
 	set_movement(Point(m_stats.speed_*m_dir, 0));
-	move();
+
+	if(moving)
+		move();
 
 	m_distance_travelled++;
 }
@@ -143,5 +144,6 @@ Enemy_Burst Enemy_Burst::create_copy(Point center, int radius)
 Enemy_Burst Enemy_Burst::create_copy(Spawn_Data data)
 {
 	create_copy(data.pos, data.radius);
+	moving=data.moving;
 	return *this;
 }
