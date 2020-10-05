@@ -12,6 +12,7 @@ Sine_Bullet::Sine_Bullet(){
 	radius=5;
 	mod_speed=6;
 	mod_amount=0.5f;
+	degrees = 0;
 }
 
 void Sine_Bullet::update(){
