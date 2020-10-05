@@ -28,6 +28,9 @@ class UIHandler
         float f_Line_Ratio = 1.0f;
         float f_Boss_Ratio = 1.0f;
 
+		sf::Font f_score_font;
+		sf::Text t_score_text;
+
         sf::Shader sh_Circular;
         sf::Shader sh_Vertical;
         sf::Shader sh_Alpha;

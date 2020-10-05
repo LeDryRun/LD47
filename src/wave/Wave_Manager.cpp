@@ -152,6 +152,15 @@ void Wave_Manager::load_templates(){
 
 	tier.push_back(Wave(type_pool,false,spawn_data,wave_difficulty));
 
+	type_pool = { {kEnemyBoss} };
+	spawn_data = {
+		Spawn_Data(0,false,true,Point(0.5f,0.1f),0),
+
+	};
+	wave_difficulty = 1;
+
+	tier.push_back(Wave(type_pool, false, spawn_data, wave_difficulty));
+
 	wave_templates.push_back(tier);
 	tier.clear();
 }
