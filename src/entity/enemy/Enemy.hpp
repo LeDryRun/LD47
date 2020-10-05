@@ -44,6 +44,8 @@ public:
 
 	int difficulty=1;
 
+    float my_lerp(float a, float b, float t) { return (1 - t) * a + t * b; };
+
 
 protected:
 	int m_fire_timer;
