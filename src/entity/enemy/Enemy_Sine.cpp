@@ -10,7 +10,7 @@ Enemy_Sine::Enemy_Sine()
 	animations.push_back(Animation("Sine_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-	m_stats = EnemyStats(false, 100, 1, 2, 20, 1, 0);
+	m_stats = EnemyStats(false, 10, 1, 2, 20, 1, 0);
 }
 
 Enemy_Sine::Enemy_Sine(Bullet_Manager * bullet_manager, Player * player)
@@ -19,7 +19,7 @@ Enemy_Sine::Enemy_Sine(Bullet_Manager * bullet_manager, Player * player)
 	animations.push_back(Animation("Sine_Build"));
 	animations.at(1).set_looping(false);
 	animations.at(1).set_desired_fps(1);
-	m_stats = EnemyStats(false, 100, 1, 2, 20, 1, 0);
+	m_stats = EnemyStats(false, 10, 1, 2, 30, 1, 0);
 
 	m_bullet_manager = bullet_manager;
 	m_player = player;
@@ -66,7 +66,9 @@ void Enemy_Sine::flight_path()
 	}
 
 	set_movement(Point(m_stats.speed_*m_dir, 0));
-	move();
+
+	if(moving)
+		move();
 	sf::Sprite current_animation = animations.at(0).get_current_frame();
 
 	m_distance_travelled++;
@@ -142,6 +144,7 @@ Enemy_Sine Enemy_Sine::create_copy(Point center, int radius)
 Enemy_Sine Enemy_Sine::create_copy(Spawn_Data data)
 {
 	create_copy(data.pos, data.radius);
+	moving=data.moving;
 	return *this;
 }
 

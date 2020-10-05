@@ -21,6 +21,9 @@ private:
 
     UIHandler ui_handler = UIHandler(world);
 
+    sf::Sprite panel;
+    sf::Sprite panelx;
+
 	Player player = Player(&bullet_manager);
 
     World_Data world;
@@ -43,7 +46,6 @@ public:
 	void update_player(Mousey&,Keyblade&,Gamepad&);
 
 	void add_bullets();
-	void reset(Imagehandler& imagehandler,Audiohandler& audiohandler);
 };
 
 

@@ -67,7 +67,7 @@ void UIHandler::draw(sf::RenderWindow& window)
     // Draw health
     window.draw(a_Health[0].get_current_frame());
     sf::Shader circular;
-    if (circular.loadFromFile("../assets/shader/sh_3_4_CircularBar.fsh", sf::Shader::Fragment))
+    /*if (circular.loadFromFile("../assets/shader/sh_3_4_CircularBar.fsh", sf::Shader::Fragment))
     {
         circular.setUniform("BaseTexture", sf::Shader::CurrentTexture);
         circular.setUniform("uv_topLeft", sf::Vector2f(0.0, 0.5));
@@ -76,7 +76,7 @@ void UIHandler::draw(sf::RenderWindow& window)
         window.draw(a_Health[1].get_current_frame(), &circular);
     }else{
         cout<<"not loading shader"<<std::endl;
-    }
+    }*/
 
     // Draw Line bar
     for (int i = 0; i < 9; i++)
