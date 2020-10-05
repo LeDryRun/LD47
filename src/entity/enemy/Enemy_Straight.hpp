@@ -14,9 +14,11 @@ public:
 	virtual void update();
 	virtual void doSpawn();
 	Animation getCurrentAnimation();
+	virtual EnemyType get_type();
 
 	Enemy_Straight create_copy(Point center, int radius);
 	Enemy_Straight create_copy(Spawn_Data data);
+
 
 private:
 	int m_length;

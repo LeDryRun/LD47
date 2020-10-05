@@ -4,26 +4,28 @@
 Enemy_V::Enemy_V()
 {
 	animations.push_back(Animation("Fish_Idle"));
-	m_health = 1;
+	animations.push_back(Animation("Fish_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
+	m_stats = EnemyStats(false, 100, 5, 2, 20, 1, 0);
 }
 
 Enemy_V::Enemy_V(Bullet_Manager * bullet_manager)
 {
 	animations.push_back(Animation("Fish_Idle"));
+	animations.push_back(Animation("Fish_Build"));
+	animations.at(1).set_looping(false);
+	animations.at(1).set_desired_fps(1);
+	m_stats = EnemyStats(false, 100, 5, 2, 20, 1, 0);
 
 	m_bullet_manager = bullet_manager;
 
 	m_length = 100;
 	m_distance_travelled = 0;
-	m_speed = 1;
 	m_dir = 1;
-	m_damage = 1;
-	m_bullet_speed = 2;
 
-	m_fire_delay = 10;
 	m_fire_timer = 0;
 
-	m_health = 100;
 	m_spawned = false;
 	m_spawning = false;
 
@@ -37,9 +39,11 @@ Enemy_V::~Enemy_V()
 
 void Enemy_V::update()
 {
+	animate();
 	if (m_spawned) {
+		set_current_animation(0);
 		flight_path();
-		if (m_fire_timer >= m_fire_delay) {
+		if (m_fire_timer >= m_stats.fire_delay_) {
 			fire();
 			m_fire_timer = 0;
 		}
@@ -58,7 +62,7 @@ void Enemy_V::flight_path()
 		m_distance_travelled = 0;
 	}
 
-	set_movement(Point(0, m_speed*m_dir));
+	set_movement(Point(0, m_stats.speed_*m_dir));
 	move();
 
 	m_distance_travelled++;
@@ -66,8 +70,24 @@ void Enemy_V::flight_path()
 
 void Enemy_V::spawn_path()
 {
-	m_spawning = false;
-	m_spawned = true;
+	float posy = get_center().get_y();
+	float targety = m_spawn_point.get_y();
+
+	if (targety - posy != 0) {
+		Point dir(0, targety - posy);
+		dir.normalize();
+
+		set_movement(Point(0, m_stats.speed_*dir.get_y()));
+		move();
+
+		if (animations.at(current_animation_int).is_finished())
+			set_current_animation(0);
+	}
+	else {
+		m_spawning = false;
+		m_spawned = true;
+	}
+
 }
 
 void Enemy_V::fire()
@@ -83,7 +103,7 @@ void Enemy_V::fire()
 		Point dir = Point(cos(60*M_PI/180)*i==0?1:-1, sin(60*M_PI/180));
 		dir.normalize();
 
-		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_damage, dir, Point(spawn.x, spawn.y), m_bullet_speed,this));
+		bullets.push_back(Bullet_Blueprint(BULLET_TYPES::LINEAR, m_stats.damage_, dir, Point(spawn.x, spawn.y), m_stats.bullet_speed_,this));
 	}
 	m_bullet_manager->add_bullets(bullets);
 }
@@ -92,6 +112,7 @@ void Enemy_V::doSpawn()
 {
 	rotate_animations(-90);
 	m_spawning = true;
+	set_current_animation(1);
 }
 
 Animation Enemy_V::getCurrentAnimation()
@@ -99,9 +120,18 @@ Animation Enemy_V::getCurrentAnimation()
 	return animations.at(0);
 }
 
+EnemyType Enemy_V::get_type()
+{
+	return kEnemyV;
+}
+
 Enemy_V Enemy_V::create_copy(Point center, int radius)
 {
-	create(center, radius);
+	m_spawn_point = center;
+	create(Point(center.get_x(), -2 * radius), radius);
+
+	m_stats.radius_ = radius;
+
 	return *this;
 }
 
