@@ -40,6 +40,7 @@ void Audiohandler::load(){
 	background_music.openFromFile("../assets/audio/music/Whorl.wav");
 	background_music.play();
 	background_music.setLoop(true);
+	add_buffer("../assets/audio/bplayer_hit.wav","player_hit");
 }
 void Audiohandler::add_buffer(std::string file_p,std::string name_p){
 	buffers.push_back(std::make_unique<Sound_Texture>(Sound_Texture(file_p,name_p)));

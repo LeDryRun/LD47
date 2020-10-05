@@ -20,6 +20,8 @@ Gameplay_State::Gameplay_State(Imagehandler& imagehandler, Audiohandler& audioha
 	bullet_manager.set_player(player);
 	wave_manager.create();
 	wave_manager.set_testing_wave(-1, -1);
+	dummy_audio=Dummy_Audio();
+	dummy_audio.load_sounds(audiohandler);
 }
 
 void Gameplay_State::load_sprites(Imagehandler& imagehandler) {
@@ -177,6 +179,12 @@ void Gameplay_State::update_player(Mousey& mouse, Keyblade& keyboard, Gamepad& g
 			if (!bhp.at(i)->is_exploding()) {
 				//std::cout<<"ASKDFA"<<std::endl;
 				player.take_damage(bhp.at(i)->get_damage());
+                if(player.get_HealthLeft()<=0){
+					dummy_audio.play_sound("enemy_die");
+                }else{
+					dummy_audio.play_sound("player_hit");
+                }
+
 				if (player.get_isDeadOver()) {
 					send_data.push_back(Data_Packet("set_state", MANAGER, { "death_state" }));
 				}
