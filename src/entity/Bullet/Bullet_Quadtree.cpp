@@ -93,10 +93,12 @@ void Bullet_Quadtree::insert_into_children(std::shared_ptr<Bullet> bullet){
 	if(center.get_x() < bullet->get_center().get_x()){left=false;}
 	if(center.get_y() < bullet->get_center().get_y()){top=false;}
 
-	if(top&&left){top_left_child->insert(bullet);}
-	else if(!top&&left){bottom_left_child->insert(bullet);}
-	else if(top&&!left){top_right_child->insert(bullet);}
-	else if(!top&&!left){bottom_right_child->insert(bullet);}
+	if(center.get_x()<bottom_right_bound.get_x() && center.get_y()<bottom_right_bound.get_y()){
+		if(top&&left){top_left_child->insert(bullet);}
+		else if(!top&&left){bottom_left_child->insert(bullet);}
+		else if(top&&!left){top_right_child->insert(bullet);}
+		else if(!top&&!left){bottom_right_child->insert(bullet);}
+	}
 }
 
 void Bullet_Quadtree::split(){

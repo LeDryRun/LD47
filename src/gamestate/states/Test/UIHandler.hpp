@@ -20,8 +20,12 @@ class UIHandler
         float f_Health_Ratio = 1.0f;
         float f_Line_Ratio = 1.0f;
 
+        sf::Shader sh_Circular;
+        sf::Shader sh_Vertical;
+
     public:
         UIHandler() {};
+        UIHandler(const UIHandler& original);
         UIHandler(World_Data& world_pointer) { world = &world_pointer; };
 
         void load_animations(Imagehandler& image_handler);

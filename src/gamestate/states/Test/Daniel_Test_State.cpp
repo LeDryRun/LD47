@@ -3,26 +3,37 @@
 
 
 Daniel_Test_State::Daniel_Test_State(Imagehandler& imagehandler,Audiohandler& audiohandler):test_layer("test_layer"){
+	seed();
 	state_name="daniel_test_state";
 
     world.init(Point(0, 0), test_layer.get_original_size());
-	load_sprites(imagehandler);
 
-	player.create(Point(500,500),16);
 	enemy_spawn_timer.create(60);
 	bullet_manager=Bullet_Manager();
 	bullet_manager.create(Point(world.active_left,world.active_top),Point(world.active_right,world.active_bottom));
-	bullet_manager.set_player(player);
 
 	create_waves();
 
 	load_sprites(imagehandler);
+	player.create(Point(world.width / 2, world.active_bottom - 100), 1);
+	bullet_manager.set_player(player);
+	wave_manager.create();
 }
 
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
+    ui_handler.load_animations(imagehandler);
 	player.load_animations(imagehandler);
 	bullet_manager.load_animations(imagehandler);
+	imagehandler.load_sprite(panel,"panel");
+	imagehandler.load_sprite(panelx,"panelx");
+
+	//panel.setPosition(1100,260);
+	//panelx.setPosition(1100,260);
+	//panel.setScale(1.5f,1.5f);
+	//panelx.setScale(1.5f,1.5f);
+
 	wave_manager.load_animations(imagehandler);
+	player.scale_animations(Point(32.0f/310.0f,32.0f/310.0f));
 }
 
 void Daniel_Test_State::update_layer_resolutions(){
@@ -38,18 +49,11 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	bullet_manager.update();
 	update_player(mouse,keyboard,gamepad);
 
-
-	bool spawn = keyboard.get_key('k').was_just_pressed();
-
-	if (spawn) {
-		wave_manager.add_wave(wave_one);
-		//m_wave_manager.add_wave(m_wave_two);
-		spawn = false;
-	}
 	if(enemy_spawn_timer.do_timer_loop()){
 		add_bullets();
 	}
 	wave_manager.update();
+    ui_handler.update(player.get_HealthRatio(), player.get_LineRatio());
 
 
 	check_gamepad(gamepad);
@@ -70,7 +74,11 @@ void Daniel_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	window.setView(test_layer);
 	window.draw(bullet_manager);
 	window.draw(wave_manager);
+	//window.draw(panel);
+	//window.draw(panelx);
 	player.draw(world,window);
+    render_bounds(window);
+ 	ui_handler.draw(window);
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
 
@@ -129,14 +137,30 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
 	//if(mouse.is_clicked()){std::cout<<bhp.size();}
 	for(int i=0;i<(int)bhp.size();i++){
 		if(player.is_colliding(*bhp.at(i))){
+            if (!bhp.at(i)->is_exploding()){
+            	//std::cout<<"ASKDFA"<<std::endl;
+                player.take_damage(bhp.at(i)->get_damage());
+            }
 			bhp.at(i)->set_exploding(true);
 		}
 	}
 
 }
 
+void Daniel_Test_State::render_bounds(sf::RenderWindow& window)
+{
+    // Create world bounds
+    sf::VertexArray active_bounds(sf::LinesStrip, 5);
+    active_bounds[0].position = sf::Vector2f(world.active_left, world.active_top);
+    active_bounds[1].position = sf::Vector2f(world.active_left, world.active_bottom);
+    active_bounds[2].position = sf::Vector2f(world.active_right, world.active_bottom);
+    active_bounds[3].position = sf::Vector2f(world.active_right, world.active_top);
+    active_bounds[4].position = sf::Vector2f(world.active_left, world.active_top);
+    window.draw(active_bounds);
+}
+
 void Daniel_Test_State::create_waves(){
-	std::vector<EnemyType> enemies;
+	/*std::vector<EnemyType> enemies;
 	enemies.push_back(EnemyType::kEnemyStraight);
 	enemies.push_back(EnemyType::kEnemyBurst);
 	enemies.push_back(EnemyType::kEnemySine);
@@ -155,14 +179,15 @@ void Daniel_Test_State::create_waves(){
 	spawn_data_two.push_back(Spawn_Data(1, 16, Point(600, 300), 600));
 
 	wave_one = Wave(enemies, false, spawn_data_one);
-	wave_two = Wave(enemies, false, spawn_data_two);
-	//wave_manager = Wave_Manager(&bullet_manager, &player);
+	wave_two = Wave(enemies, false, spawn_data_two);*/
+	wave_manager = Wave_Manager(&bullet_manager, &player, &world);
+
 }
 
 void Daniel_Test_State::add_bullets(){
 	std::vector<Bullet_Blueprint> blueprints;
 
 	//blueprints.push_back(Bullet_Blueprint(SINE,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
-	blueprints.push_back(Bullet_Blueprint(HOMING,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
+	//blueprints.push_back(Bullet_Blueprint(HOMING,1,Point(-4,3),Point(800,20),5,&dummy_enemy));
 	bullet_manager.add_bullets(blueprints);
 }

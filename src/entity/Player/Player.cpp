@@ -94,7 +94,8 @@ void Player::draw(World_Data world, sf::RenderWindow &window)
         points.append(sf::Vertex(sf::Vector2f(p.get_x(), p.get_y()), sf::Color::White));
     }
 
-	  window.draw(s_Ring);
+
+	window.draw(s_Ring);
     window.draw(points);
     window.draw(*this);
 }

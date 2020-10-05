@@ -20,8 +20,10 @@ private:
 	sf::Texture menu_background;
 	sf::Texture core_game_background;
 
-	sf::Texture lizerd;
-	sf::Texture hotbar;
+	sf::Texture game_title;
+	sf::Texture panel;
+	sf::Texture o;
+	sf::Texture panelx;
 
 	sf::Texture text_input_box;
 	sf::Texture text_input_cursor;
