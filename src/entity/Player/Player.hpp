@@ -54,6 +54,8 @@ class Player : public Circular_Entity
         bool get_isLooping() { return b_isLooping; };
         void set_isLooping(bool b) { b_isLooping = b; };
 
+        float get_LineRatio() { return f_LineLeft / f_LineLimit; };
+
         void update(World_Data world, Point move, bool shifted);
         void draw(World_Data world, sf::RenderWindow& window);
 		virtual void scale_animations(Point);
