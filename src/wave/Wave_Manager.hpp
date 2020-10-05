@@ -38,6 +38,8 @@ private:
 	std::vector<Enemy*> enemies;
 	std::vector<Wave> current_waves;
 
+	Wave boss;
+
 	Enemy_Straight enemy_straight;
 	Enemy_Burst enemy_burst;
 	Enemy_Sine enemy_sine;

@@ -7,6 +7,7 @@
 #include "../../wave/Wave_Manager.hpp"
 #include "../../communal/Tick_Timer.hpp"
 #include "Test/UIHandler.hpp"
+#include "dummy_audio.hpp"
 
 
 class Gameplay_State :public Gamestate {
@@ -20,6 +21,8 @@ private:
 	Wave_Manager wave_manager;
 
 	UIHandler ui_handler = UIHandler(world);
+
+	Dummy_Audio dummy_audio;
 
 	sf::Sprite panel;
 	sf::Sprite panelx;

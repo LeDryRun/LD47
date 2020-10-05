@@ -50,8 +50,8 @@ void Wave_Manager::load_templates(){
 	Enemy_Type_Pool type_pool={{kEnemyStraight,kEnemyBurst,kEnemySine,kEnemyV}};
 
 	std::vector<Spawn_Data> spawn_data={
-		Spawn_Data(0,false,false,Point(0.25f,0.3f),300),
-		Spawn_Data(0,false,false,Point(0.5f,0.3f),600),
+		Spawn_Data(0,false,false,Point(0.25f,0.3f),0),
+		Spawn_Data(0,false,false,Point(0.5f,0.3f),0),
 		Spawn_Data(0,false,false,Point(0.75f,0.3f),0)
 	};
 	int wave_difficulty=10;
@@ -229,10 +229,7 @@ void Wave_Manager::load_templates(){
 	};
 	wave_difficulty = 45;
 
-	tier.push_back(Wave(type_pool, false, spawn_data, wave_difficulty));
-
-	wave_templates.push_back(tier);
-	tier.clear();
+	boss=Wave(type_pool, false, spawn_data, wave_difficulty);
 }
 
 
@@ -265,6 +262,11 @@ void Wave_Manager::update()
 	desired_difficulty=(game_tick/200)+waves_defeated*2;
 	//determine current actual difficulty level	based on current spawning waves and persistent enemies
 
+
+	if(waves_defeated>0 && waves_defeated%10==0){
+		add_enemy(Spawn_Data(kEnemyBoss,false,true,Point(0.5f,0.1f),0));
+		next_wave.restart();
+	}
 
 	// if neccessary push back new wave based on difference between desired and actual using templates
 
@@ -310,7 +312,7 @@ void Wave_Manager::update()
 	if(next_wave.do_timer_loop()){
 		generate_waves();
 	}
-	std::cout<<desired_difficulty<<std::endl;
+	//std::cout<<desired_difficulty<<std::endl;
 
 }
 
