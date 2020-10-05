@@ -39,9 +39,13 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	m_wave_two = Wave(enemies, false, spawn_data_two);
 	m_wave_manager = Wave_Manager(&m_bullet_manager, &m_test_player);
 
+    ui_handler.load_animations(imagehandler);
+
 	load_sprites(imagehandler);
 
-	m_test_player.create(Point(500, 500), 16);
+	m_test_player.create(Point(500, 500), 2);
+
+    uptime.restart();
 }
 
 void Andrew_Test_State::load_sprites(Imagehandler& imagehandler){
@@ -104,6 +108,8 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 	int bulletx = 0;
 	int bullety = 0;
 
+    ui_handler.update(1.0f, m_test_player.get_LineRatio());
+
 	m_debug_text.setString("Enemy Spawn: " + std::to_string(bulletx));
 	m_debug_text.setCharacterSize(12);
 	m_debug_text.setFillColor(sf::Color::White);
@@ -123,11 +129,19 @@ void Andrew_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	window.setView(test_layer);
 	window.draw(m_debug_text);
 
+    // Create world bounds
+    sf::VertexArray active_bounds(sf::LinesStrip, 5);
+    active_bounds[0].position = sf::Vector2f(world.active_left, world.active_top);
+    active_bounds[1].position = sf::Vector2f(world.active_left, world.active_bottom);
+    active_bounds[2].position = sf::Vector2f(world.active_right, world.active_bottom);
+    active_bounds[3].position = sf::Vector2f(world.active_right, world.active_top);
+    active_bounds[4].position = sf::Vector2f(world.active_left, world.active_top);
+    window.draw(active_bounds);
 
     m_test_player.draw(world, window);
 	window.draw(m_wave_manager);
 	window.draw(m_bullet_manager);
-
+    ui_handler.draw(window);
 
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
