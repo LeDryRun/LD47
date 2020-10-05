@@ -242,7 +242,8 @@ void Wave_Manager::draw(sf::RenderTarget & target, sf::RenderStates states) cons
 }
 
 void Wave_Manager::generate_waves()
-{if(current_waves.size()==0){while(current_difficulty<desired_difficulty){
+{	std::cout<<"generate_waves"<<std::endl;
+	if(current_waves.size()==0){while(current_difficulty<desired_difficulty){
 
 	Point center = Point(world_data->width / 2, world_data->height / 2);
 	Point opos;
@@ -250,13 +251,13 @@ void Wave_Manager::generate_waves()
 
 	//AI LOGIC
 	int tier=-1;
-	int desired_tier=(int)(desired_difficulty-current_difficulty)%10;
+	int desired_tier=(int)((desired_difficulty-current_difficulty)/10)%10;
 	std::vector<int> possibles=std::vector<int>();
-	std::cout<<"desired="<<desired_difficulty<<" c="<<current_difficulty<<" d_tier="<<desired_tier<<" possibles="<<wave_templates.at(desired_tier).size();
+	std::cout<<"desired="<<desired_difficulty<<" c="<<current_difficulty<<" d_tier="<<desired_tier<<" possibles="<<possibles.size()<<std::endl;
 	do{
 		if(desired_tier<0){
 			tier=0;
-		}else if(desired_tier>=wave_templates.size()){
+		}else if(desired_tier>wave_templates.size()-1){
 			desired_tier--;
 		}else{
 			for(int i=0;i<(int)wave_templates.at(desired_tier).size();i++){
@@ -273,7 +274,7 @@ void Wave_Manager::generate_waves()
 				desired_tier--;
 			}
 		}
-		std::cout<<"desired="<<desired_difficulty<<"c="<<current_difficulty<<"d_tier="<<desired_tier<<"possibles="<<possibles.size();
+		//std::cout<<"desired="<<desired_difficulty<<"c="<<current_difficulty<<"d_tier="<<desired_tier<<"possibles="<<possibles.size();
 	}while(tier==-1);
 
 	std::cout<<std::endl<<std::endl;
