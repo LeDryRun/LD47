@@ -50,6 +50,8 @@ void Imagehandler::load(){
 	load_animation_sheet("../assets/image/animations/Player_Core");
   	load_animation_sheet("../assets/image/animations/UI_Anims/health");
   	load_animation_sheet("../assets/image/animations/UI_Anims/LineBar");
+    load_animation_sheet("../assets/image/animations/UI_Anims/panel");
+    load_animation_sheet("../assets/image/animations/UI_Anims/panelxbox");
 }
 
 void Imagehandler::load_text_input_box(Text_Input_Box& tib){

@@ -16,12 +16,13 @@ class Player : public Circular_Entity
 
         float f_HealthLimit = 100.f;
         float f_HealthLeft = f_HealthLimit;
-        float f_PlayerSpd = 10.f;
+        float f_PlayerSpd = 7.f;
 
         std::vector<Point> v_Line;
-        float f_LineLimit = 5.0f;
+        float f_LineLimit = 2.5f;
         float f_LineLeft = f_LineLimit;
         bool b_isLooping = false;
+        bool b_isHoldingLoop = false;
 
     public:
         Player()
@@ -62,6 +63,8 @@ class Player : public Circular_Entity
 
         bool get_isLooping() { return b_isLooping; };
         void set_isLooping(bool b) { b_isLooping = b; };
+        bool get_isHoldingLoop() { return b_isHoldingLoop; };
+        void set_isHoldingLoop(bool b) { b_isHoldingLoop = b; };
 
         float get_HealthRatio() { return f_HealthLeft / f_HealthLimit; };
         float get_LineRatio() { return f_LineLeft / f_LineLimit; };

@@ -8,15 +8,30 @@ void UIHandler::load_animations(Imagehandler& image_handler)
     image_handler.load_animation(a_Health[0]);
 
     a_Health[0].scale(Point(0.75, 0.75));
-    a_Health[0].set_position(Point(world->left + (a_Health[0].get_frame_width() / 2) + 5, world->bottom - (a_Health[0].get_frame_height() / 2) - 5));
+    a_Health[0].set_position(Point(world->left + (a_Health[0].get_frame_width() / 2) + 20, world->bottom - (a_Health[0].get_frame_height() / 2) - 5));
     a_Health[0].set_looping(false);
 
     a_Health[1] = Animation("Health_Bar");
     image_handler.load_animation(a_Health[1]);
 
     a_Health[1].scale(Point(0.75, 0.75));
-    a_Health[1].set_position(Point(world->left + (a_Health[1].get_frame_width() / 2) + 5, world->bottom - (a_Health[1].get_frame_height() / 2) - 5));
+    a_Health[1].set_position(a_Health[0].get_position());
     a_Health[1].set_looping(false);
+
+    // Tutorial Panels
+    a_TutorialPanel[0] = Animation("panel_idle");
+    image_handler.load_animation(a_TutorialPanel[0]);
+
+    a_TutorialPanel[0].scale(Point(0.91f, 0.91f));
+    a_TutorialPanel[0].set_position(Point(world->right - (a_TutorialPanel[0].get_frame_width() / 2) - 20, world->active_top + (a_TutorialPanel[0].get_frame_height() / 2)));
+    a_TutorialPanel[0].set_looping(false);
+
+    a_TutorialPanel[1] = Animation("panelxbox_idle");
+    image_handler.load_animation(a_TutorialPanel[1]);
+
+    a_TutorialPanel[1].scale(Point(0.91f, 0.91f));
+    a_TutorialPanel[1].set_position(a_TutorialPanel[0].get_position());
+    a_TutorialPanel[1].set_looping(false);
 
     // Line Bar
     a_LineBar[0] = Animation("Linebar_corner");
@@ -54,14 +69,61 @@ void UIHandler::load_animations(Imagehandler& image_handler)
 
     a_LineBar[9].set_position(a_LineBar[4].get_position());;
 
+    // Boss Bar
+    a_BossBar[0] = Animation("Linebar_corner_enem");
+    a_BossBar[1] = Animation("Linebar_topbot_enem");
+    a_BossBar[2] = Animation("Linebar_corner_enem");
+    a_BossBar[3] = Animation("Linebar_side_enem");
+    a_BossBar[4] = Animation("Linebar_back_enem");
+    a_BossBar[5] = Animation("Linebar_side_enem");
+    a_BossBar[6] = Animation("Linebar_corner_enem");
+    a_BossBar[7] = Animation("Linebar_topbot_enem");
+    a_BossBar[8] = Animation("Linebar_corner_enem");
+    a_BossBar[9] = Animation("Linebar_bar_enem");
+
+    for (int i = 0; i < 10; i++)
+    {
+        image_handler.load_animation(a_BossBar[i]);
+        a_BossBar[i].set_looping(false);
+        a_BossBar[i].scale(Point(1.f, 1.f));
+    }
+
+    a_BossBar[8].set_position(Point(world->active_right + 15 + (a_BossBar[8].get_frame_width() / 2) + a_BossBar[7].get_frame_width() + a_BossBar[6].get_frame_width(), world->active_bottom - (a_BossBar[8].get_frame_height() / 2)));
+    //a_BossBar[8].set_position(Point(world->active_left - (a_BossBar[8].get_frame_width() / 2) - 15, world->active_bottom - (a_BossBar[8].get_frame_height() / 2)));
+    a_BossBar[7].set_position(a_BossBar[8].get_position() - Point(a_BossBar[8].get_frame_width() / 2 + a_BossBar[7].get_frame_width() / 2, 0.0f));
+    a_BossBar[6].set_position(a_BossBar[7].get_position() - Point(a_BossBar[7].get_frame_width() / 2 + a_BossBar[6].get_frame_width() / 2, 0.0f));
+    a_BossBar[8].set_rotation(180);
+    a_BossBar[6].set_rotation(-90);
+
+    float f_barScaleY = 1.6f;
+    a_BossBar[5].scale(Point(1.0f, f_barScaleY)); // 462 tall
+    a_BossBar[4].scale(Point(1.0f, f_barScaleY));
+    a_BossBar[3].scale(Point(1.0f, f_barScaleY));
+    a_BossBar[5].set_position(a_BossBar[8].get_position() - Point(0.0f, a_BossBar[8].get_frame_height() / 2 + a_BossBar[5].get_frame_height() / 2));
+    a_BossBar[4].set_position(a_BossBar[5].get_position() - Point(a_BossBar[5].get_frame_width() / 2 + a_BossBar[4].get_frame_width() / 2, 0.0f));
+    a_BossBar[3].set_position(a_BossBar[4].get_position() - Point(a_BossBar[4].get_frame_width() / 2 + a_BossBar[3].get_frame_width() / 2, 0.0f));
+
+    a_BossBar[2].set_position(a_BossBar[5].get_position() - Point(0.0f, a_BossBar[5].get_frame_height() / 2 + a_BossBar[2].get_frame_height() / 2));
+    a_BossBar[1].set_position(a_BossBar[2].get_position() - Point(a_BossBar[2].get_frame_width() / 2 + a_BossBar[1].get_frame_width() / 2, 0.0f));
+    a_BossBar[0].set_position(a_BossBar[1].get_position() - Point(a_BossBar[1].get_frame_width() / 2 + a_BossBar[0].get_frame_width() / 2, 0.0f));
+    a_BossBar[2].set_rotation(90);
+
+    a_BossBar[9].scale(Point(1.0f, f_barScaleY));
+    a_BossBar[9].set_position(a_BossBar[4].get_position());;
+
+    // Load shaders
     if (sf::Shader::isAvailable)
     {
-        // Load shaders
+        // Load from file
         if (!sh_Circular.loadFromFile("../assets/shader/sh_3_4_CircularBar.fsh", sf::Shader::Fragment))
         {// throw a fit
             cout << "Circular shader failed to load." << endl;
         }
         if (!sh_Vertical.loadFromFile("../assets/shader/sh_VerticalBar.fsh", sf::Shader::Fragment))
+        {// throw a fit
+            cout << "Vertical bar shader failed to load." << endl;
+        }
+        if (!sh_Alpha.loadFromFile("../assets/shader/sh_Alpha.fsh", sf::Shader::Fragment))
         {// throw a fit
             cout << "Vertical bar shader failed to load." << endl;
         }
@@ -73,10 +135,18 @@ void UIHandler::load_animations(Imagehandler& image_handler)
 }
 
 
-void UIHandler::update(float health_ratio, float line_ratio)
+void UIHandler::update(float health_ratio, float line_ratio, float boss_ratio)
 {
     f_Line_Ratio = line_ratio;
     f_Health_Ratio = health_ratio;
+
+    if (boss_ratio != -1.0f)
+    {
+        b_isBossActive = true;
+        f_Boss_Ratio = boss_ratio;
+    }
+    else if (b_isBossActive)
+        b_isBossActive = false;
 }
 
 void UIHandler::draw(sf::RenderWindow& window)
@@ -94,7 +164,33 @@ void UIHandler::draw(sf::RenderWindow& window)
     { window.draw(a_LineBar[i].get_current_frame()); }
 
     sh_Vertical.setUniform("BaseTexture", sf::Shader::CurrentTexture);
-    sh_Vertical.setUniform("v_bounds", sf::Vector2f(0.66, 1.0));
+    sh_Vertical.setUniform("v_bounds", sf::Vector2f(0.33, 0.5));
     sh_Vertical.setUniform("percentage", f_Line_Ratio);
     window.draw(a_LineBar[9].get_current_frame(), &sh_Vertical);
+
+    // Draw boss health
+    for (int i = 0; i < 9; i++)
+    {
+        window.draw(a_BossBar[i].get_current_frame());
+    }
+
+    if (b_isBossActive)
+    {// Use the health shader
+        sh_Vertical.setUniform("BaseTexture", sf::Shader::CurrentTexture);
+        sh_Vertical.setUniform("v_bounds", sf::Vector2f(0.66, 1.0));
+        sh_Vertical.setUniform("percentage", f_Boss_Ratio);
+        window.draw(a_BossBar[9].get_current_frame(), &sh_Vertical);
+    }
+    else
+    {// Mute the bar
+        sh_Alpha.setUniform("BaseTexture", sf::Shader::CurrentTexture);
+        sh_Alpha.setUniform("alpha", 0.0f);
+        window.draw(a_BossBar[9].get_current_frame(), &sh_Alpha);
+    }
+
+    // Draw tutorial message
+    if (b_gamepadControlActive)
+        window.draw(a_TutorialPanel[1].get_current_frame());
+    else
+        window.draw(a_TutorialPanel[0].get_current_frame());
 }
