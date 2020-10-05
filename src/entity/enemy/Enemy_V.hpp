@@ -14,14 +14,17 @@ public:
 	virtual void update();
 	virtual void doSpawn();
 	Animation getCurrentAnimation();
+	virtual EnemyType get_type();
 
 	Enemy_V create_copy(Point center, int radius);
 	Enemy_V create_copy(Spawn_Data data);
+
 
 private:
 	int m_length;
 	int m_distance_travelled;
 	int m_dir;
+
 
 	virtual void flight_path();
 	virtual void spawn_path();
