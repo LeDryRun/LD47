@@ -12,7 +12,7 @@ Wave_Manager::Wave_Manager(Bullet_Manager* bullet_manager, Player* player, World
 	m_enemy_burst = Enemy_Burst(m_bullet_manager);
 	m_enemy_sine = Enemy_Sine(m_bullet_manager, m_player);
 	m_enemy_v = Enemy_V(m_bullet_manager);
-	m_enemy_boss = Enemy_Boss(m_bullet_manager);
+	m_enemy_boss = Enemy_Boss(m_bullet_manager, player, world_data);
 
 	m_wave_number = 0;
 	m_wave_difficulty = 0;

@@ -23,7 +23,7 @@ Andrew_Test_State::Andrew_Test_State(Imagehandler& imagehandler,Audiohandler& au
 	std::deque<Spawn_Data> spawn_data_one;
 	std::deque<Spawn_Data> spawn_data_two;
 
-	spawn_data_one.push_back(Spawn_Data(0, 0, Point(500, 200), 100));
+	spawn_data_one.push_back(Spawn_Data(0, 0, Point(500, 100), 100));
 
 	m_wave_one = Wave(enemies, false, spawn_data_one);
 	m_wave_manager = Wave_Manager(&m_bullet_manager, &m_test_player, &world);
@@ -78,6 +78,7 @@ void Andrew_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
     }
 
 	bool spawn = mouse.is_clicked();
+
 
 	if (spawn) {
 		m_wave_manager.add_wave(m_wave_one);

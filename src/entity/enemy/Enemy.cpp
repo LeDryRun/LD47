@@ -14,6 +14,11 @@ Enemy::~Enemy()
 {
 }
 
+std::vector<Spawn_Data> Enemy::get_babies()
+{
+	return std::vector<Spawn_Data>();
+}
+
 bool Enemy::is_alive()
 {
 	return m_stats.health_>0;
