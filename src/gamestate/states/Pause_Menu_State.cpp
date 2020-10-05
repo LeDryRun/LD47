@@ -3,7 +3,7 @@
 using namespace std;
 
 Pause_Menu_State::Pause_Menu_State(Imagehandler& imagehandler){
-	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("resume", 550, 480, Data_Packet("set_state",MANAGER,{"daniel_test_state"}),-1,-1,1,-1)));
+	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("resume", 550, 480, Data_Packet("set_state",MANAGER,{"gameplay_state"}),-1,-1,1,-1)));
 	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("options", 550, 560, Data_Packet("set_state",MANAGER,{"options_menu","pause_menu"}),-1,0,2,-1)));
 	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("quit", 550, 640, Data_Packet("set_state",MANAGER,{"main_menu"}),-1,1,-1,-1)));
 	load_sprites(imagehandler);

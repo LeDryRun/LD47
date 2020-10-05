@@ -3,7 +3,7 @@
 using namespace std;
 
 Main_Menu_State::Main_Menu_State(Imagehandler& imagehandler){
-	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("test", 550, 480, Data_Packet("set_state",MANAGER,{"daniel_test_state"}),-1,-1,1,-1)));
+	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("play", 550, 480, Data_Packet("set_state",MANAGER,{"gameplay_state"}),-1,-1,1,-1)));
 	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("options", 550, 560, Data_Packet("set_state",MANAGER,{"options_menu"}),-1,0,2,-1)));
 	gui_layer_buttons.push_back(std::make_unique<Text_Button>(Text_Button("close", 550, 640, Data_Packet("close",WINDOW),-1,1,-1,-1)));
 
