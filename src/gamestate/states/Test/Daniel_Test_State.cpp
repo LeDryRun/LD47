@@ -37,6 +37,7 @@ void Daniel_Test_State::reset(Imagehandler& imagehandler,Audiohandler& audiohand
 }
 
 void Daniel_Test_State::load_sprites(Imagehandler& imagehandler){
+    ui_handler.load_animations(imagehandler);
 	player.load_animations(imagehandler);
 	bullet_manager.load_animations(imagehandler);
 	wave_manager.load_animations(imagehandler);
@@ -60,6 +61,7 @@ void Daniel_Test_State::update(Mousey& mouse,Keyblade& keyboard,Gamepad& gamepad
 		add_bullets();
 	}
 	wave_manager.update();
+    ui_handler.update(player.get_HealthRatio(), player.get_LineRatio());
 
 
 	check_gamepad(gamepad);
@@ -81,6 +83,7 @@ void Daniel_Test_State::render(sf::RenderWindow& window){Duration_Check::start("
 	window.draw(bullet_manager);
 	window.draw(wave_manager);
 	player.draw(world,window);
+ 	 ui_handler.draw(window);
 	Gamestate::render_gui_layer(window);
 Duration_Check::stop("-Platformer render");}
 
@@ -139,6 +142,10 @@ void Daniel_Test_State::update_player(Mousey& mouse,Keyblade& keyboard,Gamepad& 
 	//if(mouse.is_clicked()){std::cout<<bhp.size();}
 	for(int i=0;i<(int)bhp.size();i++){
 		if(player.is_colliding(*bhp.at(i))){
+            if (!bhp.at(i)->is_exploding()){
+            	std::cout<<"ASKDFA"<<std::endl;
+                player.take_damage(bhp.at(i)->get_damage());
+            }
 			bhp.at(i)->set_exploding(true);
 		}
 	}

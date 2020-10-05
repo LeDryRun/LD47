@@ -75,7 +75,7 @@ void Enemy_V::spawn_path()
 	float posy = get_center().get_y();
 	float targety = m_spawn_point.get_y();
 
-	if (targety - posy != 0) {
+	if (targety > posy) {
 		Point dir(0, targety - posy);
 		dir.normalize();
 
